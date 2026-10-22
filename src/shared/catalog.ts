@@ -1,0 +1,12 @@
+export const STATS = ['hp', 'strength', 'magic', 'dexterity', 'speed', 'luck', 'defense', 'resistance', 'charm'] as const;
+export const ROUTES = ['cai', 'theodora', 'dietrich', 'leda'] as const;
+export const SKILLS = ['authority', 'axes', 'black_magic', 'bows', 'flying', 'gauntlets', 'heavy_armor', 'infantry', 'riding', 'spears', 'swords', 'white_magic'] as const;
+export const TIERS = ['unique', 'beginner', 'specialty', 'advanced', 'master', 'divine'] as const;
+export const AVAILABLE_STATUSES = ['recruitable', 'automatic', 'mandatory_tutorial'] as const;
+export type Route = typeof ROUTES[number];
+export type RouteContext = 'all' | Route;
+export type Stat = typeof STATS[number];
+export type Skill = typeof SKILLS[number];
+export const ROUTE_NAMES: Record<Route, string> = { cai: 'Cai', theodora: 'Theodora', dietrich: 'Dietrich', leda: 'Leda' };
+export const REFERENCE_SCHEMA_VERSION = 1;
+export const IMPORTER_VERSION = '1.0.0';

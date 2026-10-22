@@ -1,0 +1,52 @@
+{
+  "name": "tacticians_loom",
+  "productName": "Tactician's Loom",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Local Act 1 reference and team planning for Fortune's Weave",
+  "main": ".webpack/main",
+  "engines": { "node": ">=24" },
+  "scripts": {
+    "start": "npm run data:build && electron-forge start",
+    "package": "npm run check && npm run data:build && electron-forge package",
+    "make": "npm run check && npm run data:build && electron-forge make",
+    "data:build": "node --import tsx scripts/build_database.ts",
+    "data:validate": "node --import tsx scripts/validate_database.ts",
+    "typecheck": "tsc --noEmit",
+    "test": "node --import tsx --test --test-isolation=none tests/*.test.ts",
+    "check": "npm run typecheck && npm test"
+  },
+  "config": { "forge": "./forge_config.ts" },
+  "dependencies": {
+    "better-sqlite3": "13.0.3",
+    "react": "19.3.0",
+    "react-dom": "19.3.0",
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@electron/node-gyp": "git+https://github.com/electron/node-gyp.git#06b29aafb7708acef8b3669835c8a7857ebc92d2",
+    "@electron-forge/cli": "7.11.2",
+    "@electron-forge/maker-zip": "7.11.2",
+    "@electron-forge/plugin-auto-unpack-natives": "7.11.2",
+    "@electron-forge/plugin-webpack": "7.11.2",
+    "@electron-forge/shared-types": "7.11.2",
+    "@types/better-sqlite3": "9.6.0",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vercel/webpack-asset-relocator-loader": "1.7.3",
+    "css-loader": "6.11.0",
+    "electron": "44.3.0",
+    "node-loader": "2.1.0",
+    "style-loader": "3.3.4",
+    "ts-loader": "9.6.2",
+    "tsx": "4.23.13",
+    "typescript": "5.9.3",
+    "webpack": "^5.0.0"
+  },
+  "allowScripts": {
+    "better-sqlite3@13.0.3": false,
+    "electron@44.3.0": true,
+    "esbuild": true
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "coverage": "partial",
+  "note": "Reviewed against explicit wording in the supplied personal-ability effects. These associations are incomplete and do not establish weapon permissions or verify the original game claims.",
+  "entries": [
+    { "characterId": "aswan", "abilityName": "Princess of Arrows", "skill": "bows", "evidence": "Hit +20 while using bows." },
+    { "characterId": "esmeralda", "abilityName": "Throwing Arm", "skill": "spears", "evidence": "When throwing spears, Hit +10 and Attack +2." },
+    { "characterId": "esmeralda", "abilityName": "Throwing Arm+", "skill": "spears", "evidence": "When throwing spears, Hit +20 and Attack +4." },
+    { "characterId": "inyoni", "abilityName": "Heavy-Bow User", "skill": "bows", "evidence": "Strength +3 while holding a bow." },
+    { "characterId": "inyoni", "abilityName": "Pierce", "skill": "bows", "evidence": "Bow combat arts gain Attack +2 and Crit +5." },
+    { "characterId": "inyoni", "abilityName": "Pierce+", "skill": "bows", "evidence": "Bow combat arts gain Attack +4 and Crit +10." },
+    { "characterId": "majide", "abilityName": "Hellbent Axe", "skill": "axes", "evidence": "Strength +3 when using axes." },
+    { "characterId": "peter", "abilityName": "Steady Aim", "skill": "bows", "evidence": "Bow combat arts gain one tile of range." },
+    { "characterId": "tahonia", "abilityName": "Python Technique", "skill": "gauntlets", "evidence": "15% chance to follow up with gauntlet arts regardless of Attack Speed." },
+    { "characterId": "troy", "abilityName": "Yun Shou", "skill": "gauntlets", "evidence": "Hit +10 with gauntlets." },
+    { "characterId": "zarcone", "abilityName": "Hatchet Man", "skill": "axes", "evidence": "Hit +10 while wielding an axe." }
+  ]
+}

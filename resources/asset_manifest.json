@@ -1,0 +1,586 @@
+{
+  "schema_version": 1,
+  "sources": {
+    "support_browser": {
+      "name": "Fire Emblem: Fortune's Weave Support Browser (Marshall5809)",
+      "url": "https://github.com/Marshall5809/fortunes-weave-support-browser",
+      "artwork_origin": "Portraits as hosted on the Fire Emblem Wiki (fireemblemwiki.org); artwork remains © Nintendo / Intelligent Systems / Koei Tecmo",
+      "usage_note": "Private, non-distributed local planning app; attribution preserved per user decision"
+    },
+    "fireemblemwiki": {
+      "name": "Fire Emblem Wiki (fireemblemwiki.org)",
+      "url": "https://fireemblemwiki.org",
+      "artwork_origin": "FE18Rank skill affinity icons as hosted on the Fire Emblem Wiki CDN; artwork remains © Nintendo / Intelligent Systems / Koei Tecmo",
+      "usage_note": "Private, non-distributed local planning app; attribution preserved per user decision"
+    },
+    "derived_composite": {
+      "name": "Derived composite (generated locally)",
+      "url": "",
+      "artwork_origin": "Recreations: each missing skill's glyph taken from its official neutral icon and composited onto the canonical bane background averaged from the eight authentic Fire Emblem Wiki bane rips; approximations pending official bane rips from the game",
+      "usage_note": "Not authentic game rips — marked as derived so they can be replaced when official artwork is sourced"
+    }
+  },
+  "characters": {
+    "alexandra": {
+      "portrait": "alexandra",
+      "source": "support_browser"
+    },
+    "anatolia": {
+      "portrait": "anatolia",
+      "source": "support_browser"
+    },
+    "aswan": {
+      "portrait": "aswan",
+      "source": "support_browser"
+    },
+    "benditz": {
+      "portrait": "benditz",
+      "source": "support_browser"
+    },
+    "bertrand": {
+      "portrait": "bertrand",
+      "source": "support_browser"
+    },
+    "bonaventure": {
+      "portrait": "bonaventure",
+      "source": "support_browser"
+    },
+    "buccar": {
+      "portrait": "buccar",
+      "source": "support_browser"
+    },
+    "cai": {
+      "portrait": "cai",
+      "source": "support_browser"
+    },
+    "catania": {
+      "portrait": "catania",
+      "source": "support_browser"
+    },
+    "centurio": {
+      "portrait": "centurio",
+      "source": "support_browser"
+    },
+    "creek": {
+      "portrait": "creek",
+      "source": "support_browser"
+    },
+    "dadao": {
+      "portrait": "dadao",
+      "source": "support_browser"
+    },
+    "dante": {
+      "portrait": "dante",
+      "source": "support_browser"
+    },
+    "diego": {
+      "portrait": "diego",
+      "source": "support_browser"
+    },
+    "dietrich": {
+      "portrait": "dietrich",
+      "source": "support_browser"
+    },
+    "eshmel": {
+      "portrait": "eshmel",
+      "source": "support_browser"
+    },
+    "esmeralda": {
+      "portrait": "esmeralda",
+      "source": "support_browser"
+    },
+    "fabio": {
+      "portrait": "fabio",
+      "source": "support_browser"
+    },
+    "fianna": {
+      "portrait": "fianna",
+      "source": "support_browser"
+    },
+    "gaitz": {
+      "portrait": "gaitz",
+      "source": "support_browser"
+    },
+    "goliath": {
+      "portrait": "goliath",
+      "source": "support_browser"
+    },
+    "guzran": {
+      "portrait": "guzran",
+      "source": "support_browser"
+    },
+    "halvin": {
+      "portrait": "halvin",
+      "source": "support_browser"
+    },
+    "hong-hua": {
+      "portrait": "hong-hua",
+      "source": "support_browser"
+    },
+    "inyoni": {
+      "portrait": "inyoni",
+      "source": "support_browser"
+    },
+    "io": {
+      "portrait": "io",
+      "source": "support_browser"
+    },
+    "jasmine": {
+      "portrait": "jasmine",
+      "source": "support_browser"
+    },
+    "jester": {
+      "portrait": "jester",
+      "source": "support_browser"
+    },
+    "kiroc": {
+      "portrait": "kiroc",
+      "source": "support_browser"
+    },
+    "leda": {
+      "portrait": "leda",
+      "source": "support_browser"
+    },
+    "lilian": {
+      "portrait": "lilian",
+      "source": "support_browser"
+    },
+    "loretta": {
+      "portrait": "loretta",
+      "source": "support_browser"
+    },
+    "ludia": {
+      "portrait": "ludia",
+      "source": "support_browser"
+    },
+    "lysander": {
+      "portrait": "lysander",
+      "source": "support_browser"
+    },
+    "majide": {
+      "portrait": "majide",
+      "source": "support_browser"
+    },
+    "mikaela": {
+      "portrait": "mikaela",
+      "source": "support_browser"
+    },
+    "mu": {
+      "portrait": "mu",
+      "source": "support_browser"
+    },
+    "nathan": {
+      "portrait": "nathan",
+      "source": "support_browser"
+    },
+    "nezha": {
+      "portrait": "nezha",
+      "source": "support_browser"
+    },
+    "ninae": {
+      "portrait": "ninae",
+      "source": "support_browser"
+    },
+    "noctula": {
+      "portrait": "noctula",
+      "source": "support_browser"
+    },
+    "nuzzuo": {
+      "portrait": "nuzzuo",
+      "source": "support_browser"
+    },
+    "nydine": {
+      "portrait": "nydine",
+      "source": "support_browser"
+    },
+    "olympia": {
+      "portrait": "olympia",
+      "source": "support_browser"
+    },
+    "orchel": {
+      "portrait": "orchel",
+      "source": "support_browser"
+    },
+    "peppe": {
+      "portrait": "peppe",
+      "source": "support_browser"
+    },
+    "peter": {
+      "portrait": "peter",
+      "source": "support_browser"
+    },
+    "seteth": {
+      "portrait": "seteth",
+      "source": "support_browser"
+    },
+    "sha-lan": {
+      "portrait": "sha-lan",
+      "source": "support_browser"
+    },
+    "simon": {
+      "portrait": "simon",
+      "source": "support_browser"
+    },
+    "sirocco": {
+      "portrait": "sirocco",
+      "source": "support_browser"
+    },
+    "sofia": {
+      "portrait": "sofia",
+      "source": "support_browser"
+    },
+    "tahonia": {
+      "portrait": "tahonia",
+      "source": "support_browser"
+    },
+    "talimun": {
+      "portrait": "talimun",
+      "source": "support_browser"
+    },
+    "theodora": {
+      "portrait": "theodora",
+      "source": "support_browser"
+    },
+    "tialla": {
+      "portrait": "tialla",
+      "source": "support_browser"
+    },
+    "tobias": {
+      "portrait": "tobias",
+      "source": "support_browser"
+    },
+    "troy": {
+      "portrait": "troy",
+      "source": "support_browser"
+    },
+    "ultand": {
+      "portrait": "ultand",
+      "source": "support_browser"
+    },
+    "ursula": {
+      "portrait": "ursula",
+      "source": "support_browser"
+    },
+    "yang-jie": {
+      "portrait": "yang-jie",
+      "source": "support_browser"
+    },
+    "zarcone": {
+      "portrait": "zarcone",
+      "source": "support_browser"
+    }
+  },
+  "classes": {
+    "archer": {
+      "icon": "archer",
+      "source": "support_browser"
+    },
+    "armored-knight": {
+      "icon": "armored-knight",
+      "source": "support_browser"
+    },
+    "armored-ornius-rider": {
+      "icon": "armored-ornius-rider",
+      "source": "support_browser"
+    },
+    "bardinger": {
+      "icon": "bardinger",
+      "source": "support_browser"
+    },
+    "battlemaster": {
+      "icon": "battlemaster",
+      "source": "support_browser"
+    },
+    "bau-lord": {
+      "icon": "bau-lord",
+      "source": "support_browser"
+    },
+    "bishop": {
+      "icon": "bishop",
+      "source": "support_browser"
+    },
+    "blacksmith": {
+      "icon": "blacksmith",
+      "source": "support_browser"
+    },
+    "bow-adept": {
+      "icon": "bow-adept",
+      "source": "support_browser"
+    },
+    "bow-knight": {
+      "icon": "bow-knight",
+      "source": "support_browser"
+    },
+    "brigand": {
+      "icon": "brigand",
+      "source": "support_browser"
+    },
+    "caladrius": {
+      "icon": "caladrius",
+      "source": "support_browser"
+    },
+    "castle-knight": {
+      "icon": "castle-knight",
+      "source": "support_browser"
+    },
+    "cataphract": {
+      "icon": "cataphract",
+      "source": "support_browser"
+    },
+    "celestial-trooper": {
+      "icon": "celestial-trooper",
+      "source": "support_browser"
+    },
+    "charioteer": {
+      "icon": "charioteer",
+      "source": "support_browser"
+    },
+    "dancer": {
+      "icon": "dancer",
+      "source": "support_browser"
+    },
+    "diviner": {
+      "icon": "diviner",
+      "source": "support_browser"
+    },
+    "dragoon": {
+      "icon": "dragoon",
+      "source": "support_browser"
+    },
+    "dreadnought": {
+      "icon": "dreadnought",
+      "source": "support_browser"
+    },
+    "druid": {
+      "icon": "druid",
+      "source": "support_browser"
+    },
+    "elephant-rider": {
+      "icon": "elephant-rider",
+      "source": "support_browser"
+    },
+    "forest-knight": {
+      "icon": "forest-knight",
+      "source": "support_browser"
+    },
+    "gladiator": {
+      "icon": "gladiator",
+      "source": "support_browser"
+    },
+    "great-knight": {
+      "icon": "great-knight",
+      "source": "support_browser"
+    },
+    "guardian": {
+      "icon": "guardian",
+      "source": "support_browser"
+    },
+    "high-savant": {
+      "icon": "high-savant",
+      "source": "support_browser"
+    },
+    "hunter": {
+      "icon": "hunter",
+      "source": "support_browser"
+    },
+    "light-cavalry": {
+      "icon": "light-cavalry",
+      "source": "support_browser"
+    },
+    "myrmidon": {
+      "icon": "myrmidon",
+      "source": "support_browser"
+    },
+    "orichaldia": {
+      "icon": "orichaldia",
+      "source": "support_browser"
+    },
+    "ornius-rider": {
+      "icon": "ornius-rider",
+      "source": "support_browser"
+    },
+    "ovate": {
+      "icon": "ovate",
+      "source": "support_browser"
+    },
+    "priest": {
+      "icon": "priest",
+      "source": "support_browser"
+    },
+    "pugilist": {
+      "icon": "pugilist",
+      "source": "support_browser"
+    },
+    "ranger": {
+      "icon": "ranger",
+      "source": "support_browser"
+    },
+    "rogue": {
+      "icon": "rogue",
+      "source": "support_browser"
+    },
+    "sentinel": {
+      "icon": "sentinel",
+      "source": "support_browser"
+    },
+    "shadow-seeker": {
+      "icon": "shadow-seeker",
+      "source": "support_browser"
+    },
+    "shaman": {
+      "icon": "shaman",
+      "source": "support_browser"
+    },
+    "shido": {
+      "icon": "shido",
+      "source": "support_browser"
+    },
+    "sniper": {
+      "icon": "sniper",
+      "source": "support_browser"
+    },
+    "soldier": {
+      "icon": "soldier",
+      "source": "support_browser"
+    },
+    "swordmaster": {
+      "icon": "swordmaster",
+      "source": "support_browser"
+    },
+    "the-apsara": {
+      "icon": "the-apsara",
+      "source": "support_browser"
+    },
+    "the-avatar": {
+      "icon": "the-avatar",
+      "source": "support_browser"
+    },
+    "the-blade": {
+      "icon": "the-blade",
+      "source": "support_browser"
+    },
+    "the-calamity": {
+      "icon": "the-calamity",
+      "source": "support_browser"
+    },
+    "the-cavalier": {
+      "icon": "the-cavalier",
+      "source": "support_browser"
+    },
+    "the-eternal": {
+      "icon": "the-eternal",
+      "source": "support_browser"
+    },
+    "the-godhand": {
+      "icon": "the-godhand",
+      "source": "support_browser"
+    },
+    "the-trident": {
+      "icon": "the-trident",
+      "source": "support_browser"
+    },
+    "troubadour": {
+      "icon": "troubadour",
+      "source": "support_browser"
+    },
+    "valkyrium": {
+      "icon": "valkyrium",
+      "source": "support_browser"
+    },
+    "war-monk": {
+      "icon": "war-monk",
+      "source": "support_browser"
+    },
+    "warrior": {
+      "icon": "warrior",
+      "source": "support_browser"
+    },
+    "wing-soldier": {
+      "icon": "wing-soldier",
+      "source": "support_browser"
+    },
+    "wiseman": {
+      "icon": "wiseman",
+      "source": "support_browser"
+    }
+  },
+  "skills": {
+    "authority": {
+      "neutral": "authority_neutral",
+      "boon": "authority_boon",
+      "source": "fireemblemwiki",
+      "bane": "authority_bane",
+      "bane_source": "derived_composite"
+    },
+    "axes": {
+      "neutral": "axes_neutral",
+      "boon": "axes_boon",
+      "bane": "axes_bane",
+      "source": "fireemblemwiki"
+    },
+    "black_magic": {
+      "neutral": "black_magic_neutral",
+      "boon": "black_magic_boon",
+      "bane": "black_magic_bane",
+      "source": "fireemblemwiki"
+    },
+    "bows": {
+      "neutral": "bows_neutral",
+      "boon": "bows_boon",
+      "bane": "bows_bane",
+      "source": "fireemblemwiki"
+    },
+    "flying": {
+      "neutral": "flying_neutral",
+      "boon": "flying_boon",
+      "bane": "flying_bane",
+      "source": "fireemblemwiki"
+    },
+    "gauntlets": {
+      "neutral": "gauntlets_neutral",
+      "boon": "gauntlets_boon",
+      "source": "fireemblemwiki",
+      "bane": "gauntlets_bane",
+      "bane_source": "derived_composite"
+    },
+    "heavy_armor": {
+      "neutral": "heavy_armor_neutral",
+      "boon": "heavy_armor_boon",
+      "bane": "heavy_armor_bane",
+      "source": "fireemblemwiki"
+    },
+    "infantry": {
+      "neutral": "infantry_neutral",
+      "boon": "infantry_boon",
+      "source": "fireemblemwiki",
+      "bane": "infantry_bane",
+      "bane_source": "derived_composite"
+    },
+    "riding": {
+      "neutral": "riding_neutral",
+      "boon": "riding_boon",
+      "bane": "riding_bane",
+      "source": "fireemblemwiki"
+    },
+    "spears": {
+      "neutral": "spears_neutral",
+      "boon": "spears_boon",
+      "source": "fireemblemwiki",
+      "bane": "spears_bane",
+      "bane_source": "derived_composite"
+    },
+    "swords": {
+      "neutral": "swords_neutral",
+      "boon": "swords_boon",
+      "bane": "swords_bane",
+      "source": "fireemblemwiki"
+    },
+    "white_magic": {
+      "neutral": "white_magic_neutral",
+      "boon": "white_magic_boon",
+      "bane": "white_magic_bane",
+      "source": "fireemblemwiki"
+    }
+  },
+  "abilities": {}
+}

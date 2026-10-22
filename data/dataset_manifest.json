@@ -1,0 +1,8 @@
+{
+  "dataset_version": "2026.10.18.1",
+  "change_summary": "Initial import of the supplied character and class datasets. Source claims remain provisional; unknown values and conflicts are preserved.",
+  "source_files": {
+    "characters": "fire_emblem_fortunes_weave_characters.json",
+    "classes": "fire_emblem_fortunes_weave_classes.json"
+  }
+}

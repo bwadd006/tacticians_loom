@@ -1,0 +1,4974 @@
+{
+  "metadata": {
+    "game": "Fire Emblem: Fortune’s Weave",
+    "title": "Class Roster, Certification, Training, Growth, Mastery and Unlock Data",
+    "schema_version": "1.0.0",
+    "as_of_date": "2026-10-18",
+    "language": "en",
+    "compatible_characters_file": "fire_emblem_fortunes_weave_characters.json",
+    "stat_keys": [
+      "hp",
+      "strength",
+      "magic",
+      "speed",
+      "dexterity",
+      "defense",
+      "resistance",
+      "luck",
+      "charm"
+    ],
+    "growth_unit": "percentage_points",
+    "proficiency_keys": [
+      "authority",
+      "axes",
+      "black_magic",
+      "bows",
+      "flying",
+      "gauntlets",
+      "heavy_armor",
+      "infantry",
+      "riding",
+      "spears",
+      "swords",
+      "white_magic"
+    ],
+    "class_count": 60,
+    "class_counts_by_tier": {
+      "unique": 2,
+      "beginner": 5,
+      "specialty": 12,
+      "advanced": 17,
+      "master": 16,
+      "divine": 8
+    },
+    "null_meaning": "Unknown or not independently confirmed; not zero, false, unusable, or an impossible requirement.",
+    "skill_exp_bonus_explanation": "skill_exp_bonuses means the +1/+2/etc proficiency EXP modifiers as displayed by a guide, not a complete list of usable skills or weapons.",
+    "warning": "All classes covered, but not every certification grade, weapon restriction, base stat modifier, exact mastery EXP threshold, or route persistence is independently documented.",
+    "scope": "The 60-player-class roster from LUM.GG; excludes enemy-only classes not included in that playable roster.",
+    "recommended_level_vs_minimum": "Ideal levels are recommendations, not proven hard minimum requirements; exact minimum levels and exam pass formula are null."
+  },
+  "sources": [
+    {
+      "name": "LUM class roster",
+      "url": "https://lum.gg/fire-emblem-fortunes-weave/classes"
+    },
+    {
+      "name": "Serenes Forest class growths",
+      "url": "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+    },
+    {
+      "name": "NoobFeed beginner",
+      "url": "https://www.noobfeed.com/articles/fire-emblem-fortunes-weave-unlock-beginner-classes"
+    },
+    {
+      "name": "NoobFeed specialty",
+      "url": "https://www.noobfeed.com/articles/fire-emblem-fortunes-weave-specialty-classes"
+    },
+    {
+      "name": "FortunesWeaveWiki",
+      "url": "https://www.fortunesweavewiki.wiki/classes/Fortune-s-Weave-classes"
+    },
+    {
+      "name": "The Games Wiki",
+      "url": "https://thegameswiki.com/fire-emblem-fortunes-weave/wiki/certification-exams"
+    },
+    {
+      "name": "RPG Site Cai",
+      "url": "https://www.rpgsite.net/guide/21213-fire-emblem-fortunes-weave-part-i-cais-path-walkthrough"
+    },
+    {
+      "name": "RPG Site Theodora",
+      "url": "https://www.rpgsite.net/guide/21211-fire-emblem-fortunes-weave-part-i-theodoras-path-walkthrough"
+    },
+    {
+      "name": "RPG Site Dietrich",
+      "url": "https://www.rpgsite.net/guide/21212-fire-emblem-fortunes-weave-part-i-dietrichs-path-walkthrough"
+    },
+    {
+      "name": "RPG Site Leda",
+      "url": "https://www.rpgsite.net/guide/21210-fire-emblem-fortunes-weave-part-i-ledas-path-walkthrough"
+    }
+  ],
+  "certification_rules": {
+    "unique": {
+      "license": null,
+      "ideal_character_level": null,
+      "minimum_renown_level": null,
+      "requires_exam": false
+    },
+    "beginner": {
+      "license": "Beginner License",
+      "ideal_character_level": 5,
+      "minimum_renown_level": 1,
+      "requires_exam": true
+    },
+    "specialty": {
+      "license": "Specialty License",
+      "ideal_character_level": 20,
+      "minimum_renown_level": 4,
+      "requires_exam": true
+    },
+    "advanced": {
+      "license": "Advanced License",
+      "ideal_character_level": 35,
+      "minimum_renown_level": 8,
+      "requires_exam": true
+    },
+    "master": {
+      "license": "Master License",
+      "ideal_character_level": 45,
+      "minimum_renown_level": null,
+      "requires_exam": true
+    },
+    "divine": {
+      "license": null,
+      "ideal_character_level": null,
+      "minimum_renown_level": null,
+      "requires_exam": null,
+      "additional_unlock_item": "Key of the Diadem"
+    }
+  },
+  "route_unlocks": [
+    {
+      "id": "cai-special-request-from-pop",
+      "route_id": "cai",
+      "unlock_class_ids": [
+        "caladrius"
+      ],
+      "part": 1,
+      "earliest_chapter": 7,
+      "activity_name": "Special Request from Pop",
+      "requirements": {
+        "minimum_renown": 7,
+        "mentor": "Castor",
+        "items_to_deliver": [
+          {
+            "name": "Angelica",
+            "quantity": 2
+          }
+        ]
+      },
+      "deadline_in_game": "11/27",
+      "missable": true,
+      "persists_across_routes": null,
+      "status": "reported",
+      "source_url": "https://www.rpgsite.net/guide/21213-fire-emblem-fortunes-weave-part-i-cais-path-walkthrough"
+    },
+    {
+      "id": "cai-special-request-from-mom",
+      "route_id": "cai",
+      "unlock_class_ids": [
+        "dragoon"
+      ],
+      "part": 1,
+      "earliest_chapter": 8,
+      "activity_name": "Special Request from Mom",
+      "requirements": {
+        "minimum_renown": 8,
+        "mentor": "Aurora",
+        "defeat": "Temple soldiers at Fortuna’s Temple"
+      },
+      "deadline_in_game": "11/27",
+      "missable": true,
+      "persists_across_routes": null,
+      "status": "reported",
+      "source_url": "https://www.rpgsite.net/guide/21213-fire-emblem-fortunes-weave-part-i-cais-path-walkthrough"
+    },
+    {
+      "id": "cai-bertrand-second-mentorship",
+      "route_id": "cai",
+      "unlock_class_ids": [
+        "troubadour"
+      ],
+      "part": 1,
+      "earliest_chapter": null,
+      "activity_name": "Bertrand second mentorship",
+      "requirements": {
+        "mentor": "Bertrand",
+        "mentor_quest_number": 2
+      },
+      "deadline_in_game": null,
+      "missable": false,
+      "persists_across_routes": null,
+      "status": "unverified_detail",
+      "source_url": "https://www.rpgsite.net/guide/21213-fire-emblem-fortunes-weave-part-i-cais-path-walkthrough",
+      "notes": "LUM reports Bertrand 2nd mentorship unlock; RPG Site Cai Part I walkthrough does not explicitly document Troubadour unlock. Chapter unknown."
+    },
+    {
+      "id": "theodora-send-supplies-ladon-loach",
+      "route_id": "theodora",
+      "unlock_class_ids": [
+        "cataphract"
+      ],
+      "part": 1,
+      "earliest_chapter": 8,
+      "activity_name": "Send Supplies: Ladon Loach",
+      "requirements": {
+        "items_to_deliver": [
+          {
+            "name": "Ladon Loach",
+            "quantity": 35
+          }
+        ]
+      },
+      "deadline_in_game": "10/24",
+      "missable": true,
+      "persists_across_routes": null,
+      "status": "reported",
+      "source_url": "https://www.rpgsite.net/guide/21211-fire-emblem-fortunes-weave-part-i-theodoras-path-walkthrough"
+    },
+    {
+      "id": "theodora-send-supplies-kothar-gar",
+      "route_id": "theodora",
+      "unlock_class_ids": [
+        "guardian"
+      ],
+      "part": 1,
+      "earliest_chapter": 9,
+      "activity_name": "Send Supplies: Kothar Gar",
+      "requirements": {
+        "items_to_deliver": [
+          {
+            "name": "Kothar Gar",
+            "quantity": 10
+          }
+        ]
+      },
+      "deadline_in_game": "10/24",
+      "missable": true,
+      "persists_across_routes": null,
+      "status": "reported",
+      "source_url": "https://www.rpgsite.net/guide/21211-fire-emblem-fortunes-weave-part-i-theodoras-path-walkthrough"
+    },
+    {
+      "id": "theodora-send-supplies-sea-star-stone",
+      "route_id": "theodora",
+      "unlock_class_ids": [
+        "dragoon"
+      ],
+      "part": 1,
+      "earliest_chapter": 11,
+      "activity_name": "Send Supplies: Sea-Star Stone",
+      "requirements": {
+        "items_to_deliver": [
+          {
+            "name": "Sea-Star Stone",
+            "quantity": 35
+          }
+        ]
+      },
+      "deadline_in_game": "10/24",
+      "missable": true,
+      "persists_across_routes": null,
+      "status": "reported",
+      "source_url": "https://www.rpgsite.net/guide/21211-fire-emblem-fortunes-weave-part-i-theodoras-path-walkthrough"
+    },
+    {
+      "id": "dietrich-dread-warrior-challenge-il-lara",
+      "route_id": "dietrich",
+      "unlock_class_ids": [
+        "guardian"
+      ],
+      "part": 1,
+      "earliest_chapter": 8,
+      "activity_name": "Dread Warrior Challenge: Il-Lara",
+      "requirements": {
+        "defeat": "Il-Lara",
+        "location": "Dione Fort"
+      },
+      "deadline_in_game": "11/27",
+      "missable": true,
+      "persists_across_routes": null,
+      "status": "reported",
+      "source_url": "https://www.rpgsite.net/guide/21212-fire-emblem-fortunes-weave-part-i-dietrichs-path-walkthrough"
+    },
+    {
+      "id": "dietrich-dread-warrior-challenge-oko",
+      "route_id": "dietrich",
+      "unlock_class_ids": [
+        "ranger"
+      ],
+      "part": 1,
+      "earliest_chapter": 10,
+      "activity_name": "Dread Warrior Challenge: Oko",
+      "requirements": {
+        "defeat": "Oko",
+        "location": "Iapetus Cavern"
+      },
+      "deadline_in_game": "11/27",
+      "missable": true,
+      "persists_across_routes": null,
+      "status": "reported",
+      "source_url": "https://www.rpgsite.net/guide/21212-fire-emblem-fortunes-weave-part-i-dietrichs-path-walkthrough"
+    },
+    {
+      "id": "dietrich-upgrade-ten-combat-arts",
+      "route_id": "dietrich",
+      "unlock_class_ids": [
+        "blacksmith"
+      ],
+      "part": 1,
+      "earliest_chapter": 10,
+      "activity_name": "Upgrade ten Combat Arts",
+      "requirements": {
+        "combat_arts_upgraded": 10,
+        "location": "Smyrnos’s Temple"
+      },
+      "deadline_in_game": "11/27",
+      "missable": true,
+      "persists_across_routes": null,
+      "status": "reported",
+      "source_url": "https://www.rpgsite.net/guide/21212-fire-emblem-fortunes-weave-part-i-dietrichs-path-walkthrough",
+      "notes": "RPG Site walkthrough says 10, whereas LUM class page says 20; use 10 provisionally and preserve discrepancy."
+    },
+    {
+      "id": "leda-great-dancer-s-successor",
+      "route_id": "leda",
+      "unlock_class_ids": [
+        "dancer"
+      ],
+      "part": 1,
+      "earliest_chapter": 9,
+      "activity_name": "Great Dancer's Successor",
+      "requirements": {
+        "items_to_deliver": [
+          {
+            "name": "Hingosh",
+            "quantity": 1
+          }
+        ],
+        "location": "Baina Oasis"
+      },
+      "deadline_in_game": "10/15",
+      "missable": true,
+      "persists_across_routes": null,
+      "status": "reported_inferred",
+      "source_url": "https://www.rpgsite.net/guide/21210-fire-emblem-fortunes-weave-part-i-ledas-path-walkthrough",
+      "notes": "RPG Site directly documents Dancer’s Necklace reward, LUM reports it as a Dancer class unlock. Verify equip/class association in game."
+    },
+    {
+      "id": "leda-elegant-drink-recipes",
+      "route_id": "leda",
+      "unlock_class_ids": [
+        "ranger",
+        "troubadour"
+      ],
+      "part": 1,
+      "earliest_chapter": 11,
+      "activity_name": "Elegant Drink Recipes",
+      "requirements": {
+        "minimum_renown": 10,
+        "prior_quest": "Popular Drink Recipes",
+        "items_to_deliver": [
+          {
+            "name": "Wonder Leaves",
+            "quantity": null
+          }
+        ]
+      },
+      "deadline_in_game": "11/17",
+      "missable": true,
+      "persists_across_routes": null,
+      "status": "reported",
+      "source_url": "https://www.rpgsite.net/guide/21210-fire-emblem-fortunes-weave-part-i-ledas-path-walkthrough",
+      "notes": "Quest starts during Chapter 10, but walkthrough states required Wonder Leaves are obtained in Chapter 11."
+    },
+    {
+      "id": "restore-mars-temple",
+      "route_id": null,
+      "unlock_class_ids": [
+        "swordmaster"
+      ],
+      "part": 3,
+      "earliest_chapter": null,
+      "activity_name": "Restore Mars’s Temple",
+      "requirements": {
+        "temple": "Mars",
+        "restored": true
+      },
+      "deadline_in_game": null,
+      "missable": null,
+      "persists_across_routes": null,
+      "status": "reported",
+      "source_url": "https://lum.gg/fire-emblem-fortunes-weave/classes"
+    },
+    {
+      "id": "restore-smyrnos-temple",
+      "route_id": null,
+      "unlock_class_ids": [
+        "high-savant"
+      ],
+      "part": 3,
+      "earliest_chapter": null,
+      "activity_name": "Restore Smyrnos’s Temple",
+      "requirements": {
+        "temple": "Smyrnos",
+        "restored": true
+      },
+      "deadline_in_game": null,
+      "missable": null,
+      "persists_across_routes": null,
+      "status": "reported",
+      "source_url": "https://lum.gg/fire-emblem-fortunes-weave/classes"
+    },
+    {
+      "id": "restore-aurora-temple",
+      "route_id": null,
+      "unlock_class_ids": [
+        "war-monk"
+      ],
+      "part": 3,
+      "earliest_chapter": null,
+      "activity_name": "Restore Aurora’s Temple",
+      "requirements": {
+        "temple": "Aurora",
+        "restored": true
+      },
+      "deadline_in_game": null,
+      "missable": null,
+      "persists_across_routes": null,
+      "status": "reported",
+      "source_url": "https://lum.gg/fire-emblem-fortunes-weave/classes"
+    },
+    {
+      "id": "restore-kalla-temple",
+      "route_id": null,
+      "unlock_class_ids": [
+        "bow-knight"
+      ],
+      "part": 3,
+      "earliest_chapter": null,
+      "activity_name": "Restore Kalla’s Temple",
+      "requirements": {
+        "temple": "Kalla",
+        "restored": true
+      },
+      "deadline_in_game": null,
+      "missable": null,
+      "persists_across_routes": null,
+      "status": "reported",
+      "source_url": "https://lum.gg/fire-emblem-fortunes-weave/classes"
+    },
+    {
+      "id": "restore-credna-temple",
+      "route_id": null,
+      "unlock_class_ids": [
+        "great-knight"
+      ],
+      "part": 3,
+      "earliest_chapter": null,
+      "activity_name": "Restore Credna’s Temple",
+      "requirements": {
+        "temple": "Credna",
+        "restored": true
+      },
+      "deadline_in_game": null,
+      "missable": null,
+      "persists_across_routes": null,
+      "status": "reported",
+      "source_url": "https://lum.gg/fire-emblem-fortunes-weave/classes"
+    },
+    {
+      "id": "restore-jurah-temple",
+      "route_id": null,
+      "unlock_class_ids": [
+        "valkyrium"
+      ],
+      "part": 3,
+      "earliest_chapter": null,
+      "activity_name": "Restore Jurah’s Temple",
+      "requirements": {
+        "temple": "Jurah",
+        "restored": true
+      },
+      "deadline_in_game": null,
+      "missable": null,
+      "persists_across_routes": null,
+      "status": "reported",
+      "source_url": "https://lum.gg/fire-emblem-fortunes-weave/classes"
+    },
+    {
+      "id": "divine-key-of-the-diadem",
+      "route_id": null,
+      "unlock_class_ids": [
+        "the-blade",
+        "the-apsara",
+        "the-eternal",
+        "the-godhand",
+        "the-calamity",
+        "the-trident",
+        "the-cavalier",
+        "the-avatar"
+      ],
+      "part": null,
+      "earliest_chapter": null,
+      "activity_name": "Obtain/Use Key of the Diadem",
+      "requirements": {
+        "key_item": "Key of the Diadem"
+      },
+      "deadline_in_game": null,
+      "missable": null,
+      "persists_across_routes": null,
+      "status": "reported",
+      "source_url": "https://lum.gg/fire-emblem-fortunes-weave/classes"
+    },
+    {
+      "id": "elephant-rider-story",
+      "route_id": null,
+      "unlock_class_ids": [
+        "elephant-rider"
+      ],
+      "part": 3,
+      "earliest_chapter": null,
+      "activity_name": "Later-story Elephant Rider unlock",
+      "requirements": {
+        "license": "Elephant License"
+      },
+      "deadline_in_game": null,
+      "missable": null,
+      "persists_across_routes": null,
+      "status": "secondary_source",
+      "source_url": "https://www.fortunesweavewiki.wiki/classes/Fortune-s-Weave-classes"
+    }
+  ],
+  "character_restrictions": {
+    "global_character_class_restrictions_verified": false,
+    "exceptions": [],
+    "note": "Character-specific restrictions (gender, unique passives, character-only classes) remain unverified. An empty exceptions list must not be treated as proof that none exist."
+  },
+  "data_conflicts": [
+    {
+      "class_id": "blacksmith",
+      "field": "route_unlocks.dietrich.requirements.combat_arts_upgraded",
+      "preferred": 10,
+      "alternate": 20,
+      "preferred_source": "https://www.rpgsite.net/guide/21212-fire-emblem-fortunes-weave-part-i-dietrichs-path-walkthrough",
+      "alternate_source": "https://lum.gg/fire-emblem-fortunes-weave/classes",
+      "status": "unresolved"
+    },
+    {
+      "class_id": "shaman",
+      "field": "class_growth_rate_modifiers_percent.magic",
+      "preferred": 15,
+      "alternate": 25,
+      "preferred_source": "https://serenesforest.net/fortunes-weave/classes/growth-rates/",
+      "alternate_source": "https://www.noobfeed.com/articles/fire-emblem-fortunes-weave-specialty-classes",
+      "status": "unresolved"
+    },
+    {
+      "class_id": "bardinger",
+      "field": "certification.recommended_skill_grades",
+      "preferred": "Riding C, Spear B, Sword B",
+      "alternate": "Riding C, Spear C, Sword C",
+      "preferred_source": "https://thegameswiki.com/fire-emblem-fortunes-weave/wiki/certification-exams",
+      "alternate_source": "https://www.fortunesweavewiki.wiki/classes/Fortune-s-Weave-classes",
+      "status": "unresolved"
+    },
+    {
+      "class_id": "dancer",
+      "field": "class_growth_rate_modifiers_percent",
+      "preferred": null,
+      "alternate": null,
+      "status": "missing_from_primary_growth_table"
+    },
+    {
+      "class_id": "cataphract",
+      "field": "class_growth_rate_modifiers_percent",
+      "preferred": null,
+      "alternate": null,
+      "status": "missing_from_primary_growth_table"
+    },
+    {
+      "class_id": null,
+      "field": "certification_rules.level_hard_gate",
+      "status": "unresolved",
+      "note": "Some guides call ideal levels recommendations, others call them hard exam requirements; stored as ideal only."
+    }
+  ],
+  "classes": [
+    {
+      "id": "commoner",
+      "name": "Commoner",
+      "tier": "unique",
+      "playable": true,
+      "movement_tags": [
+        "infantry"
+      ],
+      "skill_exp_bonuses": {},
+      "skills_listed_without_exp_bonus": [
+        "any_weapon"
+      ],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 0,
+        "strength": 0,
+        "magic": 0,
+        "speed": 0,
+        "dexterity": 0,
+        "defense": 0,
+        "resistance": 0,
+        "luck": 0,
+        "charm": 0
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [],
+      "mastery": {
+        "ability_name": "Combat Basics",
+        "effect": "Hit and Avoid +3.",
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "unique",
+        "recommended_skill_grades": null,
+        "skill_rule_is_complete": false,
+        "logic": null,
+        "grade_source": null,
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "noble",
+      "name": "Noble",
+      "tier": "unique",
+      "playable": true,
+      "movement_tags": [
+        "infantry"
+      ],
+      "skill_exp_bonuses": {},
+      "skills_listed_without_exp_bonus": [
+        "any_weapon"
+      ],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 0,
+        "strength": 0,
+        "magic": 0,
+        "speed": 0,
+        "dexterity": 0,
+        "defense": 0,
+        "resistance": 0,
+        "luck": 0,
+        "charm": 0
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [],
+      "mastery": {
+        "ability_name": "Combat Basics",
+        "effect": "Hit and Avoid +3.",
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "unique",
+        "recommended_skill_grades": null,
+        "skill_rule_is_complete": false,
+        "logic": null,
+        "grade_source": null,
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "gladiator",
+      "name": "Gladiator",
+      "tier": "beginner",
+      "playable": true,
+      "movement_tags": [
+        "infantry"
+      ],
+      "skill_exp_bonuses": {
+        "swords": 1,
+        "axes": 1,
+        "gauntlets": 1
+      },
+      "skills_listed_without_exp_bonus": [
+        "infantry"
+      ],
+      "weapon_access": {
+        "usable_weapon_types": [
+          "swords",
+          "axes",
+          "gauntlets"
+        ],
+        "usable_magic_types": [],
+        "verified": true,
+        "note": "Siliconera early class descriptions and community class reference"
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 10,
+        "strength": 10,
+        "magic": 0,
+        "speed": 0,
+        "dexterity": 0,
+        "defense": 0,
+        "resistance": 0,
+        "luck": 0,
+        "charm": 0
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [],
+      "mastery": {
+        "ability_name": "Attack Basics",
+        "effect": "Strength +1.",
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "beginner",
+        "recommended_skill_grades": [
+          {
+            "skill_id": "gauntlets",
+            "grade": "D"
+          },
+          {
+            "skill_id": "axes",
+            "grade": "D"
+          },
+          {
+            "skill_id": "swords",
+            "grade": "D"
+          }
+        ],
+        "skill_rule_is_complete": false,
+        "logic": "Guide reports these skills and grades; applicability of all-vs-any and exam chance is unconfirmed.",
+        "grade_source": "https://www.noobfeed.com/articles/fire-emblem-fortunes-weave-unlock-beginner-classes",
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "hunter",
+      "name": "Hunter",
+      "tier": "beginner",
+      "playable": true,
+      "movement_tags": [
+        "infantry"
+      ],
+      "skill_exp_bonuses": {
+        "swords": 1,
+        "bows": 1,
+        "infantry": 1
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": [
+          "swords",
+          "bows"
+        ],
+        "usable_magic_types": [],
+        "verified": true,
+        "note": "Siliconera class example"
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 10,
+        "strength": 0,
+        "magic": 0,
+        "speed": 10,
+        "dexterity": 10,
+        "defense": 0,
+        "resistance": 0,
+        "luck": 0,
+        "charm": 0
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [],
+      "mastery": {
+        "ability_name": "Hunting Basics",
+        "effect": "Dexterity and Speed +1.",
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "beginner",
+        "recommended_skill_grades": [
+          {
+            "skill_id": "bows",
+            "grade": "D"
+          },
+          {
+            "skill_id": "swords",
+            "grade": "D"
+          }
+        ],
+        "skill_rule_is_complete": false,
+        "logic": "Guide reports these skills and grades; applicability of all-vs-any and exam chance is unconfirmed.",
+        "grade_source": "https://www.noobfeed.com/articles/fire-emblem-fortunes-weave-unlock-beginner-classes",
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "soldier",
+      "name": "Soldier",
+      "tier": "beginner",
+      "playable": true,
+      "movement_tags": [
+        "armored",
+        "infantry"
+      ],
+      "skill_exp_bonuses": {
+        "spears": 1,
+        "axes": 1,
+        "heavy_armor": 1
+      },
+      "skills_listed_without_exp_bonus": [
+        "swords",
+        "infantry"
+      ],
+      "weapon_access": {
+        "usable_weapon_types": [
+          "swords",
+          "spears",
+          "axes"
+        ],
+        "usable_magic_types": [],
+        "verified": true,
+        "note": "Siliconera class example"
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 10,
+        "strength": 5,
+        "magic": 0,
+        "speed": -5,
+        "dexterity": 5,
+        "defense": 10,
+        "resistance": 0,
+        "luck": 0,
+        "charm": 0
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [],
+      "mastery": {
+        "ability_name": "Defense Basics",
+        "effect": "Defense +1.",
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "beginner",
+        "recommended_skill_grades": [
+          {
+            "skill_id": "axes",
+            "grade": "D"
+          },
+          {
+            "skill_id": "spears",
+            "grade": "D"
+          }
+        ],
+        "skill_rule_is_complete": false,
+        "logic": "Guide reports these skills and grades; applicability of all-vs-any and exam chance is unconfirmed.",
+        "grade_source": "https://www.noobfeed.com/articles/fire-emblem-fortunes-weave-unlock-beginner-classes",
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "ornius-rider",
+      "name": "Ornius Rider",
+      "tier": "beginner",
+      "playable": true,
+      "movement_tags": [
+        "cavalry"
+      ],
+      "skill_exp_bonuses": {
+        "spears": 1,
+        "riding": 1,
+        "flying": 1
+      },
+      "skills_listed_without_exp_bonus": [
+        "swords",
+        "axes"
+      ],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 10,
+        "strength": 0,
+        "magic": 0,
+        "speed": 10,
+        "dexterity": 0,
+        "defense": 0,
+        "resistance": 5,
+        "luck": 5,
+        "charm": 0
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Mount/Dismount",
+          "effect": "Allows Mount and Dismount commands.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Offense Basics",
+        "effect": "Strength and Magic +1.",
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "beginner",
+        "recommended_skill_grades": [
+          {
+            "skill_id": "riding",
+            "grade": "E+"
+          },
+          {
+            "skill_id": "axes",
+            "grade": "D"
+          },
+          {
+            "skill_id": "spears",
+            "grade": "D"
+          }
+        ],
+        "skill_rule_is_complete": false,
+        "logic": "Guide reports these skills and grades; applicability of all-vs-any and exam chance is unconfirmed.",
+        "grade_source": "https://www.noobfeed.com/articles/fire-emblem-fortunes-weave-unlock-beginner-classes",
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "diviner",
+      "name": "Diviner",
+      "tier": "beginner",
+      "playable": true,
+      "movement_tags": [
+        "infantry"
+      ],
+      "skill_exp_bonuses": {
+        "black_magic": 1,
+        "white_magic": 1
+      },
+      "skills_listed_without_exp_bonus": [
+        "swords",
+        "axes",
+        "gauntlets",
+        "infantry"
+      ],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 5,
+        "strength": -5,
+        "magic": 15,
+        "speed": 0,
+        "dexterity": 5,
+        "defense": -5,
+        "resistance": 10,
+        "luck": 0,
+        "charm": 0
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [],
+      "mastery": {
+        "ability_name": "Magic Basics",
+        "effect": "Magic and Resistance +1.",
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "beginner",
+        "recommended_skill_grades": [
+          {
+            "skill_id": "black_magic",
+            "grade": "D"
+          },
+          {
+            "skill_id": "white_magic",
+            "grade": "D"
+          }
+        ],
+        "skill_rule_is_complete": false,
+        "logic": "Guide reports these skills and grades; applicability of all-vs-any and exam chance is unconfirmed.",
+        "grade_source": "https://www.noobfeed.com/articles/fire-emblem-fortunes-weave-unlock-beginner-classes",
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "myrmidon",
+      "name": "Myrmidon",
+      "tier": "specialty",
+      "playable": true,
+      "movement_tags": [
+        "infantry"
+      ],
+      "skill_exp_bonuses": {
+        "swords": 2,
+        "infantry": 1
+      },
+      "skills_listed_without_exp_bonus": [
+        "spears"
+      ],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 10,
+        "strength": 0,
+        "magic": 0,
+        "speed": 15,
+        "dexterity": 10,
+        "defense": 0,
+        "resistance": 0,
+        "luck": 5,
+        "charm": 5
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Combat Arts +1",
+          "effect": "Adds one combat-art equipment slot.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Sword Crit +3",
+          "effect": "With sword equipped, Critical +3.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Ravaging Arts",
+        "effect": "Critical hits deal +6 damage.",
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "specialty",
+        "recommended_skill_grades": [
+          {
+            "skill_id": "swords",
+            "grade": "C"
+          }
+        ],
+        "skill_rule_is_complete": false,
+        "logic": "Guide reports these skills and grades; applicability of all-vs-any and exam chance is unconfirmed.",
+        "grade_source": "https://www.noobfeed.com/articles/fire-emblem-fortunes-weave-specialty-classes",
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "brigand",
+      "name": "Brigand",
+      "tier": "specialty",
+      "playable": true,
+      "movement_tags": [
+        "infantry"
+      ],
+      "skill_exp_bonuses": {
+        "axes": 2
+      },
+      "skills_listed_without_exp_bonus": [
+        "swords",
+        "gauntlets"
+      ],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 15,
+        "strength": 15,
+        "magic": -5,
+        "speed": 5,
+        "dexterity": 0,
+        "defense": 5,
+        "resistance": 0,
+        "luck": 0,
+        "charm": 5
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Combat Arts +1",
+          "effect": "Adds one combat-art equipment slot.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Axe Hit +3",
+          "effect": "With axe equipped, Hit +3.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Regroup",
+        "effect": "When the foe dodges an attack, grants Avoid +20 during combat.",
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "specialty",
+        "recommended_skill_grades": [
+          {
+            "skill_id": "axes",
+            "grade": "C"
+          },
+          {
+            "skill_id": "swords",
+            "grade": "C"
+          }
+        ],
+        "skill_rule_is_complete": false,
+        "logic": "Guide reports these skills and grades; applicability of all-vs-any and exam chance is unconfirmed.",
+        "grade_source": "https://www.noobfeed.com/articles/fire-emblem-fortunes-weave-specialty-classes",
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "pugilist",
+      "name": "Pugilist",
+      "tier": "specialty",
+      "playable": true,
+      "movement_tags": [
+        "infantry"
+      ],
+      "skill_exp_bonuses": {
+        "gauntlets": 2,
+        "infantry": 2
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 15,
+        "strength": 10,
+        "magic": -5,
+        "speed": 10,
+        "dexterity": 5,
+        "defense": 10,
+        "resistance": 0,
+        "luck": 0,
+        "charm": 5
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Combat Arts +1",
+          "effect": "Adds one combat-art equipment slot.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Brawl Avo +3",
+          "effect": "Brawl Avoid +3.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Attack, Get Back",
+        "effect": "Using a combat art grants Avoid +10 during combat.",
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "specialty",
+        "recommended_skill_grades": [
+          {
+            "skill_id": "gauntlets",
+            "grade": "C"
+          }
+        ],
+        "skill_rule_is_complete": false,
+        "logic": "Guide reports these skills and grades; applicability of all-vs-any and exam chance is unconfirmed.",
+        "grade_source": "https://www.noobfeed.com/articles/fire-emblem-fortunes-weave-specialty-classes",
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "archer",
+      "name": "Archer",
+      "tier": "specialty",
+      "playable": true,
+      "movement_tags": [
+        "infantry"
+      ],
+      "skill_exp_bonuses": {
+        "bows": 2,
+        "infantry": 1
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 10,
+        "strength": 0,
+        "magic": 0,
+        "speed": 10,
+        "dexterity": 15,
+        "defense": 5,
+        "resistance": 0,
+        "luck": 5,
+        "charm": 5
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Combat Arts +1",
+          "effect": "Adds one combat-art equipment slot.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Bow Hit +5",
+          "effect": "With bow equipped, Hit +5.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Crescendo",
+        "effect": "Each defeated foe adds Hit +3 until map end, capped at +30.",
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "specialty",
+        "recommended_skill_grades": [
+          {
+            "skill_id": "bows",
+            "grade": "C"
+          }
+        ],
+        "skill_rule_is_complete": false,
+        "logic": "Guide reports these skills and grades; applicability of all-vs-any and exam chance is unconfirmed.",
+        "grade_source": "https://www.noobfeed.com/articles/fire-emblem-fortunes-weave-specialty-classes",
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "rogue",
+      "name": "Rogue",
+      "tier": "specialty",
+      "playable": true,
+      "movement_tags": [
+        "infantry"
+      ],
+      "skill_exp_bonuses": {
+        "swords": 1,
+        "bows": 1,
+        "infantry": 2
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 10,
+        "strength": 0,
+        "magic": 0,
+        "speed": 15,
+        "dexterity": 10,
+        "defense": 0,
+        "resistance": 5,
+        "luck": 5,
+        "charm": 0
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Combat Arts +1",
+          "effect": "Adds one combat-art equipment slot.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Locktouch",
+          "effect": "Can open chests without keys.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Search",
+          "effect": "Search results slightly more likely to be perfect.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "In Shadow",
+        "effect": "Defeating a foe grants Avoid +10 through the next combat.",
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "specialty",
+        "recommended_skill_grades": [
+          {
+            "skill_id": "bows",
+            "grade": "C"
+          },
+          {
+            "skill_id": "swords",
+            "grade": "C"
+          }
+        ],
+        "skill_rule_is_complete": false,
+        "logic": "Guide reports these skills and grades; applicability of all-vs-any and exam chance is unconfirmed.",
+        "grade_source": "https://www.noobfeed.com/articles/fire-emblem-fortunes-weave-specialty-classes",
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "armored-knight",
+      "name": "Armored Knight",
+      "tier": "specialty",
+      "playable": true,
+      "movement_tags": [
+        "armored",
+        "infantry"
+      ],
+      "skill_exp_bonuses": {
+        "spears": 1,
+        "axes": 1,
+        "heavy_armor": 2
+      },
+      "skills_listed_without_exp_bonus": [
+        "swords",
+        "infantry"
+      ],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 10,
+        "strength": 10,
+        "magic": -5,
+        "speed": -5,
+        "dexterity": 5,
+        "defense": 25,
+        "resistance": -5,
+        "luck": 0,
+        "charm": 5
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Combat Arts +1",
+          "effect": "Adds one combat-art equipment slot.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Strike-Last Def +3",
+          "effect": "When foe attacks first, grants Protection +3 during combat.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Great Counter",
+        "effect": "When foe strikes first, gain Attack +3 during combat.",
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "specialty",
+        "recommended_skill_grades": [
+          {
+            "skill_id": "heavy_armor",
+            "grade": "E+"
+          },
+          {
+            "skill_id": "axes",
+            "grade": "C"
+          },
+          {
+            "skill_id": "spears",
+            "grade": "C"
+          }
+        ],
+        "skill_rule_is_complete": false,
+        "logic": "Guide reports these skills and grades; applicability of all-vs-any and exam chance is unconfirmed.",
+        "grade_source": "https://www.noobfeed.com/articles/fire-emblem-fortunes-weave-specialty-classes",
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "light-cavalry",
+      "name": "Light Cavalry",
+      "tier": "specialty",
+      "playable": true,
+      "movement_tags": [
+        "cavalry"
+      ],
+      "skill_exp_bonuses": {
+        "spears": 1,
+        "riding": 2
+      },
+      "skills_listed_without_exp_bonus": [
+        "swords",
+        "axes"
+      ],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 10,
+        "strength": 5,
+        "magic": -5,
+        "speed": 5,
+        "dexterity": 0,
+        "defense": 5,
+        "resistance": 0,
+        "luck": 5,
+        "charm": 10
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Mount/Dismount",
+          "effect": "Allows Mount and Dismount commands.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Bolster Health",
+        "effect": "Max HP +3.",
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "specialty",
+        "recommended_skill_grades": [
+          {
+            "skill_id": "riding",
+            "grade": "D"
+          },
+          {
+            "skill_id": "spears",
+            "grade": "C"
+          },
+          {
+            "skill_id": "swords",
+            "grade": "C"
+          }
+        ],
+        "skill_rule_is_complete": false,
+        "logic": "Guide reports these skills and grades; applicability of all-vs-any and exam chance is unconfirmed.",
+        "grade_source": "https://www.noobfeed.com/articles/fire-emblem-fortunes-weave-specialty-classes",
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "charioteer",
+      "name": "Charioteer",
+      "tier": "specialty",
+      "playable": true,
+      "movement_tags": [
+        "cavalry"
+      ],
+      "skill_exp_bonuses": {
+        "bows": 2,
+        "riding": 1
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 10,
+        "strength": 5,
+        "magic": -5,
+        "speed": -5,
+        "dexterity": 15,
+        "defense": 10,
+        "resistance": 0,
+        "luck": 5,
+        "charm": 10
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Chariot Armor",
+          "effect": "In cavalry state Shield +5 and cannot avoid attacks.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Charioteer Tactics",
+          "effect": "Mount/Dismount; cavalry state permits Charge.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Charioteer's Path",
+          "effect": "Growth rates increase as unit levels (formula unknown).",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Charger",
+        "effect": "Using Charge grants Protection +10 until the next phase.",
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "specialty",
+        "recommended_skill_grades": [
+          {
+            "skill_id": "riding",
+            "grade": "D"
+          },
+          {
+            "skill_id": "bows",
+            "grade": "C"
+          }
+        ],
+        "skill_rule_is_complete": false,
+        "logic": "Guide reports these skills and grades; applicability of all-vs-any and exam chance is unconfirmed.",
+        "grade_source": "https://www.noobfeed.com/articles/fire-emblem-fortunes-weave-specialty-classes",
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "armored-ornius-rider",
+      "name": "Armored Ornius Rider",
+      "tier": "specialty",
+      "playable": true,
+      "movement_tags": [
+        "cavalry"
+      ],
+      "skill_exp_bonuses": {
+        "spears": 1,
+        "axes": 1,
+        "riding": 1,
+        "flying": 1
+      },
+      "skills_listed_without_exp_bonus": [
+        "swords"
+      ],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 10,
+        "strength": 0,
+        "magic": -5,
+        "speed": 10,
+        "dexterity": 5,
+        "defense": 10,
+        "resistance": 0,
+        "luck": 5,
+        "charm": 5
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Mount/Dismount",
+          "effect": "Allows Mount and Dismount commands.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Sense Threat",
+        "effect": "When foe has effectiveness against the unit, grants Avoid +20 during combat.",
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "specialty",
+        "recommended_skill_grades": [
+          {
+            "skill_id": "riding",
+            "grade": "D"
+          },
+          {
+            "skill_id": "axes",
+            "grade": "C"
+          },
+          {
+            "skill_id": "spears",
+            "grade": "C"
+          }
+        ],
+        "skill_rule_is_complete": false,
+        "logic": "Guide reports these skills and grades; applicability of all-vs-any and exam chance is unconfirmed.",
+        "grade_source": "https://www.noobfeed.com/articles/fire-emblem-fortunes-weave-specialty-classes",
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "wing-soldier",
+      "name": "Wing Soldier",
+      "tier": "specialty",
+      "playable": true,
+      "movement_tags": [
+        "flying"
+      ],
+      "skill_exp_bonuses": {
+        "swords": 1,
+        "spears": 1,
+        "flying": 2
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 10,
+        "strength": 0,
+        "magic": 5,
+        "speed": 0,
+        "dexterity": 5,
+        "defense": 5,
+        "resistance": 5,
+        "luck": 5,
+        "charm": 10
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Mount/Dismount",
+          "effect": "Allows Mount and Dismount commands.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Protecting Wings",
+        "effect": "Resistance +3.",
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "specialty",
+        "recommended_skill_grades": [
+          {
+            "skill_id": "flying",
+            "grade": "D"
+          },
+          {
+            "skill_id": "spears",
+            "grade": "C"
+          },
+          {
+            "skill_id": "swords",
+            "grade": "C"
+          }
+        ],
+        "skill_rule_is_complete": false,
+        "logic": "Guide reports these skills and grades; applicability of all-vs-any and exam chance is unconfirmed.",
+        "grade_source": "https://www.noobfeed.com/articles/fire-emblem-fortunes-weave-specialty-classes",
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "shaman",
+      "name": "Shaman",
+      "tier": "specialty",
+      "playable": true,
+      "movement_tags": [
+        "infantry"
+      ],
+      "skill_exp_bonuses": {
+        "swords": 1,
+        "black_magic": 2,
+        "white_magic": 1
+      },
+      "skills_listed_without_exp_bonus": [
+        "gauntlets",
+        "infantry"
+      ],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 5,
+        "strength": -5,
+        "magic": 15,
+        "speed": 10,
+        "dexterity": 10,
+        "defense": -10,
+        "resistance": 10,
+        "luck": 10,
+        "charm": 0
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Black-Magic Seeker",
+          "effect": "Doubles black-magic uses.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Magic Hit +3",
+          "effect": "When equipped with magic, Hit +3.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Bind Dexterity",
+        "effect": "Adjacent enemies suffer Dexterity -3.",
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "specialty",
+        "recommended_skill_grades": [
+          {
+            "skill_id": "black_magic",
+            "grade": "C"
+          }
+        ],
+        "skill_rule_is_complete": false,
+        "logic": "Guide reports these skills and grades; applicability of all-vs-any and exam chance is unconfirmed.",
+        "grade_source": "https://www.noobfeed.com/articles/fire-emblem-fortunes-weave-specialty-classes",
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ],
+      "data_conflicts": [
+        {
+          "field": "class_growth_rate_modifiers_percent.magic",
+          "selected": 15,
+          "other_reported": 25,
+          "other_source": "https://www.noobfeed.com/articles/fire-emblem-fortunes-weave-specialty-classes"
+        }
+      ]
+    },
+    {
+      "id": "priest",
+      "name": "Priest",
+      "tier": "specialty",
+      "playable": true,
+      "movement_tags": [
+        "infantry"
+      ],
+      "skill_exp_bonuses": {
+        "gauntlets": 1,
+        "black_magic": 1,
+        "white_magic": 2
+      },
+      "skills_listed_without_exp_bonus": [
+        "axes",
+        "infantry"
+      ],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 5,
+        "strength": -5,
+        "magic": 10,
+        "speed": 5,
+        "dexterity": 5,
+        "defense": -10,
+        "resistance": 15,
+        "luck": 15,
+        "charm": 10
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "White-Magic Seeker",
+          "effect": "Doubles white-magic uses.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Magic Heal +5",
+          "effect": "Healing with magic restores +5 additional HP.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Piety",
+        "effect": "Luck +3.",
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "specialty",
+        "recommended_skill_grades": [
+          {
+            "skill_id": "white_magic",
+            "grade": "C"
+          }
+        ],
+        "skill_rule_is_complete": false,
+        "logic": "Guide reports these skills and grades; applicability of all-vs-any and exam chance is unconfirmed.",
+        "grade_source": "https://www.noobfeed.com/articles/fire-emblem-fortunes-weave-specialty-classes",
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "shido",
+      "name": "Shido",
+      "tier": "advanced",
+      "playable": true,
+      "movement_tags": [
+        "infantry"
+      ],
+      "skill_exp_bonuses": {
+        "swords": 3,
+        "spears": 1,
+        "infantry": 2
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 10,
+        "strength": 5,
+        "magic": 0,
+        "speed": 15,
+        "dexterity": 10,
+        "defense": 0,
+        "resistance": -5,
+        "luck": 5,
+        "charm": 5
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Combat Arts +2",
+          "effect": "Adds two combat-art equipment slots.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Sword Crit +5",
+          "effect": "With sword equipped, Critical +5.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Ever Vigilant",
+        "effect": "After defeating a foe with a critical hit, restores some HP.",
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "advanced",
+        "recommended_skill_grades": null,
+        "skill_rule_is_complete": false,
+        "logic": null,
+        "grade_source": null,
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "dancer",
+      "name": "Dancer",
+      "tier": "advanced",
+      "playable": true,
+      "movement_tags": [
+        "infantry"
+      ],
+      "skill_exp_bonuses": {
+        "swords": 3,
+        "bows": 2,
+        "infantry": 4
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": null,
+        "strength": null,
+        "magic": null,
+        "speed": null,
+        "dexterity": null,
+        "defense": null,
+        "resistance": null,
+        "luck": null,
+        "charm": null
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Dance",
+          "effect": "Allows Dance combat art.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Combat Arts +2",
+          "effect": "Adds two combat-art equipment slots.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Special Dance",
+        "effect": "Using Dance grants target ally Dexterity and Speed +3 for that phase.",
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "advanced",
+        "recommended_skill_grades": null,
+        "skill_rule_is_complete": false,
+        "logic": null,
+        "grade_source": null,
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [
+        "leda-great-dancer-s-successor"
+      ],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "warrior",
+      "name": "Warrior",
+      "tier": "advanced",
+      "playable": true,
+      "movement_tags": [
+        "infantry"
+      ],
+      "skill_exp_bonuses": {
+        "swords": 2,
+        "axes": 3,
+        "gauntlets": 2,
+        "infantry": 1
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 20,
+        "strength": 20,
+        "magic": -5,
+        "speed": 0,
+        "dexterity": 0,
+        "defense": 5,
+        "resistance": -5,
+        "luck": 0,
+        "charm": 5
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Combat Arts +2",
+          "effect": "Adds two combat-art equipment slots.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Axe Hit +5",
+          "effect": "With axe equipped, Hit +5.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Brawl Hit +5",
+          "effect": "With gauntlets equipped, Hit +5.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Practiced Art",
+        "effect": "Hit +10 when attacking with a combat art.",
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "advanced",
+        "recommended_skill_grades": null,
+        "skill_rule_is_complete": false,
+        "logic": null,
+        "grade_source": null,
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "blacksmith",
+      "name": "Blacksmith",
+      "tier": "advanced",
+      "playable": true,
+      "movement_tags": [
+        "infantry"
+      ],
+      "skill_exp_bonuses": {
+        "axes": 3,
+        "black_magic": 1,
+        "infantry": 1
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 15,
+        "strength": 10,
+        "magic": 10,
+        "speed": 0,
+        "dexterity": 5,
+        "defense": 10,
+        "resistance": 10,
+        "luck": 0,
+        "charm": 5
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Black-Magic Seeker",
+          "effect": "Doubles black-magic uses.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Axe Hit +5",
+          "effect": "With axe equipped, Hit +5.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Makeshift",
+        "effect": "When using a combat art, 10% chance to negate weapon durability cost.",
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "advanced",
+        "recommended_skill_grades": null,
+        "skill_rule_is_complete": false,
+        "logic": null,
+        "grade_source": null,
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [
+        "dietrich-upgrade-ten-combat-arts"
+      ],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "sniper",
+      "name": "Sniper",
+      "tier": "advanced",
+      "playable": true,
+      "movement_tags": [
+        "infantry"
+      ],
+      "skill_exp_bonuses": {
+        "bows": 3,
+        "infantry": 1
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 10,
+        "strength": 5,
+        "magic": 0,
+        "speed": 10,
+        "dexterity": 20,
+        "defense": 5,
+        "resistance": 5,
+        "luck": 5,
+        "charm": 5
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Combat Arts +2",
+          "effect": "Adds two combat-art equipment slots.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Bow Hit +10",
+          "effect": "With bow equipped, Hit +10.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Marksmanship",
+        "effect": "When equipped with a bow, Hit +15.",
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "advanced",
+        "recommended_skill_grades": null,
+        "skill_rule_is_complete": false,
+        "logic": null,
+        "grade_source": null,
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "forest-knight",
+      "name": "Forest Knight",
+      "tier": "advanced",
+      "playable": true,
+      "movement_tags": [
+        "cavalry"
+      ],
+      "skill_exp_bonuses": {
+        "swords": 1,
+        "bows": 2,
+        "riding": 2
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 10,
+        "strength": 5,
+        "magic": 0,
+        "speed": 10,
+        "dexterity": 10,
+        "defense": 5,
+        "resistance": 5,
+        "luck": 5,
+        "charm": 5
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Mount/Dismount",
+          "effect": "Allows Mount and Dismount commands.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Combat Arts +1",
+          "effect": "Adds one combat-art equipment slot.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Bow Hit +5",
+          "effect": "With bow equipped, Hit +5.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Hunter's Eye",
+        "effect": "When equipped with a bow, Attack +3 on follow-up attacks.",
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "advanced",
+        "recommended_skill_grades": [
+          {
+            "skill_id": "riding",
+            "grade": "D"
+          },
+          {
+            "skill_id": "bows",
+            "grade": "B"
+          }
+        ],
+        "skill_rule_is_complete": false,
+        "logic": "Guide reports these skills and grades; applicability of all-vs-any and exam chance is unconfirmed.",
+        "grade_source": "https://www.fortunesweavewiki.wiki/classes/Fortune-s-Weave-classes",
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "ranger",
+      "name": "Ranger",
+      "tier": "advanced",
+      "playable": true,
+      "movement_tags": [
+        "infantry"
+      ],
+      "skill_exp_bonuses": {
+        "swords": 2,
+        "bows": 2,
+        "infantry": 3
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 10,
+        "strength": 5,
+        "magic": 0,
+        "speed": 15,
+        "dexterity": 15,
+        "defense": 0,
+        "resistance": 10,
+        "luck": 15,
+        "charm": 0
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Combat Arts +2",
+          "effect": "Adds two combat-art equipment slots.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Locktouch",
+          "effect": "Can open chests without keys.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Advanced Search",
+          "effect": "Search results more likely to be perfect.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Countershot",
+        "effect": "When equipped with a bow, can counter adjacent foes at 50% trigger rate.",
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "advanced",
+        "recommended_skill_grades": null,
+        "skill_rule_is_complete": false,
+        "logic": null,
+        "grade_source": null,
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [
+        "dietrich-dread-warrior-challenge-oko",
+        "leda-elegant-drink-recipes"
+      ],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "guardian",
+      "name": "Guardian",
+      "tier": "advanced",
+      "playable": true,
+      "movement_tags": [
+        "infantry"
+      ],
+      "skill_exp_bonuses": {
+        "spears": 3,
+        "white_magic": 1,
+        "infantry": 1
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 10,
+        "strength": 10,
+        "magic": 0,
+        "speed": 0,
+        "dexterity": 5,
+        "defense": 10,
+        "resistance": 15,
+        "luck": 5,
+        "charm": 5
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Combat Arts +2",
+          "effect": "Adds two combat-art equipment slots.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Magic Heal +10",
+          "effect": "Healing with magic restores +10 additional HP.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Brace",
+        "effect": "After defeating a foe, Protection +3 until next phase.",
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "advanced",
+        "recommended_skill_grades": null,
+        "skill_rule_is_complete": false,
+        "logic": null,
+        "grade_source": null,
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [
+        "theodora-send-supplies-kothar-gar",
+        "dietrich-dread-warrior-challenge-il-lara"
+      ],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "dreadnought",
+      "name": "Dreadnought",
+      "tier": "advanced",
+      "playable": true,
+      "movement_tags": [
+        "armored",
+        "infantry"
+      ],
+      "skill_exp_bonuses": {
+        "spears": 2,
+        "axes": 2,
+        "infantry": 1,
+        "heavy_armor": 3
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 15,
+        "strength": 15,
+        "magic": -5,
+        "speed": -10,
+        "dexterity": 5,
+        "defense": 30,
+        "resistance": -10,
+        "luck": 0,
+        "charm": 5
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Combat Arts +2",
+          "effect": "Adds two combat-art equipment slots.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Strike-Last Def +5",
+          "effect": "When foe attacks first, grants Protection +5 during combat.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Focused Counter",
+        "effect": "When foe strikes first, Hit +10 during combat.",
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "advanced",
+        "recommended_skill_grades": [
+          {
+            "skill_id": "heavy_armor",
+            "grade": "D"
+          },
+          {
+            "skill_id": "axes",
+            "grade": "B"
+          },
+          {
+            "skill_id": "spears",
+            "grade": "B"
+          }
+        ],
+        "skill_rule_is_complete": false,
+        "logic": "Guide reports these skills and grades; applicability of all-vs-any and exam chance is unconfirmed.",
+        "grade_source": "https://thegameswiki.com/fire-emblem-fortunes-weave/wiki/certification-exams",
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "bardinger",
+      "name": "Bardinger",
+      "tier": "advanced",
+      "playable": true,
+      "movement_tags": [
+        "cavalry"
+      ],
+      "skill_exp_bonuses": {
+        "swords": 2,
+        "spears": 2,
+        "axes": 1,
+        "riding": 3
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 10,
+        "strength": 10,
+        "magic": -5,
+        "speed": 0,
+        "dexterity": 0,
+        "defense": 5,
+        "resistance": 10,
+        "luck": 5,
+        "charm": 10
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Mount/Dismount",
+          "effect": "Allows Mount and Dismount commands.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Combat Arts +2",
+          "effect": "Adds two combat-art equipment slots.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Aegis",
+        "effect": "20% chance to halve magical damage taken.",
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "advanced",
+        "recommended_skill_grades": [
+          {
+            "skill_id": "riding",
+            "grade": "C"
+          },
+          {
+            "skill_id": "spears",
+            "grade": "B"
+          },
+          {
+            "skill_id": "swords",
+            "grade": "B"
+          }
+        ],
+        "skill_rule_is_complete": false,
+        "logic": "Guide reports these skills and grades; applicability of all-vs-any and exam chance is unconfirmed.",
+        "grade_source": "https://thegameswiki.com/fire-emblem-fortunes-weave/wiki/certification-exams",
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "cataphract",
+      "name": "Cataphract",
+      "tier": "advanced",
+      "playable": true,
+      "movement_tags": [
+        "armored",
+        "cavalry"
+      ],
+      "skill_exp_bonuses": {
+        "swords": 1,
+        "spears": 2,
+        "axes": 2,
+        "riding": 1,
+        "heavy_armor": 1
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": null,
+        "strength": null,
+        "magic": null,
+        "speed": null,
+        "dexterity": null,
+        "defense": null,
+        "resistance": null,
+        "luck": null,
+        "charm": null
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Mount/Dismount",
+          "effect": "Allows Mount and Dismount commands.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Combat Arts +1",
+          "effect": "Adds one combat-art equipment slot.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Strike-Last Def +3",
+          "effect": "When foe attacks first, grants Protection +3 during combat.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Pavise",
+        "effect": "20% chance to halve physical damage taken.",
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "advanced",
+        "recommended_skill_grades": null,
+        "skill_rule_is_complete": false,
+        "logic": null,
+        "grade_source": null,
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [
+        "theodora-send-supplies-ladon-loach"
+      ],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "elephant-rider",
+      "name": "Elephant Rider",
+      "tier": "advanced",
+      "playable": true,
+      "movement_tags": [
+        "cavalry"
+      ],
+      "skill_exp_bonuses": {
+        "riding": 2
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 20,
+        "strength": 10,
+        "magic": -5,
+        "speed": -10,
+        "dexterity": 20,
+        "defense": 15,
+        "resistance": -5,
+        "luck": 5,
+        "charm": 10
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "War-Elephant Boots",
+          "effect": "In cavalry state halves incoming damage and cannot avoid attacks.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Elephant Tactics",
+          "effect": "Mount/Dismount; cavalry state permits Heavy Charge.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Elephant Rider's Path",
+          "effect": "Growth rates increase as unit levels (formula unknown).",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Elephant Vanguard",
+        "effect": "While an Elephant Rider in cavalry state, Hit +10.",
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "advanced",
+        "recommended_skill_grades": null,
+        "skill_rule_is_complete": false,
+        "logic": null,
+        "grade_source": null,
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [
+        "elephant-rider-story"
+      ],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "caladrius",
+      "name": "Caladrius",
+      "tier": "advanced",
+      "playable": true,
+      "movement_tags": [
+        "cavalry"
+      ],
+      "skill_exp_bonuses": {
+        "swords": 1,
+        "spears": 2,
+        "axes": 2,
+        "black_magic": 2,
+        "riding": 1,
+        "flying": 1
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 15,
+        "strength": 0,
+        "magic": 10,
+        "speed": 10,
+        "dexterity": 5,
+        "defense": 10,
+        "resistance": 10,
+        "luck": 5,
+        "charm": 5
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Mount/Dismount",
+          "effect": "Allows Mount and Dismount commands.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Black-Magic Seeker",
+          "effect": "Doubles black-magic uses.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Combat Arts +1",
+          "effect": "Adds one combat-art equipment slot.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Overtake",
+        "effect": "Defeating a foe grants Movement +1 through next turn, stacking up to +3.",
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "advanced",
+        "recommended_skill_grades": [
+          {
+            "skill_id": "riding",
+            "grade": "D"
+          },
+          {
+            "skill_id": "black_magic",
+            "grade": "B"
+          }
+        ],
+        "skill_rule_is_complete": false,
+        "logic": "Guide reports these skills and grades; applicability of all-vs-any and exam chance is unconfirmed.",
+        "grade_source": "https://www.fortunesweavewiki.wiki/classes/Fortune-s-Weave-classes",
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [
+        "cai-special-request-from-pop"
+      ],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "dragoon",
+      "name": "Dragoon",
+      "tier": "advanced",
+      "playable": true,
+      "movement_tags": [
+        "flying"
+      ],
+      "skill_exp_bonuses": {
+        "swords": 1,
+        "spears": 1,
+        "axes": 3,
+        "flying": 3
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 15,
+        "strength": 5,
+        "magic": 0,
+        "speed": 5,
+        "dexterity": 0,
+        "defense": 10,
+        "resistance": 10,
+        "luck": 10,
+        "charm": 5
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Mount/Dismount",
+          "effect": "Allows Mount and Dismount commands.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Combat Arts +1",
+          "effect": "Adds one combat-art equipment slot.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Besieger",
+        "effect": "When foe stands on favorable terrain, Hit +20.",
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "advanced",
+        "recommended_skill_grades": null,
+        "skill_rule_is_complete": false,
+        "logic": null,
+        "grade_source": null,
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [
+        "cai-special-request-from-mom",
+        "theodora-send-supplies-sea-star-stone"
+      ],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "ovate",
+      "name": "Ovate",
+      "tier": "advanced",
+      "playable": true,
+      "movement_tags": [
+        "infantry"
+      ],
+      "skill_exp_bonuses": {
+        "swords": 2,
+        "black_magic": 3,
+        "white_magic": 1,
+        "gauntlets": 1,
+        "infantry": 1
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 10,
+        "strength": -5,
+        "magic": 20,
+        "speed": 5,
+        "dexterity": 15,
+        "defense": -10,
+        "resistance": 15,
+        "luck": 10,
+        "charm": 0
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Black-Magic Seeker",
+          "effect": "Doubles black-magic uses.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Magic Hit +5",
+          "effect": "When equipped with magic, Hit +5.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Bind Speed",
+        "effect": "Adjacent foes suffer Speed -3.",
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "advanced",
+        "recommended_skill_grades": [
+          {
+            "skill_id": "black_magic",
+            "grade": "B"
+          }
+        ],
+        "skill_rule_is_complete": false,
+        "logic": "Guide reports these skills and grades; applicability of all-vs-any and exam chance is unconfirmed.",
+        "grade_source": "https://thegameswiki.com/fire-emblem-fortunes-weave/wiki/certification-exams",
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "bishop",
+      "name": "Bishop",
+      "tier": "advanced",
+      "playable": true,
+      "movement_tags": [
+        "infantry"
+      ],
+      "skill_exp_bonuses": {
+        "axes": 1,
+        "gauntlets": 2,
+        "black_magic": 1,
+        "white_magic": 3,
+        "infantry": 1
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 10,
+        "strength": -5,
+        "magic": 15,
+        "speed": 0,
+        "dexterity": 5,
+        "defense": -10,
+        "resistance": 20,
+        "luck": 20,
+        "charm": 10
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "White-Magic Seeker",
+          "effect": "Doubles white-magic uses.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Magic Heal +10",
+          "effect": "Healing with magic restores +10 additional HP.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Barrier",
+        "effect": "Adjacent allies get Resistance +3.",
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "advanced",
+        "recommended_skill_grades": [
+          {
+            "skill_id": "white_magic",
+            "grade": "B"
+          }
+        ],
+        "skill_rule_is_complete": false,
+        "logic": "Guide reports these skills and grades; applicability of all-vs-any and exam chance is unconfirmed.",
+        "grade_source": "https://www.fortunesweavewiki.wiki/classes/Fortune-s-Weave-classes",
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "troubadour",
+      "name": "Troubadour",
+      "tier": "advanced",
+      "playable": true,
+      "movement_tags": [
+        "cavalry"
+      ],
+      "skill_exp_bonuses": {
+        "black_magic": 2,
+        "white_magic": 2,
+        "riding": 2
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 10,
+        "strength": 0,
+        "magic": 15,
+        "speed": 0,
+        "dexterity": 5,
+        "defense": 5,
+        "resistance": 15,
+        "luck": 15,
+        "charm": 10
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Mount/Dismount",
+          "effect": "Allows Mount and Dismount commands.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Magic Heal +5",
+          "effect": "Healing with magic restores +5 additional HP.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Magic Hit +3",
+          "effect": "When equipped with magic, Hit +3.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Song of Courage",
+        "effect": null,
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "advanced",
+        "recommended_skill_grades": null,
+        "skill_rule_is_complete": false,
+        "logic": null,
+        "grade_source": null,
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [
+        "cai-bertrand-second-mentorship",
+        "leda-elegant-drink-recipes"
+      ],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "swordmaster",
+      "name": "Swordmaster",
+      "tier": "master",
+      "playable": true,
+      "movement_tags": [
+        "infantry"
+      ],
+      "skill_exp_bonuses": {
+        "swords": 4,
+        "spears": 1,
+        "infantry": 2
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 15,
+        "strength": 10,
+        "magic": 0,
+        "speed": 20,
+        "dexterity": 15,
+        "defense": 0,
+        "resistance": 0,
+        "luck": 5,
+        "charm": 5
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Combat Arts +3",
+          "effect": "Adds three combat-art equipment slots.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Sword Crit +7",
+          "effect": "With sword equipped, Critical +7.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Astra",
+        "effect": null,
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "master",
+        "recommended_skill_grades": null,
+        "skill_rule_is_complete": false,
+        "logic": null,
+        "grade_source": null,
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [
+        "restore-mars-temple"
+      ],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "high-savant",
+      "name": "High Savant",
+      "tier": "master",
+      "playable": true,
+      "movement_tags": [
+        "cavalry"
+      ],
+      "skill_exp_bonuses": {
+        "swords": 3,
+        "black_magic": 2,
+        "riding": 2
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 10,
+        "strength": 15,
+        "magic": 15,
+        "speed": 10,
+        "dexterity": 5,
+        "defense": 5,
+        "resistance": 5,
+        "luck": 5,
+        "charm": 5
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Mount/Dismount",
+          "effect": "Allows Mount and Dismount commands.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Combat Arts +2",
+          "effect": "Adds two combat-art equipment slots.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Black-Magic Seeker",
+          "effect": "Doubles black-magic uses.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Dark Moon",
+        "effect": null,
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "master",
+        "recommended_skill_grades": null,
+        "skill_rule_is_complete": false,
+        "logic": null,
+        "grade_source": null,
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [
+        "restore-smyrnos-temple"
+      ],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "battlemaster",
+      "name": "Battlemaster",
+      "tier": "master",
+      "playable": true,
+      "movement_tags": [
+        "infantry"
+      ],
+      "skill_exp_bonuses": {
+        "swords": 2,
+        "axes": 4,
+        "gauntlets": 2,
+        "infantry": 1
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 25,
+        "strength": 25,
+        "magic": -5,
+        "speed": 5,
+        "dexterity": -5,
+        "defense": 10,
+        "resistance": -5,
+        "luck": -5,
+        "charm": 5
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Combat Arts +3",
+          "effect": "Adds three combat-art equipment slots.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Axe Hit +7",
+          "effect": "With axe equipped, Hit +7.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Brawl Hit +7",
+          "effect": "With gauntlets equipped, Hit +7.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "War Master's Strike",
+        "effect": null,
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "master",
+        "recommended_skill_grades": null,
+        "skill_rule_is_complete": false,
+        "logic": null,
+        "grade_source": null,
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "war-monk",
+      "name": "War Monk",
+      "tier": "master",
+      "playable": true,
+      "movement_tags": [
+        "infantry"
+      ],
+      "skill_exp_bonuses": {
+        "gauntlets": 4,
+        "white_magic": 2,
+        "infantry": 2
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 15,
+        "strength": 10,
+        "magic": 0,
+        "speed": 15,
+        "dexterity": 0,
+        "defense": 5,
+        "resistance": 15,
+        "luck": 5,
+        "charm": 5
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Combat Arts +3",
+          "effect": "Adds three combat-art equipment slots.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "White-Magic Seeker",
+          "effect": "Doubles white-magic uses.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Brawl Avo +7",
+          "effect": "Brawl Avoid +7.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Strike and Heal",
+        "effect": null,
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "master",
+        "recommended_skill_grades": null,
+        "skill_rule_is_complete": false,
+        "logic": null,
+        "grade_source": null,
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [
+        "restore-aurora-temple"
+      ],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "bow-adept",
+      "name": "Bow Adept",
+      "tier": "master",
+      "playable": true,
+      "movement_tags": [
+        "infantry"
+      ],
+      "skill_exp_bonuses": {
+        "bows": 4,
+        "infantry": 2
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 15,
+        "strength": 5,
+        "magic": 0,
+        "speed": 15,
+        "dexterity": 20,
+        "defense": 5,
+        "resistance": 5,
+        "luck": 5,
+        "charm": 5
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Combat Arts +3",
+          "effect": "Adds three combat-art equipment slots.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Bow Hit +15",
+          "effect": "With bow equipped, Hit +15.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Sky Hunter",
+        "effect": null,
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "master",
+        "recommended_skill_grades": null,
+        "skill_rule_is_complete": false,
+        "logic": null,
+        "grade_source": null,
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "bow-knight",
+      "name": "Bow Knight",
+      "tier": "master",
+      "playable": true,
+      "movement_tags": [
+        "cavalry"
+      ],
+      "skill_exp_bonuses": {
+        "swords": 1,
+        "bows": 3,
+        "riding": 2
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 10,
+        "strength": 10,
+        "magic": 0,
+        "speed": 15,
+        "dexterity": 10,
+        "defense": 5,
+        "resistance": 0,
+        "luck": 5,
+        "charm": 5
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Mount/Dismount",
+          "effect": "Allows Mount and Dismount commands.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Combat Arts +2",
+          "effect": "Adds two combat-art equipment slots.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Bow Hit +10",
+          "effect": "With bow equipped, Hit +10.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Hunter's Cross",
+        "effect": null,
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "master",
+        "recommended_skill_grades": null,
+        "skill_rule_is_complete": false,
+        "logic": null,
+        "grade_source": null,
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [
+        "restore-kalla-temple"
+      ],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "shadow-seeker",
+      "name": "Shadow Seeker",
+      "tier": "master",
+      "playable": true,
+      "movement_tags": [
+        "infantry"
+      ],
+      "skill_exp_bonuses": {
+        "swords": 2,
+        "bows": 3,
+        "infantry": 4
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 15,
+        "strength": 5,
+        "magic": 0,
+        "speed": 25,
+        "dexterity": 15,
+        "defense": 0,
+        "resistance": 10,
+        "luck": 15,
+        "charm": 0
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Combat Arts +3",
+          "effect": "Adds three combat-art equipment slots.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Locktouch",
+          "effect": "Can open chests without keys.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Master Search",
+          "effect": "Search results considerably more likely to be perfect.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Dropshadow Blade",
+        "effect": null,
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "master",
+        "recommended_skill_grades": null,
+        "skill_rule_is_complete": false,
+        "logic": null,
+        "grade_source": null,
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "sentinel",
+      "name": "Sentinel",
+      "tier": "master",
+      "playable": true,
+      "movement_tags": [
+        "infantry"
+      ],
+      "skill_exp_bonuses": {
+        "spears": 4,
+        "white_magic": 2,
+        "infantry": 1
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 15,
+        "strength": 15,
+        "magic": 0,
+        "speed": 5,
+        "dexterity": 5,
+        "defense": 10,
+        "resistance": 15,
+        "luck": 5,
+        "charm": 5
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Combat Arts +3",
+          "effect": "Adds three combat-art equipment slots.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Magic Heal +10",
+          "effect": "Healing with magic restores +10 additional HP.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "White-Magic Seeker",
+          "effect": "Doubles white-magic uses.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Resolute Stance",
+        "effect": null,
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "master",
+        "recommended_skill_grades": null,
+        "skill_rule_is_complete": false,
+        "logic": null,
+        "grade_source": null,
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "castle-knight",
+      "name": "Castle Knight",
+      "tier": "master",
+      "playable": true,
+      "movement_tags": [
+        "armored",
+        "infantry"
+      ],
+      "skill_exp_bonuses": {
+        "spears": 2,
+        "axes": 2,
+        "infantry": 1,
+        "heavy_armor": 4
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 25,
+        "strength": 20,
+        "magic": -5,
+        "speed": -15,
+        "dexterity": 5,
+        "defense": 30,
+        "resistance": -10,
+        "luck": 0,
+        "charm": 5
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Combat Arts +3",
+          "effect": "Adds three combat-art equipment slots.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Strike-Last Def +7",
+          "effect": null,
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Intercept",
+        "effect": null,
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "master",
+        "recommended_skill_grades": null,
+        "skill_rule_is_complete": false,
+        "logic": null,
+        "grade_source": null,
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "orichaldia",
+      "name": "Orichaldia",
+      "tier": "master",
+      "playable": true,
+      "movement_tags": [
+        "cavalry"
+      ],
+      "skill_exp_bonuses": {
+        "swords": 2,
+        "spears": 3,
+        "axes": 1,
+        "riding": 4
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 15,
+        "strength": 15,
+        "magic": -5,
+        "speed": 5,
+        "dexterity": 0,
+        "defense": 5,
+        "resistance": 5,
+        "luck": 5,
+        "charm": 10
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Mount/Dismount",
+          "effect": "Allows Mount and Dismount commands.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Combat Arts +3",
+          "effect": "Adds three combat-art equipment slots.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Fierce Spear",
+        "effect": null,
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "master",
+        "recommended_skill_grades": null,
+        "skill_rule_is_complete": false,
+        "logic": null,
+        "grade_source": null,
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "great-knight",
+      "name": "Great Knight",
+      "tier": "master",
+      "playable": true,
+      "movement_tags": [
+        "armored",
+        "cavalry"
+      ],
+      "skill_exp_bonuses": {
+        "swords": 1,
+        "spears": 2,
+        "axes": 3,
+        "riding": 2,
+        "heavy_armor": 2
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 20,
+        "strength": 20,
+        "magic": -5,
+        "speed": -10,
+        "dexterity": 0,
+        "defense": 15,
+        "resistance": -10,
+        "luck": 0,
+        "charm": 5
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Mount/Dismount",
+          "effect": "Allows Mount and Dismount commands.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Combat Arts +2",
+          "effect": "Adds two combat-art equipment slots.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Strike-Last Def +5",
+          "effect": "When foe attacks first, grants Protection +5 during combat.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Fierce Shield",
+        "effect": null,
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "master",
+        "recommended_skill_grades": null,
+        "skill_rule_is_complete": false,
+        "logic": null,
+        "grade_source": null,
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [
+        "restore-credna-temple"
+      ],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "celestial-trooper",
+      "name": "Celestial Trooper",
+      "tier": "master",
+      "playable": true,
+      "movement_tags": [
+        "flying"
+      ],
+      "skill_exp_bonuses": {
+        "swords": 2,
+        "spears": 3,
+        "flying": 4
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 15,
+        "strength": 5,
+        "magic": -5,
+        "speed": 10,
+        "dexterity": 5,
+        "defense": 5,
+        "resistance": 15,
+        "luck": 15,
+        "charm": 10
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Mount/Dismount",
+          "effect": "Allows Mount and Dismount commands.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Combat Arts +2",
+          "effect": "Adds two combat-art equipment slots.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Flying Avo +7",
+          "effect": "Flying Avoid +7.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Lightning Reflexes",
+        "effect": null,
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "master",
+        "recommended_skill_grades": null,
+        "skill_rule_is_complete": false,
+        "logic": null,
+        "grade_source": null,
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "bau-lord",
+      "name": "Bau Lord",
+      "tier": "master",
+      "playable": true,
+      "movement_tags": [
+        "flying"
+      ],
+      "skill_exp_bonuses": {
+        "swords": 1,
+        "spears": 2,
+        "axes": 3,
+        "flying": 4
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 15,
+        "strength": 5,
+        "magic": 0,
+        "speed": 5,
+        "dexterity": 0,
+        "defense": 10,
+        "resistance": 10,
+        "luck": 10,
+        "charm": 5
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Mount/Dismount",
+          "effect": "Allows Mount and Dismount commands.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Combat Arts +2",
+          "effect": "Adds two combat-art equipment slots.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Ambush",
+        "effect": null,
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "master",
+        "recommended_skill_grades": null,
+        "skill_rule_is_complete": false,
+        "logic": null,
+        "grade_source": null,
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "druid",
+      "name": "Druid",
+      "tier": "master",
+      "playable": true,
+      "movement_tags": [
+        "infantry"
+      ],
+      "skill_exp_bonuses": {
+        "swords": 2,
+        "black_magic": 4,
+        "gauntlets": 1,
+        "infantry": 1
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 10,
+        "strength": -5,
+        "magic": 30,
+        "speed": 10,
+        "dexterity": 15,
+        "defense": -10,
+        "resistance": 20,
+        "luck": 10,
+        "charm": 0
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Black-Magic Seeker",
+          "effect": "Doubles black-magic uses.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Magic Hit +7",
+          "effect": "When equipped with magic, Hit +7.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Bind Resistance",
+        "effect": null,
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "master",
+        "recommended_skill_grades": null,
+        "skill_rule_is_complete": false,
+        "logic": null,
+        "grade_source": null,
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "wiseman",
+      "name": "Wiseman",
+      "tier": "master",
+      "playable": true,
+      "movement_tags": [
+        "infantry"
+      ],
+      "skill_exp_bonuses": {
+        "axes": 1,
+        "gauntlets": 2,
+        "white_magic": 4,
+        "infantry": 1
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 10,
+        "strength": -5,
+        "magic": 20,
+        "speed": 5,
+        "dexterity": 0,
+        "defense": -10,
+        "resistance": 25,
+        "luck": 20,
+        "charm": 10
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "White-Magic Seeker",
+          "effect": "Doubles white-magic uses.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Magic Heal +15",
+          "effect": "Healing with magic restores +15 additional HP.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Dominate Magic",
+        "effect": null,
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "master",
+        "recommended_skill_grades": null,
+        "skill_rule_is_complete": false,
+        "logic": null,
+        "grade_source": null,
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "valkyrium",
+      "name": "Valkyrium",
+      "tier": "master",
+      "playable": true,
+      "movement_tags": [
+        "cavalry"
+      ],
+      "skill_exp_bonuses": {
+        "black_magic": 3,
+        "white_magic": 2,
+        "riding": 2
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 10,
+        "strength": 0,
+        "magic": 15,
+        "speed": 5,
+        "dexterity": 5,
+        "defense": 5,
+        "resistance": 10,
+        "luck": 15,
+        "charm": 10
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Mount/Dismount",
+          "effect": "Allows Mount and Dismount commands.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Magic Heal +10",
+          "effect": "Healing with magic restores +10 additional HP.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Magic Hit +5",
+          "effect": "When equipped with magic, Hit +5.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Song of Calm",
+        "effect": null,
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "master",
+        "recommended_skill_grades": null,
+        "skill_rule_is_complete": false,
+        "logic": null,
+        "grade_source": null,
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [
+        "restore-jurah-temple"
+      ],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "the-blade",
+      "name": "The Blade",
+      "tier": "divine",
+      "playable": true,
+      "movement_tags": [
+        "infantry"
+      ],
+      "skill_exp_bonuses": {
+        "swords": 5,
+        "spears": 1,
+        "infantry": 2
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 15,
+        "strength": 10,
+        "magic": 10,
+        "speed": 20,
+        "dexterity": 20,
+        "defense": 5,
+        "resistance": 5,
+        "luck": 5,
+        "charm": 10
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Combat Arts +3",
+          "effect": "Adds three combat-art equipment slots.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Sword Crit +10",
+          "effect": "With sword equipped, Critical +10.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Divine Insight",
+        "effect": null,
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "divine",
+        "recommended_skill_grades": null,
+        "skill_rule_is_complete": false,
+        "logic": null,
+        "grade_source": null,
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [
+        "divine-key-of-the-diadem"
+      ],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "the-apsara",
+      "name": "The Apsara",
+      "tier": "divine",
+      "playable": true,
+      "movement_tags": [
+        "infantry"
+      ],
+      "skill_exp_bonuses": {
+        "infantry": 5
+      },
+      "skills_listed_without_exp_bonus": [
+        "swords",
+        "bows"
+      ],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 15,
+        "strength": 5,
+        "magic": 10,
+        "speed": 25,
+        "dexterity": 15,
+        "defense": 5,
+        "resistance": 5,
+        "luck": 10,
+        "charm": 30
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Dance",
+          "effect": "Allows Dance combat art.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Combat Arts +2",
+          "effect": "Adds two combat-art equipment slots.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Divine Dance",
+        "effect": null,
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "divine",
+        "recommended_skill_grades": null,
+        "skill_rule_is_complete": false,
+        "logic": null,
+        "grade_source": null,
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [
+        "divine-key-of-the-diadem"
+      ],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "the-eternal",
+      "name": "The Eternal",
+      "tier": "divine",
+      "playable": true,
+      "movement_tags": [
+        "infantry"
+      ],
+      "skill_exp_bonuses": {
+        "swords": 3,
+        "axes": 5,
+        "gauntlets": 3,
+        "infantry": 1
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 30,
+        "strength": 30,
+        "magic": 0,
+        "speed": 10,
+        "dexterity": 0,
+        "defense": 15,
+        "resistance": 0,
+        "luck": 0,
+        "charm": 10
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Combat Arts +3",
+          "effect": "Adds three combat-art equipment slots.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Axe Hit +10",
+          "effect": "With axe equipped, Hit +10.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Brawl Hit +10",
+          "effect": "With gauntlets equipped, Hit +10.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Divine Might",
+        "effect": null,
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "divine",
+        "recommended_skill_grades": null,
+        "skill_rule_is_complete": false,
+        "logic": null,
+        "grade_source": null,
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [
+        "divine-key-of-the-diadem"
+      ],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "the-godhand",
+      "name": "The Godhand",
+      "tier": "divine",
+      "playable": true,
+      "movement_tags": [
+        "infantry"
+      ],
+      "skill_exp_bonuses": {
+        "gauntlets": 5,
+        "white_magic": 3,
+        "infantry": 3
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 15,
+        "strength": 10,
+        "magic": 10,
+        "speed": 15,
+        "dexterity": 5,
+        "defense": 10,
+        "resistance": 15,
+        "luck": 5,
+        "charm": 10
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Combat Arts +3",
+          "effect": "Adds three combat-art equipment slots.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "White-Magic Zenith",
+          "effect": null,
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Brawl Avo +10",
+          "effect": "Brawl Avoid +10.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Divine Adornment",
+        "effect": null,
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "divine",
+        "recommended_skill_grades": null,
+        "skill_rule_is_complete": false,
+        "logic": null,
+        "grade_source": null,
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [
+        "divine-key-of-the-diadem"
+      ],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "the-calamity",
+      "name": "The Calamity",
+      "tier": "divine",
+      "playable": true,
+      "movement_tags": [
+        "infantry"
+      ],
+      "skill_exp_bonuses": {
+        "swords": 2,
+        "bows": 4,
+        "infantry": 5
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 15,
+        "strength": 5,
+        "magic": 15,
+        "speed": 25,
+        "dexterity": 20,
+        "defense": 5,
+        "resistance": 15,
+        "luck": 15,
+        "charm": 5
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Combat Arts +3",
+          "effect": "Adds three combat-art equipment slots.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Locktouch",
+          "effect": "Can open chests without keys.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Ultimate Search",
+          "effect": null,
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Divine Will",
+        "effect": null,
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "divine",
+        "recommended_skill_grades": null,
+        "skill_rule_is_complete": false,
+        "logic": null,
+        "grade_source": null,
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [
+        "divine-key-of-the-diadem"
+      ],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "the-trident",
+      "name": "The Trident",
+      "tier": "divine",
+      "playable": true,
+      "movement_tags": [
+        "infantry"
+      ],
+      "skill_exp_bonuses": {
+        "spears": 5,
+        "white_magic": 3,
+        "infantry": 1
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 15,
+        "strength": 15,
+        "magic": 5,
+        "speed": 10,
+        "dexterity": 10,
+        "defense": 15,
+        "resistance": 15,
+        "luck": 5,
+        "charm": 10
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Combat Arts +3",
+          "effect": "Adds three combat-art equipment slots.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Magic Heal +10",
+          "effect": "Healing with magic restores +10 additional HP.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "White-Magic Zenith",
+          "effect": null,
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Divine Wall",
+        "effect": null,
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "divine",
+        "recommended_skill_grades": null,
+        "skill_rule_is_complete": false,
+        "logic": null,
+        "grade_source": null,
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [
+        "divine-key-of-the-diadem"
+      ],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "the-cavalier",
+      "name": "The Cavalier",
+      "tier": "divine",
+      "playable": true,
+      "movement_tags": [
+        "cavalry"
+      ],
+      "skill_exp_bonuses": {
+        "swords": 3,
+        "spears": 3,
+        "axes": 3,
+        "riding": 5
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 20,
+        "strength": 15,
+        "magic": 5,
+        "speed": 10,
+        "dexterity": 10,
+        "defense": 15,
+        "resistance": 10,
+        "luck": 5,
+        "charm": 15
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "Mount/Dismount",
+          "effect": "Allows Mount and Dismount commands.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Combat Arts +3",
+          "effect": "Adds three combat-art equipment slots.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Golden Ride",
+          "effect": null,
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Divine Dexterity",
+        "effect": null,
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "divine",
+        "recommended_skill_grades": null,
+        "skill_rule_is_complete": false,
+        "logic": null,
+        "grade_source": null,
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [
+        "divine-key-of-the-diadem"
+      ],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    },
+    {
+      "id": "the-avatar",
+      "name": "The Avatar",
+      "tier": "divine",
+      "playable": true,
+      "movement_tags": [
+        "infantry"
+      ],
+      "skill_exp_bonuses": {
+        "swords": 2,
+        "axes": 1,
+        "gauntlets": 2,
+        "black_magic": 5,
+        "white_magic": 5,
+        "infantry": 1
+      },
+      "skills_listed_without_exp_bonus": [],
+      "weapon_access": {
+        "usable_weapon_types": null,
+        "usable_magic_types": null,
+        "verified": false,
+        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+      },
+      "class_growth_rate_modifiers_percent": {
+        "hp": 10,
+        "strength": -5,
+        "magic": 30,
+        "speed": 10,
+        "dexterity": 5,
+        "defense": -5,
+        "resistance": 30,
+        "luck": 20,
+        "charm": 10
+      },
+      "base_stat_modifiers": null,
+      "active_class_abilities": [
+        {
+          "name": "All-Magic Zenith",
+          "effect": null,
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Magic Hit +10",
+          "effect": "When equipped with magic, Hit +10.",
+          "source": "LUM class roster"
+        },
+        {
+          "name": "Magic Heal +20",
+          "effect": "Healing with magic restores +20 additional HP.",
+          "source": "LUM class roster"
+        }
+      ],
+      "mastery": {
+        "ability_name": "Divine Law",
+        "effect": null,
+        "class_exp_required": null,
+        "retained_on_reclass": true
+      },
+      "certification": {
+        "tier_rule_id": "divine",
+        "recommended_skill_grades": null,
+        "skill_rule_is_complete": false,
+        "logic": null,
+        "grade_source": null,
+        "exam_pass_probability_formula": null,
+        "exact_minimum_level": null,
+        "character_exceptions": null
+      },
+      "unlock_ids": [
+        "divine-key-of-the-diadem"
+      ],
+      "known_character_restrictions": null,
+      "source_urls": [
+        "https://lum.gg/fire-emblem-fortunes-weave/classes",
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+      ]
+    }
+  ]
+}
