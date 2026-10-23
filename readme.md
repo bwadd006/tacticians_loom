@@ -62,6 +62,8 @@ environment may supply a virtual display.
 ## Data and boundaries
 
 - Edit the reviewed JSON in `data/source/`, never the generated SQLite database.
+- Run `npm run data:audit` before and after a review batch to inspect the
+  validated completeness baseline and coverage delta.
 - Update `data/dataset_manifest.json` for a changed dataset, then rebuild.
 - `data:build` reports entity changes and replaces the previous database only
   after candidate validation succeeds.

@@ -3,7 +3,7 @@
     "game": "Fire Emblem: Fortune’s Weave",
     "title": "Class Roster, Certification, Training, Growth, Mastery and Unlock Data",
     "schema_version": "1.0.0",
-    "as_of_date": "2026-10-18",
+    "as_of_date": "2026-10-23",
     "language": "en",
     "compatible_characters_file": "fire_emblem_fortunes_weave_characters.json",
     "stat_keys": [
@@ -55,6 +55,10 @@
     {
       "name": "Serenes Forest class growths",
       "url": "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+    },
+    {
+      "name": "Game8 Japan class reference",
+      "url": "https://game8.jp/fe-banshisenko/816408"
     },
     {
       "name": "NoobFeed beginner",
@@ -928,10 +932,14 @@
         "axes"
       ],
       "weapon_access": {
-        "usable_weapon_types": null,
-        "usable_magic_types": null,
-        "verified": false,
-        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+        "usable_weapon_types": [
+          "swords",
+          "spears",
+          "axes"
+        ],
+        "usable_magic_types": [],
+        "verified": true,
+        "note": "Game8 Japan's post-release class page explicitly lists usable skills separately from certification skills; the current English class reference agrees."
       },
       "class_growth_rate_modifiers_percent": {
         "hp": 10,
@@ -944,7 +952,17 @@
         "luck": 5,
         "charm": 0
       },
-      "base_stat_modifiers": null,
+      "base_stat_modifiers": {
+        "hp": 0,
+        "strength": 0,
+        "magic": 0,
+        "speed": 3,
+        "dexterity": 1,
+        "defense": 0,
+        "resistance": 0,
+        "luck": 1,
+        "charm": 0
+      },
       "active_class_abilities": [
         {
           "name": "Mount/Dismount",
@@ -985,7 +1003,9 @@
       "known_character_restrictions": null,
       "source_urls": [
         "https://lum.gg/fire-emblem-fortunes-weave/classes",
-        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/",
+        "https://game8.jp/fe-banshisenko/816667",
+        "https://fortunesweave.co.uk/classes/ornius-rider"
       ]
     },
     {
@@ -1007,10 +1027,17 @@
         "infantry"
       ],
       "weapon_access": {
-        "usable_weapon_types": null,
-        "usable_magic_types": null,
-        "verified": false,
-        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+        "usable_weapon_types": [
+          "swords",
+          "axes",
+          "gauntlets"
+        ],
+        "usable_magic_types": [
+          "black_magic",
+          "white_magic"
+        ],
+        "verified": true,
+        "note": "Game8 Japan's post-release class page explicitly lists usable skills separately from certification skills; the current English class reference agrees."
       },
       "class_growth_rate_modifiers_percent": {
         "hp": 5,
@@ -1023,7 +1050,17 @@
         "luck": 0,
         "charm": 0
       },
-      "base_stat_modifiers": null,
+      "base_stat_modifiers": {
+        "hp": 0,
+        "strength": 0,
+        "magic": 1,
+        "speed": 0,
+        "dexterity": 0,
+        "defense": 0,
+        "resistance": 1,
+        "luck": 0,
+        "charm": 0
+      },
       "active_class_abilities": [],
       "mastery": {
         "ability_name": "Magic Basics",
@@ -1054,7 +1091,9 @@
       "known_character_restrictions": null,
       "source_urls": [
         "https://lum.gg/fire-emblem-fortunes-weave/classes",
-        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/",
+        "https://game8.jp/fe-banshisenko/816666",
+        "https://fortunesweave.co.uk/classes/diviner"
       ]
     },
     {
@@ -1073,10 +1112,13 @@
         "spears"
       ],
       "weapon_access": {
-        "usable_weapon_types": null,
-        "usable_magic_types": null,
-        "verified": false,
-        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+        "usable_weapon_types": [
+          "swords",
+          "spears"
+        ],
+        "usable_magic_types": [],
+        "verified": true,
+        "note": "Game8 Japan's post-release class page explicitly lists usable skills separately from certification skills; the current English class reference agrees."
       },
       "class_growth_rate_modifiers_percent": {
         "hp": 10,
@@ -1089,7 +1131,17 @@
         "luck": 5,
         "charm": 5
       },
-      "base_stat_modifiers": null,
+      "base_stat_modifiers": {
+        "hp": 1,
+        "strength": 0,
+        "magic": 0,
+        "speed": 2,
+        "dexterity": 0,
+        "defense": 0,
+        "resistance": -1,
+        "luck": 0,
+        "charm": 0
+      },
       "active_class_abilities": [
         {
           "name": "Combat Arts +1",
@@ -1127,7 +1179,9 @@
       "known_character_restrictions": null,
       "source_urls": [
         "https://lum.gg/fire-emblem-fortunes-weave/classes",
-        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/",
+        "https://game8.jp/fe-banshisenko/816665",
+        "https://fortunesweave.co.uk/classes/myrmidon"
       ]
     },
     {
@@ -1146,10 +1200,14 @@
         "gauntlets"
       ],
       "weapon_access": {
-        "usable_weapon_types": null,
-        "usable_magic_types": null,
-        "verified": false,
-        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+        "usable_weapon_types": [
+          "swords",
+          "axes",
+          "gauntlets"
+        ],
+        "usable_magic_types": [],
+        "verified": true,
+        "note": "Game8 Japan's post-release class page explicitly lists usable skills separately from certification skills; the current English class reference agrees."
       },
       "class_growth_rate_modifiers_percent": {
         "hp": 15,
@@ -1162,7 +1220,17 @@
         "luck": 0,
         "charm": 5
       },
-      "base_stat_modifiers": null,
+      "base_stat_modifiers": {
+        "hp": 3,
+        "strength": 2,
+        "magic": 0,
+        "speed": 0,
+        "dexterity": 0,
+        "defense": 1,
+        "resistance": -1,
+        "luck": 0,
+        "charm": 0
+      },
       "active_class_abilities": [
         {
           "name": "Combat Arts +1",
@@ -1204,7 +1272,9 @@
       "known_character_restrictions": null,
       "source_urls": [
         "https://lum.gg/fire-emblem-fortunes-weave/classes",
-        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/",
+        "https://game8.jp/fe-banshisenko/816664",
+        "https://fortunesweave.co.uk/classes/brigand"
       ]
     },
     {
@@ -1221,10 +1291,12 @@
       },
       "skills_listed_without_exp_bonus": [],
       "weapon_access": {
-        "usable_weapon_types": null,
-        "usable_magic_types": null,
-        "verified": false,
-        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+        "usable_weapon_types": [
+          "gauntlets"
+        ],
+        "usable_magic_types": [],
+        "verified": true,
+        "note": "Game8 Japan's post-release class page explicitly lists usable skills separately from certification skills; the current English class reference agrees."
       },
       "class_growth_rate_modifiers_percent": {
         "hp": 15,
@@ -1237,7 +1309,17 @@
         "luck": 0,
         "charm": 5
       },
-      "base_stat_modifiers": null,
+      "base_stat_modifiers": {
+        "hp": 2,
+        "strength": 1,
+        "magic": 0,
+        "speed": 1,
+        "dexterity": 0,
+        "defense": 2,
+        "resistance": -1,
+        "luck": 0,
+        "charm": 0
+      },
       "active_class_abilities": [
         {
           "name": "Combat Arts +1",
@@ -1275,7 +1357,9 @@
       "known_character_restrictions": null,
       "source_urls": [
         "https://lum.gg/fire-emblem-fortunes-weave/classes",
-        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/",
+        "https://game8.jp/fe-banshisenko/816663",
+        "https://fortunesweave.co.uk/classes/pugilist"
       ]
     },
     {
@@ -1292,10 +1376,12 @@
       },
       "skills_listed_without_exp_bonus": [],
       "weapon_access": {
-        "usable_weapon_types": null,
-        "usable_magic_types": null,
-        "verified": false,
-        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+        "usable_weapon_types": [
+          "bows"
+        ],
+        "usable_magic_types": [],
+        "verified": true,
+        "note": "Game8 Japan's post-release class page explicitly lists usable skills separately from certification skills; the current English class reference agrees."
       },
       "class_growth_rate_modifiers_percent": {
         "hp": 10,
@@ -1308,7 +1394,17 @@
         "luck": 5,
         "charm": 5
       },
-      "base_stat_modifiers": null,
+      "base_stat_modifiers": {
+        "hp": 0,
+        "strength": 0,
+        "magic": 0,
+        "speed": 2,
+        "dexterity": 2,
+        "defense": 1,
+        "resistance": 0,
+        "luck": 0,
+        "charm": 0
+      },
       "active_class_abilities": [
         {
           "name": "Combat Arts +1",
@@ -1346,7 +1442,9 @@
       "known_character_restrictions": null,
       "source_urls": [
         "https://lum.gg/fire-emblem-fortunes-weave/classes",
-        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/",
+        "https://game8.jp/fe-banshisenko/816662",
+        "https://fortunesweave.co.uk/classes/archer"
       ]
     },
     {
@@ -1364,10 +1462,13 @@
       },
       "skills_listed_without_exp_bonus": [],
       "weapon_access": {
-        "usable_weapon_types": null,
-        "usable_magic_types": null,
-        "verified": false,
-        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+        "usable_weapon_types": [
+          "swords",
+          "bows"
+        ],
+        "usable_magic_types": [],
+        "verified": true,
+        "note": "Game8 Japan's post-release class page explicitly lists usable skills separately from certification skills; the current English class reference agrees."
       },
       "class_growth_rate_modifiers_percent": {
         "hp": 10,
@@ -1380,7 +1481,17 @@
         "luck": 5,
         "charm": 0
       },
-      "base_stat_modifiers": null,
+      "base_stat_modifiers": {
+        "hp": 0,
+        "strength": 0,
+        "magic": 0,
+        "speed": 3,
+        "dexterity": 1,
+        "defense": 0,
+        "resistance": 1,
+        "luck": 1,
+        "charm": -1
+      },
       "active_class_abilities": [
         {
           "name": "Combat Arts +1",
@@ -1427,7 +1538,9 @@
       "known_character_restrictions": null,
       "source_urls": [
         "https://lum.gg/fire-emblem-fortunes-weave/classes",
-        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/",
+        "https://game8.jp/fe-banshisenko/816661",
+        "https://fortunesweave.co.uk/classes/rogue"
       ]
     },
     {
@@ -1449,10 +1562,14 @@
         "infantry"
       ],
       "weapon_access": {
-        "usable_weapon_types": null,
-        "usable_magic_types": null,
-        "verified": false,
-        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+        "usable_weapon_types": [
+          "swords",
+          "spears",
+          "axes"
+        ],
+        "usable_magic_types": [],
+        "verified": true,
+        "note": "Game8 Japan's post-release class page explicitly lists usable skills separately from certification skills; the current English class reference agrees."
       },
       "class_growth_rate_modifiers_percent": {
         "hp": 10,
@@ -1465,7 +1582,17 @@
         "luck": 0,
         "charm": 5
       },
-      "base_stat_modifiers": null,
+      "base_stat_modifiers": {
+        "hp": 2,
+        "strength": 1,
+        "magic": 0,
+        "speed": -2,
+        "dexterity": 0,
+        "defense": 4,
+        "resistance": 0,
+        "luck": 0,
+        "charm": 0
+      },
       "active_class_abilities": [
         {
           "name": "Combat Arts +1",
@@ -1511,7 +1638,9 @@
       "known_character_restrictions": null,
       "source_urls": [
         "https://lum.gg/fire-emblem-fortunes-weave/classes",
-        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/",
+        "https://game8.jp/fe-banshisenko/816660",
+        "https://fortunesweave.co.uk/classes/armored-knight"
       ]
     },
     {
@@ -1531,10 +1660,14 @@
         "axes"
       ],
       "weapon_access": {
-        "usable_weapon_types": null,
-        "usable_magic_types": null,
-        "verified": false,
-        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+        "usable_weapon_types": [
+          "swords",
+          "spears",
+          "axes"
+        ],
+        "usable_magic_types": [],
+        "verified": true,
+        "note": "Game8 Japan's post-release class page explicitly lists usable skills separately from certification skills; the current English class reference agrees."
       },
       "class_growth_rate_modifiers_percent": {
         "hp": 10,
@@ -1547,7 +1680,17 @@
         "luck": 5,
         "charm": 10
       },
-      "base_stat_modifiers": null,
+      "base_stat_modifiers": {
+        "hp": 1,
+        "strength": 1,
+        "magic": 0,
+        "speed": 1,
+        "dexterity": 0,
+        "defense": 2,
+        "resistance": 0,
+        "luck": 0,
+        "charm": 1
+      },
       "active_class_abilities": [
         {
           "name": "Mount/Dismount",
@@ -1588,7 +1731,9 @@
       "known_character_restrictions": null,
       "source_urls": [
         "https://lum.gg/fire-emblem-fortunes-weave/classes",
-        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/",
+        "https://game8.jp/fe-banshisenko/816659",
+        "https://fortunesweave.co.uk/classes/light-cavalry"
       ]
     },
     {
@@ -1605,10 +1750,12 @@
       },
       "skills_listed_without_exp_bonus": [],
       "weapon_access": {
-        "usable_weapon_types": null,
-        "usable_magic_types": null,
-        "verified": false,
-        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+        "usable_weapon_types": [
+          "bows"
+        ],
+        "usable_magic_types": [],
+        "verified": true,
+        "note": "Game8 Japan's post-release class page explicitly lists usable skills separately from certification skills; the current English class reference agrees."
       },
       "class_growth_rate_modifiers_percent": {
         "hp": 10,
@@ -1621,7 +1768,17 @@
         "luck": 5,
         "charm": 10
       },
-      "base_stat_modifiers": null,
+      "base_stat_modifiers": {
+        "hp": 3,
+        "strength": 1,
+        "magic": 0,
+        "speed": -2,
+        "dexterity": 3,
+        "defense": 3,
+        "resistance": 0,
+        "luck": 0,
+        "charm": 1
+      },
       "active_class_abilities": [
         {
           "name": "Chariot Armor",
@@ -1668,7 +1825,9 @@
       "known_character_restrictions": null,
       "source_urls": [
         "https://lum.gg/fire-emblem-fortunes-weave/classes",
-        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/",
+        "https://game8.jp/fe-banshisenko/816658",
+        "https://fortunesweave.co.uk/classes/charioteer"
       ]
     },
     {
@@ -1689,10 +1848,14 @@
         "swords"
       ],
       "weapon_access": {
-        "usable_weapon_types": null,
-        "usable_magic_types": null,
-        "verified": false,
-        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+        "usable_weapon_types": [
+          "swords",
+          "spears",
+          "axes"
+        ],
+        "usable_magic_types": [],
+        "verified": true,
+        "note": "Game8 Japan's post-release class page explicitly lists usable skills separately from certification skills; the current English class reference agrees."
       },
       "class_growth_rate_modifiers_percent": {
         "hp": 10,
@@ -1705,7 +1868,17 @@
         "luck": 5,
         "charm": 5
       },
-      "base_stat_modifiers": null,
+      "base_stat_modifiers": {
+        "hp": 1,
+        "strength": 0,
+        "magic": 0,
+        "speed": 2,
+        "dexterity": 0,
+        "defense": 2,
+        "resistance": 0,
+        "luck": 0,
+        "charm": 0
+      },
       "active_class_abilities": [
         {
           "name": "Mount/Dismount",
@@ -1746,7 +1919,9 @@
       "known_character_restrictions": null,
       "source_urls": [
         "https://lum.gg/fire-emblem-fortunes-weave/classes",
-        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/",
+        "https://game8.jp/fe-banshisenko/816657",
+        "https://fortunesweave.co.uk/classes/armored-ornius-rider"
       ]
     },
     {
@@ -1764,10 +1939,13 @@
       },
       "skills_listed_without_exp_bonus": [],
       "weapon_access": {
-        "usable_weapon_types": null,
-        "usable_magic_types": null,
-        "verified": false,
-        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+        "usable_weapon_types": [
+          "swords",
+          "spears"
+        ],
+        "usable_magic_types": [],
+        "verified": true,
+        "note": "Game8 Japan's post-release class page explicitly lists usable skills separately from certification skills; the current English class reference agrees."
       },
       "class_growth_rate_modifiers_percent": {
         "hp": 10,
@@ -1780,7 +1958,17 @@
         "luck": 5,
         "charm": 10
       },
-      "base_stat_modifiers": null,
+      "base_stat_modifiers": {
+        "hp": 0,
+        "strength": 0,
+        "magic": 0,
+        "speed": 4,
+        "dexterity": 1,
+        "defense": 1,
+        "resistance": 2,
+        "luck": 0,
+        "charm": 1
+      },
       "active_class_abilities": [
         {
           "name": "Mount/Dismount",
@@ -1818,10 +2006,24 @@
         "character_exceptions": null
       },
       "unlock_ids": [],
-      "known_character_restrictions": null,
+      "known_character_restrictions": [
+        {
+          "type": "gender",
+          "allowed_values": [
+            "female"
+          ],
+          "note": "Game8 Japan and the current English class reference both identify Wing Soldier as female-only.",
+          "source_urls": [
+            "https://game8.jp/fe-banshisenko/816656",
+            "https://fortunesweave.co.uk/classes/wing-soldier"
+          ]
+        }
+      ],
       "source_urls": [
         "https://lum.gg/fire-emblem-fortunes-weave/classes",
-        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/",
+        "https://game8.jp/fe-banshisenko/816656",
+        "https://fortunesweave.co.uk/classes/wing-soldier"
       ]
     },
     {
@@ -1842,10 +2044,16 @@
         "infantry"
       ],
       "weapon_access": {
-        "usable_weapon_types": null,
-        "usable_magic_types": null,
-        "verified": false,
-        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+        "usable_weapon_types": [
+          "swords",
+          "gauntlets"
+        ],
+        "usable_magic_types": [
+          "black_magic",
+          "white_magic"
+        ],
+        "verified": true,
+        "note": "Game8 Japan's post-release class page explicitly lists usable skills separately from certification skills; the current English class reference agrees."
       },
       "class_growth_rate_modifiers_percent": {
         "hp": 5,
@@ -1858,7 +2066,17 @@
         "luck": 10,
         "charm": 0
       },
-      "base_stat_modifiers": null,
+      "base_stat_modifiers": {
+        "hp": 0,
+        "strength": 0,
+        "magic": 2,
+        "speed": 1,
+        "dexterity": 1,
+        "defense": 0,
+        "resistance": 2,
+        "luck": 0,
+        "charm": -1
+      },
       "active_class_abilities": [
         {
           "name": "Black-Magic Seeker",
@@ -1896,7 +2114,9 @@
       "known_character_restrictions": null,
       "source_urls": [
         "https://lum.gg/fire-emblem-fortunes-weave/classes",
-        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/",
+        "https://game8.jp/fe-banshisenko/816655",
+        "https://fortunesweave.co.uk/classes/shaman"
       ],
       "data_conflicts": [
         {
@@ -1925,10 +2145,16 @@
         "infantry"
       ],
       "weapon_access": {
-        "usable_weapon_types": null,
-        "usable_magic_types": null,
-        "verified": false,
-        "note": "The source training list is NOT a complete weapon/magic access list. Explicit no-bonus skills do not establish all other weapon permissions."
+        "usable_weapon_types": [
+          "axes",
+          "gauntlets"
+        ],
+        "usable_magic_types": [
+          "black_magic",
+          "white_magic"
+        ],
+        "verified": true,
+        "note": "Game8 Japan's post-release class page explicitly lists usable skills separately from certification skills; the current English class reference agrees."
       },
       "class_growth_rate_modifiers_percent": {
         "hp": 5,
@@ -1941,7 +2167,17 @@
         "luck": 15,
         "charm": 10
       },
-      "base_stat_modifiers": null,
+      "base_stat_modifiers": {
+        "hp": 0,
+        "strength": 0,
+        "magic": 1,
+        "speed": 0,
+        "dexterity": 0,
+        "defense": 0,
+        "resistance": 3,
+        "luck": 2,
+        "charm": 1
+      },
       "active_class_abilities": [
         {
           "name": "White-Magic Seeker",
@@ -1979,7 +2215,9 @@
       "known_character_restrictions": null,
       "source_urls": [
         "https://lum.gg/fire-emblem-fortunes-weave/classes",
-        "https://serenesforest.net/fortunes-weave/classes/growth-rates/"
+        "https://serenesforest.net/fortunes-weave/classes/growth-rates/",
+        "https://game8.jp/fe-banshisenko/816654",
+        "https://fortunesweave.co.uk/classes/priest"
       ]
     },
     {

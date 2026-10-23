@@ -74,6 +74,44 @@ test('personal adjustments, class growth, training, weapon access and mastery st
   assert.equal(getClass(database, 'gladiator')!.certification.exact_minimum_level, null);
 });
 
+test('reviewed post-release class facts stay attached to their stable class IDs', () => {
+  const orniusRider = getClass(database, 'ornius-rider')!;
+  assert.equal(orniusRider.weapon_access.verified, true);
+  assert.deepEqual(orniusRider.weapon_access.usable_weapon_types, ['swords', 'spears', 'axes']);
+  assert.deepEqual(orniusRider.weapon_access.usable_magic_types, []);
+  assert.equal(orniusRider.base_stat_modifiers?.speed, 3);
+
+  const diviner = getClass(database, 'diviner')!;
+  assert.equal(diviner.weapon_access.verified, true);
+  assert.deepEqual(diviner.weapon_access.usable_weapon_types, ['swords', 'axes', 'gauntlets']);
+  assert.deepEqual(diviner.weapon_access.usable_magic_types, ['black_magic', 'white_magic']);
+  assert.equal(diviner.base_stat_modifiers?.magic, 1);
+  const specialtyAccess = new Map([
+    ['myrmidon', [['swords', 'spears'], []]],
+    ['brigand', [['swords', 'axes', 'gauntlets'], []]],
+    ['pugilist', [['gauntlets'], []]],
+    ['archer', [['bows'], []]],
+    ['rogue', [['swords', 'bows'], []]],
+    ['armored-knight', [['swords', 'spears', 'axes'], []]],
+    ['light-cavalry', [['swords', 'spears', 'axes'], []]],
+    ['charioteer', [['bows'], []]],
+    ['armored-ornius-rider', [['swords', 'spears', 'axes'], []]],
+    ['wing-soldier', [['swords', 'spears'], []]],
+    ['shaman', [['swords', 'gauntlets'], ['black_magic', 'white_magic']]],
+    ['priest', [['axes', 'gauntlets'], ['black_magic', 'white_magic']]],
+  ]);
+  for (const [classId, [weapons, magic]] of specialtyAccess) {
+    const specialtyClass = getClass(database, classId)!;
+    assert.equal(specialtyClass.weapon_access.verified, true, classId);
+    assert.deepEqual(specialtyClass.weapon_access.usable_weapon_types, weapons, classId);
+    assert.deepEqual(specialtyClass.weapon_access.usable_magic_types, magic, classId);
+    assert.notEqual(specialtyClass.base_stat_modifiers, null, classId);
+  }
+  assert.deepEqual(getClass(database, 'wing-soldier')!.known_character_restrictions?.[0]?.allowed_values, ['female']);
+  assert.equal(getClass(database, 'commoner')!.weapon_access.verified, false);
+  assert.equal(getClass(database, 'noble')!.base_stat_modifiers, null);
+});
+
 test('conflicts, ranked abilities, requirements and conventional stat order are preserved', () => {
   const conflict = database.prepare("SELECT raw_json FROM data_conflicts WHERE character_id = 'nezha'").get() as { raw_json: string };
   assert.deepEqual(JSON.parse(conflict.raw_json), characters.data_conflicts.find((c: { character_id: string }) => c.character_id === 'nezha'));

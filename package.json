@@ -11,6 +11,7 @@
     "package": "npm run check && npm run data:build && electron-forge package",
     "make": "npm run check && npm run data:build && electron-forge make",
     "data:build": "node --import tsx scripts/build_database.ts",
+    "data:audit": "node --import tsx scripts/audit_source_coverage.ts",
     "data:validate": "node --import tsx scripts/validate_database.ts",
     "typecheck": "tsc --noEmit",
     "test": "node --import tsx --test --test-isolation=none tests/*.test.ts",

@@ -50,7 +50,7 @@ test('training, certification, mastery and unlock filters use only documented ev
 test('data-state filters expose uncertainty without inferring eligibility or availability', () => {
   assert.deepEqual(ids(withFilter({ kind: 'data_state', state: 'unknown_growths' })).sort(), ['cataphract', 'dancer']);
   assert.equal(withFilter({ kind: 'data_state', state: 'incomplete_certification' }).length, 60);
-  assert.equal(withFilter({ kind: 'data_state', state: 'unverified_weapon_access' }).length, 57);
+  assert.equal(withFilter({ kind: 'data_state', state: 'unverified_weapon_access' }).length, 43);
   assert.equal(withFilter({ kind: 'unlock', match: 'none' }).length, 37);
 });
 

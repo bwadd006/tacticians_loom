@@ -1,6 +1,6 @@
 {
-  "dataset_version": "2026.10.18.1",
-  "change_summary": "Initial import of the supplied character and class datasets. Source claims remain provisional; unknown values and conflicts are preserved.",
+  "dataset_version": "2026.10.23.2",
+  "change_summary": "Expand the post-release source review to all twelve Specialty classes: verify weapon and magic access plus base-stat modifiers against current class references, and record the independently corroborated Wing Soldier gender restriction. Existing unknowns and conflicts remain preserved.",
   "source_files": {
     "characters": "fire_emblem_fortunes_weave_characters.json",
     "classes": "fire_emblem_fortunes_weave_classes.json"
