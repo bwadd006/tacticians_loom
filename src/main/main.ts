@@ -20,7 +20,7 @@ app.setName("Tactician's Loom");
 function createWindow() {
   const window = new BrowserWindow({
     title: "Tactician's Loom", width: 1440, height: 900, minWidth: 800, minHeight: 600,
-    backgroundColor: '#232620', show: false,
+    backgroundColor: '#080a0d', show: false,
     webPreferences: { preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY, contextIsolation: true, nodeIntegration: false, sandbox: true },
   });
   window.removeMenu();
@@ -82,7 +82,15 @@ app.whenReady().then(async () => {
           for (let attempt = 0; attempt < 40 && !document.querySelector('#result_count strong'); attempt++) await new Promise(resolve => setTimeout(resolve, 50));
           if (document.querySelector('#result_count strong')?.textContent !== String(overview.actOneCount)) throw new Error('Character Library did not render the Act 1 roster');
           const headers = [...document.querySelectorAll('.character_table thead button')].map(b => b.textContent ?? '');
-          for (const route of ['Cai', 'Theodora', 'Dietrich', 'Leda']) if (!headers.some(h => h.includes(route))) throw new Error('Missing availability column: ' + route);
+          const routeHeaders = headers.slice(-4).map(header => header.trim());
+          if (routeHeaders.join('|') !== ['Cai', 'Dietrich', 'Theodora', 'Leda'].join('|')) throw new Error('Recruitment columns are missing or out of order: ' + routeHeaders.join(', '));
+          const alexandraRoutes = [...document.querySelectorAll('[data-character-id="alexandra"] .route_summary_cell')];
+          const alexandraCai = alexandraRoutes[0]?.textContent ?? '';
+          if (alexandraRoutes.length !== 4 || !alexandraCai.includes('Renown: 7') || !alexandraCai.includes('Chapter: 7') || !alexandraCai.includes('Support: 2') || !(alexandraCai.indexOf('Chapter:') < alexandraCai.indexOf('Renown:') && alexandraCai.indexOf('Renown:') < alexandraCai.indexOf('Support:'))) throw new Error('Recruitable route summary is incomplete or out of order');
+          const dadaoRoutes = [...document.querySelectorAll('[data-character-id="dadao"] .route_summary_cell')];
+          if (!dadaoRoutes[0]?.textContent?.includes('2 × Kothar Gar')) throw new Error('Additional recruitment requirements are missing from the route column');
+          const caiAutomatic = document.querySelector('[data-character-id="cai"] .route_summary_cell')?.textContent ?? '';
+          if (!caiAutomatic.includes('Automatic join') || !caiAutomatic.includes('Chapter: 1') || caiAutomatic.includes('Renown:') || caiAutomatic.includes('Support:')) throw new Error('Automatic join route summary is not limited to its chapter');
           const portraits = [...document.querySelectorAll('.character_table img.portrait_table')];
           for (let attempt = 0; attempt < 40 && !portraits.some(i => i.complete && i.naturalWidth > 0); attempt++) await new Promise(resolve => setTimeout(resolve, 50));
           if (!portraits.length || !portraits.some(i => i.complete && i.naturalWidth > 0)) throw new Error('Bundled portrait images did not load');
@@ -93,6 +101,39 @@ app.whenReady().then(async () => {
           firstCharacter.click();
           for (let attempt = 0; attempt < 40 && !document.querySelector('#character_details'); attempt++) await new Promise(resolve => setTimeout(resolve, 50));
           if (!document.querySelector('#character_details') || document.activeElement?.id !== 'detail_name') throw new Error('Character details did not open with heading focus');
+          const detailHeadings = [...document.querySelectorAll('#character_details section > h3')].map(heading => heading.textContent ?? '');
+          if (detailHeadings.indexOf('Recruitment by route') < 0 || detailHeadings.indexOf('Recruitment by route') > detailHeadings.indexOf('Personal abilities')) throw new Error('Recruitment details are not presented before personal abilities');
+          if (detailHeadings.includes('Starting information') || detailHeadings.includes('Source conflicts & notes')) throw new Error('Removed dossier sections are still displayed');
+          const visibleText = document.body.innerText;
+          if (visibleText.includes('Copy source URL') || visibleText.includes('No additional conditions listed; this does not establish unrestricted recruitment.') || visibleText.includes('source conflict')) throw new Error('Source or removed recruitment copy remains visible');
+          const firstRecruitmentFacts = document.querySelector('.recruitment_facts');
+          const factText = firstRecruitmentFacts?.textContent ?? '';
+          const factLabels = ['Chapter:', 'Renown:', 'Support:', 'Missable:'];
+          if (!firstRecruitmentFacts || firstRecruitmentFacts.querySelectorAll('strong').length !== 4 || factLabels.some((label, index) => factText.indexOf(label) < 0 || (index > 0 && factText.indexOf(label) < factText.indexOf(factLabels[index - 1])))) throw new Error('Compact recruitment facts are missing or out of order');
+          const resetButtons = [...document.querySelectorAll('.result_bar button')].filter(button => button.textContent?.trim() === 'Reset Sorting');
+          if (resetButtons.length !== 1 || [...document.querySelectorAll('.customize button')].some(button => button.textContent?.trim() === 'Reset Sorting')) throw new Error('Reset Sorting is not uniquely exposed beside Reset Filters');
+          const strengthSort = document.querySelector('[aria-label="Sort by Strength"]');
+          if (!(strengthSort instanceof HTMLButtonElement)) throw new Error('Strength sort control missing');
+          strengthSort.click();
+          for (let attempt = 0; attempt < 40 && !document.querySelector('.sort_summary')?.textContent?.includes('Strength'); attempt++) await new Promise(resolve => setTimeout(resolve, 50));
+          if (!document.querySelector('.sort_summary')?.textContent?.includes('Strength')) throw new Error('Column sorting did not update');
+          if (!(resetButtons[0] instanceof HTMLButtonElement)) throw new Error('Reset Sorting control missing');
+          resetButtons[0].click();
+          for (let attempt = 0; attempt < 40 && !document.querySelector('.sort_summary')?.textContent?.includes('Name ↑'); attempt++) await new Promise(resolve => setTimeout(resolve, 50));
+          if (!document.querySelector('.sort_summary')?.textContent?.includes('Name ↑')) throw new Error('Reset Sorting did not restore name order');
+          const fabio = document.querySelector('[data-character-id="fabio"] .character_name');
+          if (!(fabio instanceof HTMLButtonElement)) throw new Error('Fabio row control missing');
+          fabio.click();
+          for (let attempt = 0; attempt < 40 && document.querySelector('#detail_name')?.textContent !== 'Fabio'; attempt++) await new Promise(resolve => setTimeout(resolve, 50));
+          const fabioRoutes = [...document.querySelectorAll('#character_details .route_heading h4')].map(heading => heading.textContent?.trim());
+          if (fabioRoutes.join('|') !== 'Dietrich|Leda') throw new Error('Dossier includes routes where Fabio is not available: ' + fabioRoutes.join(', '));
+          const rootStyle = getComputedStyle(document.documentElement);
+          if (rootStyle.getPropertyValue('--details-panel-width').trim() !== '400px') throw new Error('Compact density did not activate at the default window size');
+          const affinityCell = document.querySelector('.affinities');
+          if (!(affinityCell instanceof HTMLTableCellElement) || parseFloat(getComputedStyle(affinityCell).maxWidth) > 180) throw new Error('Affinity column remained too wide in compact density');
+          const tablePortrait = document.querySelector('.portrait_table');
+          const skillIcon = document.querySelector('.skill_icon');
+          if (rootStyle.fontSize !== '16px' || !(tablePortrait instanceof HTMLImageElement) || parseFloat(getComputedStyle(tablePortrait).width) < 29 || !(skillIcon instanceof HTMLImageElement) || parseFloat(getComputedStyle(skillIcon).width) < 23) throw new Error('Readable text and artwork sizing did not apply');
           const search = document.querySelector('input[aria-label="Search characters"]');
           if (!(search instanceof HTMLInputElement)) throw new Error('Character search missing');
           const valueSetter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')?.set;

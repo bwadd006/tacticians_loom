@@ -6,6 +6,14 @@ prioritized sorting, details panel and saved per-route setups — are implemente
 Portraits and skill affinity icons are bundled game artwork (see the asset
 manifest for attribution and the few documented gaps and derived recreations).
 
+The current interface uses a responsive deep-dark layout with a 16-pixel text
+baseline and enlarged local artwork. Its table always ends with recruitment for
+Cai, Dietrich, Theodora, and Leda. Recruitable/tutorial entries show Chapter,
+Renown, Support, and additional requirements; automatic joins show only their
+join chapter. The dossier includes recruitment only on documented available
+routes. Provenance, conflict records, notes, and starting information remain in
+the maintained data for updates but are intentionally absent from the app UI.
+
 ## Develop
 
 Use Node.js 24 or newer and npm. From this directory:
@@ -66,3 +74,17 @@ environment may supply a virtual display.
   directory.
 
 Design documents and agent instructions live outside this application directory.
+
+## Roadmap
+
+The recommended next feature is the Class Library. Later phases are:
+
+1. Shared shortlist and side-by-side character comparison.
+2. Cross-route recruitment planning.
+3. Saved route team building with optional roles, classes, and notes.
+4. Coverage, overlap, and player-directed swap comparison.
+5. Windows validation, migrations, export/import, and release hardening.
+
+These are planned phases, not implemented features. Act 2 mechanics, repeated
+route history, automatic team optimization, combat simulation, cloud sync, and
+automatic data updates remain separate deferred work.

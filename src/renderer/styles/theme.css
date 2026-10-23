@@ -1,33 +1,102 @@
-:root { color-scheme: dark; --background: #20231f; --surface: #2b3028; --raised: #343a30; --text: #eeede4; --muted: #b6bdad; --accent: #d4be86; --border: #505948; --positive: #b6d29e; --negative: #e4b0a0; font-family: system-ui, sans-serif; font-size: 14px; color: var(--text); background: var(--background); }
+:root {
+  color-scheme: dark;
+  --background: #080a0d;
+  --surface: #11151a;
+  --surface-alt: #151a20;
+  --raised: #1a2027;
+  --raised-hover: #252d32;
+  --table-header: #1b211f;
+  --table-row: #0f1417;
+  --table-row-alt: #13191c;
+  --table-row-active: #202a27;
+  --text: #eeeae1;
+  --muted: #a9aea9;
+  --accent: #d6ba74;
+  --accent-soft: #8d7a4e;
+  --border: #30393a;
+  --table-divider: #283133;
+  --positive: #acd08e;
+  --negative: #e3a091;
+  --warning: #efc77e;
+  --scroll-thumb: #59645c;
+  --page-padding-x: 28px;
+  --page-padding-y: 22px;
+  --workspace-offset: 365px;
+  --workspace-min-height: 310px;
+  --details-panel-width: 440px;
+  --table-font-size: 14px;
+  --table-portrait-width: 31px;
+  --table-portrait-height: 39px;
+  --detail-portrait-width: 60px;
+  --detail-portrait-height: 75px;
+  --skill-icon-size: 25px;
+  font-family: system-ui, sans-serif;
+  font-size: 16px;
+  color: var(--text);
+  background: var(--background);
+}
+
 * { box-sizing: border-box; }
-body { margin: 0; }
-main { padding: 22px 28px; max-width: 2000px; margin: auto; }
-h1 { font-family: Georgia, serif; font-size: 29px; font-weight: 500; margin: 3px 0; }
-h2 { font-size: 23px; font-weight: 500; margin: 0; }
-h3 { font-size: 16px; margin: 0 0 12px; }
-h4 { font-size: 14px; margin: 0 0 8px; } h5 { margin: 10px 0; }
+html { min-height: 100%; background: var(--background); }
+body {
+  min-height: 100vh;
+  margin: 0;
+  overflow-x: clip;
+  background:
+    radial-gradient(circle at 50% -180px, rgb(214 186 116 / 8%), transparent 520px),
+    var(--background);
+}
+main { padding: var(--page-padding-y) var(--page-padding-x); max-width: 2000px; margin: auto; }
+h1 { font-family: Georgia, serif; font-size: 32px; font-weight: 500; margin: 3px 0; }
+h2 { font-size: 26px; font-weight: 500; margin: 0; }
+h3 { font-size: 18px; margin: 0 0 12px; }
+h4 { font-size: 16px; margin: 0 0 8px; }
+h5 { margin: 10px 0; }
 p { line-height: 1.5; color: var(--muted); margin: 8px 0; }
 button, input, select { font: inherit; color: var(--text); }
 button { cursor: pointer; border: 1px solid var(--border); background: var(--raised); border-radius: 4px; padding: 8px 11px; }
-button:hover:not(:disabled) { border-color: var(--accent); background: #414936; }
+button:hover:not(:disabled) { border-color: var(--accent); background: var(--raised-hover); }
 button:disabled { opacity: .5; cursor: default; }
-button.primary { color: #20231f; background: var(--accent); border-color: var(--accent); font-weight: 650; }
+button.primary { color: var(--background); background: var(--accent); border-color: var(--accent); font-weight: 650; }
 button.primary:hover:not(:disabled) { color: var(--text); }
 button.quiet { background: transparent; }
-input, select { border: 1px solid var(--border); background: var(--background); border-radius: 4px; padding: 8px; min-height: 35px; }
-label { display: flex; flex-direction: column; gap: 5px; color: var(--muted); font-size: 12px; }
-label input, label select { font-size: 14px; }
+input, select { border: 1px solid var(--border); background: var(--background); border-radius: 4px; padding: 8px; min-height: 38px; }
+label { display: flex; flex-direction: column; gap: 5px; color: var(--muted); font-size: 14px; }
+label input, label select { font-size: 16px; }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 summary { cursor: pointer; }
-small, .hint { font-size: 12px; color: var(--muted); }
-.muted { color: var(--muted); } .warning { color: #f0cb90; padding: 8px 0; } .feedback { color: var(--positive); }
-.eyebrow { color: var(--accent); font-size: 11px; letter-spacing: .13em; text-transform: uppercase; margin: 0; }
+small, .hint { font-size: 14px; color: var(--muted); }
+.muted { color: var(--muted); }
+.warning { color: var(--warning); padding: 8px 0; }
+.feedback { color: var(--positive); }
+.eyebrow { color: var(--accent); font-size: 12px; letter-spacing: .13em; text-transform: uppercase; margin: 0; }
 .app_header { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
 .chapter_marker { color: var(--accent); border-bottom: 2px solid var(--accent); padding: 12px 0; }
 .button_row { display: flex; flex-wrap: wrap; gap: 8px; }
 .visually_hidden { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
-footer { border-top: 1px solid var(--border); margin-top: 20px; padding-top: 10px; font-size: 12px; color: var(--muted); }
-.artwork_stub { flex: 0 0 auto; width: 48px; height: 60px; border: 1px dashed var(--border); display: inline-flex; align-items: center; justify-content: center; color: var(--muted); border-radius: 4px; }
+footer { border-top: 1px solid var(--border); margin-top: 20px; padding-top: 10px; font-size: 14px; color: var(--muted); }
+.artwork_stub { flex: 0 0 auto; width: var(--detail-portrait-width); height: var(--detail-portrait-height); border: 1px dashed var(--border); display: inline-flex; align-items: center; justify-content: center; color: var(--muted); border-radius: 4px; }
 dialog { background: var(--surface); color: var(--text); border: 1px solid var(--accent); border-radius: 6px; max-width: 460px; padding: 24px; }
-dialog::backdrop { background: #0009; }
+dialog::backdrop { background: #000c; }
 dialog p { margin: 16px 0 22px; }
+
+@media (max-height: 1100px), (max-width: 1600px) {
+  :root {
+    --page-padding-x: 18px;
+    --page-padding-y: 12px;
+    --workspace-offset: 300px;
+    --workspace-min-height: 330px;
+    --details-panel-width: 400px;
+    --table-portrait-width: 29px;
+    --table-portrait-height: 36px;
+    --detail-portrait-width: 56px;
+    --detail-portrait-height: 70px;
+    --skill-icon-size: 23px;
+  }
+
+  h1 { font-size: 28px; }
+  h2 { font-size: 24px; }
+  .app_header { padding-bottom: 10px; }
+  .chapter_marker { padding: 8px 0; }
+  footer { margin-top: 14px; }
+}

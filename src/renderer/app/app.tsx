@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react';
-import type { ReferenceApi, ReferenceConflict, ReferenceOverview } from '../../shared/api';
+import type { ReferenceApi, ReferenceOverview } from '../../shared/api';
 import type { Character } from '../../shared/source_models';
 import { CharacterLibrary } from '../features/character_browser/character_library';
 
 declare global { interface Window { loom: ReferenceApi } }
 export function App() {
-  const [data, setData] = useState<{ characters: Character[]; overview: ReferenceOverview; conflicts: ReferenceConflict[] }>();
+  const [data, setData] = useState<{ characters: Character[]; overview: ReferenceOverview }>();
   const [error, setError] = useState(false);
   const [attempt, setAttempt] = useState(0);
   useEffect(() => {
     let current = true;
     setError(false);
-    Promise.all([window.loom.characters('all'), window.loom.overview(), window.loom.conflicts()])
-      .then(([characters, overview, conflicts]) => { if (current) setData({ characters, overview, conflicts }); })
+    Promise.all([window.loom.characters('all'), window.loom.overview()])
+      .then(([characters, overview]) => { if (current) setData({ characters, overview }); })
       .catch(() => { if (current) setError(true); });
     return () => { current = false; };
   }, [attempt]);
