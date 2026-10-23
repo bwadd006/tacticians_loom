@@ -74,10 +74,11 @@ export const classesDocumentSchema = z.object({
   sources: z.array(source), data_conflicts: z.array(conflict.extend({ class_id: id.nullable() })),
   certification_rules: z.record(z.enum(TIERS), z.object({
     license: z.string().nullable(), ideal_character_level: threshold, minimum_renown_level: threshold, requires_exam: z.boolean().nullable(),
+    additional_unlock_item: z.string().optional(),
   }).passthrough()),
   route_unlocks: z.array(z.object({
     id, route_id: z.enum(ROUTES).nullable(), unlock_class_ids: z.array(id),
-    part: threshold, earliest_chapter: threshold, requirements: object,
+    part: threshold, earliest_chapter: threshold, activity_name: z.string(), requirements: object,
     deadline_in_game: z.string().nullable(), missable: z.boolean().nullable(),
     persists_across_routes: z.boolean().nullable(), status: z.string(), source_url: z.string(),
   }).passthrough()),
@@ -92,3 +93,5 @@ export type Character = z.infer<typeof characterSchema>;
 export type CharacterClass = z.infer<typeof classSchema>;
 export type CharactersDocument = z.infer<typeof charactersDocumentSchema>;
 export type ClassesDocument = z.infer<typeof classesDocumentSchema>;
+export type CertificationRules = ClassesDocument['certification_rules'];
+export type ClassUnlock = ClassesDocument['route_unlocks'][number];

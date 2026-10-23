@@ -8,7 +8,7 @@ import { buildDatabase } from '../scripts/database_builder';
 import { validateDatabase } from '../scripts/database_validation';
 import { ROUTES, STATS } from '../src/shared/catalog';
 import { validateSources } from '../src/shared/validate_sources';
-import { getCharacter, getClass, listCharacters, metadata, openReference } from '../src/main/database/reference_queries';
+import { getCharacter, getClass, getClassLibrary, listCharacters, metadata, openReference } from '../src/main/database/reference_queries';
 
 const appRoot = process.cwd();
 const characters = JSON.parse(fs.readFileSync(path.join(appRoot, 'data/source/fire_emblem_fortunes_weave_characters.json'), 'utf8'));
@@ -27,6 +27,17 @@ test('every entity round-trips, database integrity and source counts match', () 
   assert.equal(validateDatabase(database).validation, 'passed');
   for (const c of characters.characters) assert.deepEqual(getCharacter(database, c.id), c);
   for (const c of classes.classes) assert.deepEqual(getClass(database, c.id), c);
+});
+
+test('Class Library query returns all tier rules, unlock evidence and maintenance uncertainty', () => {
+  const library = getClassLibrary(database);
+  assert.equal(library.classes.length, 60);
+  assert.deepEqual(Object.keys(library.certificationRules).sort(), ['advanced', 'beginner', 'divine', 'master', 'specialty', 'unique']);
+  assert.equal(library.unlocks.length, 19);
+  assert.equal(library.restrictions.verified, false);
+  assert.ok(library.restrictions.note.includes('unverified'));
+  assert.equal(library.conflicts.length, 6);
+  assert.deepEqual(library.classes.slice(0, 2).map(characterClass => characterClass.tier), ['unique', 'unique']);
 });
 
 test('All Routes is the distinct Act 1 union; route queries retain all four availability records', () => {

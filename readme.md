@@ -1,12 +1,16 @@
 # Tactician's Loom
 
 Standalone Electron/React/TypeScript desktop application. The reference-data
-foundation and the Character Library — route selector, growth table, filters,
-prioritized sorting, details panel and saved per-route setups — are implemented.
+foundation, Character Library, and Class Library are implemented. The Character
+Library provides its route selector, growth table, filters, prioritized sorting,
+details panel and saved per-route setups. The Class Library provides one
+all-class table with tier title rows, class dossiers, filters, ordered
+sorting, unlock evidence, and one global saved setup.
 Portraits and skill affinity icons are bundled game artwork (see the asset
 manifest for attribution and the few documented gaps and derived recreations).
 
-The current interface uses a responsive deep-dark layout with a 16-pixel text
+The current interface uses desktop navigation between both libraries and a
+responsive deep-dark layout with a 16-pixel text
 baseline and enlarged local artwork. Its table always ends with recruitment for
 Cai, Dietrich, Theodora, and Leda. Recruitable/tutorial entries show Chapter,
 Renown, Support, and additional requirements; automatic joins show only their
@@ -50,7 +54,8 @@ Run packaging and runtime checks on Windows before distributing a Windows build.
 Installer formats and automatic updates are deferred.
 
 The executable accepts `--smoke-test` to exercise the packaged renderer, preload,
-IPC, reference queries, a saved-setup round trip and bundled-image loading,
+IPC, both libraries' reference queries and saved-setup round trips, bundled-image
+loading,
 print `SMOKE_PASSED` and exit. A graphical desktop is normally required; a CI
 environment may supply a virtual display.
 
@@ -77,13 +82,13 @@ Design documents and agent instructions live outside this application directory.
 
 ## Roadmap
 
-The recommended next feature is the Class Library. Later phases are:
+The recommended next feature is shared shortlisting and side-by-side character
+comparison. Later phases are:
 
-1. Shared shortlist and side-by-side character comparison.
-2. Cross-route recruitment planning.
-3. Saved route team building with optional roles, classes, and notes.
-4. Coverage, overlap, and player-directed swap comparison.
-5. Windows validation, migrations, export/import, and release hardening.
+1. Cross-route recruitment planning.
+2. Saved route team building with optional roles, classes, and notes.
+3. Coverage, overlap, and player-directed swap comparison.
+4. Windows validation, migrations, export/import, and release hardening.
 
 These are planned phases, not implemented features. Act 2 mechanics, repeated
 route history, automatic team optimization, combat simulation, cloud sync, and
