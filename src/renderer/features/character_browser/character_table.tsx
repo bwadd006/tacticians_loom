@@ -2,7 +2,7 @@ import type { RefObject } from 'react';
 import { ROUTES, ROUTE_NAMES, STATS, type Route, type RouteContext } from '../../../shared/catalog';
 import type { Character } from '../../../shared/source_models';
 import type { LibrarySetup } from '../../../shared/library_setup';
-import { fieldLabel, skillLabel, STAT_HEADERS, STAT_LABELS } from '../../../shared/library_setup';
+import { RECRUITMENT_FIELDS, fieldLabel, recruitmentSortField, skillLabel, STAT_HEADERS, STAT_LABELS } from '../../../shared/library_setup';
 import { abilityMatches, isAvailable, statusLabel } from '../../../shared/library_query';
 import { Portrait } from '../../components/portrait';
 import { SkillIcon } from '../../components/skill_icon';
@@ -30,19 +30,43 @@ function requirementLabel(requirement: Requirement): string {
 
 export function CharacterTable({ characters, route, setup, selectedId, onSelect, onSort, scrollRef }: {
   characters: Character[]; route: RouteContext; setup: LibrarySetup; selectedId: string | null;
-  onSelect: (id: string, target: HTMLButtonElement) => void; onSort: (field: string) => void;
+  onSelect: (id: string, target: HTMLButtonElement) => void; onSort: (field: string, append?: boolean) => void;
   scrollRef: RefObject<HTMLDivElement | null>;
 }) {
+  function sortMarker(field: string) {
+    const index = setup.sorts.findIndex(rule => rule.field === field);
+    const sort = setup.sorts[index];
+    return index >= 0 ? <small> {sort.direction === 'asc' ? '↑' : '↓'}{index + 1}</small> : null;
+  }
   function heading(field: string, label: string, className?: string) {
     const index = setup.sorts.findIndex(r => r.field === field);
     const sort = setup.sorts[index];
     return <th key={field} scope="col" className={className} aria-sort={index === 0 ? sort.direction === 'asc' ? 'ascending' : 'descending' : undefined}>
-      <button onClick={() => onSort(field)} title={`Sort by ${fieldLabel(field)}; click again to reverse`} aria-label={`Sort by ${fieldLabel(field)}`}>{label}{index >= 0 && <small> {sort.direction === 'asc' ? '↑' : '↓'}{index + 1}</small>}</button>
+      <button onClick={event => onSort(field, event.shiftKey)} title={`Sort by ${fieldLabel(field)}; Shift-click to add a priority` } aria-label={`Sort by ${fieldLabel(field)}`}>{label}{sortMarker(field)}</button>
+    </th>;
+  }
+  function routeHeading(routeId: Route) {
+    const availabilityField = `availability:${routeId}`;
+    const fields = [availabilityField, ...RECRUITMENT_FIELDS.map(field => recruitmentSortField(routeId, field))];
+    const primary = setup.sorts[0];
+    const primaryApplies = primary && fields.includes(primary.field);
+    const shortcuts = { earliest_chapter: 'Ch', min_renown: 'R', min_support: 'S' } as const;
+    return <th key={routeId} scope="col" className="route_summary_column" aria-sort={primaryApplies ? primary.direction === 'asc' ? 'ascending' : 'descending' : undefined}>
+      <div className="route_column_heading">
+        <button onClick={event => onSort(availabilityField, event.shiftKey)} title={`Sort by ${ROUTE_NAMES[routeId]} availability; Shift-click to add a priority`} aria-label={`Sort by ${ROUTE_NAMES[routeId]} availability`}>{ROUTE_NAMES[routeId]}{sortMarker(availabilityField)}</button>
+        <div className="route_sort_shortcuts" aria-label={`${ROUTE_NAMES[routeId]} recruitment sorts`}>
+          {RECRUITMENT_FIELDS.map(requirement => {
+            const field = recruitmentSortField(routeId, requirement);
+            const active = setup.sorts.some(rule => rule.field === field);
+            return <button key={requirement} className={active ? 'active' : ''} aria-pressed={active} onClick={event => onSort(field, event.shiftKey)} title={`Sort by ${ROUTE_NAMES[routeId]} ${fieldLabel(requirement)}; Shift-click to add a priority`} aria-label={`Sort by ${ROUTE_NAMES[routeId]} ${fieldLabel(requirement)}`}>{shortcuts[requirement]}{sortMarker(field)}</button>;
+          })}
+        </div>
+      </div>
     </th>;
   }
   return <div className="table_scroll" ref={scrollRef} role="region" aria-label="Character results, scroll horizontally for all columns" tabIndex={0}>
     <table className="character_table" aria-label="Act 1 characters">
-      <thead><tr>{heading('name', 'Character', 'name_cell')}{STATS.map(stat => heading(stat, STAT_HEADERS[stat]))}<th scope="col">Skill affinities</th>{ROUTES.map(r => heading(`availability:${r}`, ROUTE_NAMES[r], 'route_summary_column'))}</tr></thead>
+      <thead><tr>{heading('name', 'Character', 'name_cell')}{STATS.map(stat => heading(stat, STAT_HEADERS[stat]))}<th scope="col">Skill affinities</th>{ROUTES.map(routeHeading)}</tr></thead>
       <tbody>{characters.map(c => <tr key={c.id} data-character-id={c.id} className={selectedId === c.id ? 'selected' : ''}>
         <th scope="row" className="name_cell"><button className="character_name" aria-expanded={selectedId === c.id} aria-controls={selectedId === c.id ? 'character_details' : undefined} onClick={e => onSelect(c.id, e.currentTarget)}><Portrait id={c.id} name={c.name} variant="table" /><span>{c.name}</span></button></th>
         {STATS.map(stat => <td key={stat} className="growth" aria-label={`${STAT_LABELS[stat]}: ${c.growth_rates_percent[stat] ?? 'Unknown'}`}>{c.growth_rates_percent[stat] ?? <span title="Unknown">—</span>}</td>)}

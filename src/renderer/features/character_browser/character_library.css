@@ -60,6 +60,11 @@
 .ability_match { color: var(--accent); margin-top: 5px; }
 .available { color: var(--positive); }
 .route_summary_column, .route_summary_cell { min-width: 225px; }
+.route_column_heading { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; }
+.route_sort_shortcuts { display: flex; gap: 4px; }
+.character_table thead .route_sort_shortcuts button { min-width: 31px; padding: 3px 5px; border: 1px solid var(--border); border-radius: 3px; color: var(--muted); font-size: 12px; text-align: center; }
+.character_table thead .route_sort_shortcuts button:hover { border-color: var(--accent-soft); color: var(--text); }
+.character_table thead .route_sort_shortcuts button.active { border-color: var(--accent); color: var(--accent); background: var(--surface-alt); }
 .route_summary_cell { vertical-align: top !important; line-height: 1.35; }
 .route_summary_status { display: block; margin-bottom: 5px; color: inherit; }
 .route_summary_facts { display: flex; flex-wrap: wrap; gap: 3px 12px; color: var(--muted); }

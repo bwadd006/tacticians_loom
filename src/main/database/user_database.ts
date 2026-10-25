@@ -2,7 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import type Database from 'better-sqlite3';
 import { loadSqlite } from './sqlite';
-import { routeContextSchema, setupSchema, type SavedSetup } from '../../shared/library_setup';
+import { normalizeLegacyRecruitmentSorts, routeContextSchema, setupSchema, type SavedSetup } from '../../shared/library_setup';
 import { classSetupSchema, type SavedClassSetup } from '../../shared/class_library_setup';
 
 export function openUserDatabase(filename: string): Database.Database {
@@ -46,7 +46,7 @@ export function loadClassSetup(db: Database.Database): SavedClassSetup | null {
 }
 export function saveSetup(db: Database.Database, context: unknown, input: unknown, datasetVersion: string): SavedSetup {
   const route = routeContextSchema.parse(context);
-  const setup = setupSchema.parse(input);
+  const setup = normalizeLegacyRecruitmentSorts(setupSchema.parse(input), route);
   const savedAt = new Date().toISOString();
   db.transaction(() => {
     db.prepare(`INSERT INTO library_setups VALUES (?, ?, ?, ?) ON CONFLICT(context) DO UPDATE SET
@@ -60,5 +60,5 @@ export function loadSetup(db: Database.Database, context: unknown): SavedSetup |
   if (!row) return null;
   const parsed = setupSchema.safeParse(JSON.parse(row.setup_json));
   if (!parsed.success) throw new Error('This saved setup has an unsupported format. It has been preserved; your current view is unchanged.');
-  return { setup: parsed.data, savedAt: row.saved_at, datasetVersion: row.dataset_version };
+  return { setup: normalizeLegacyRecruitmentSorts(parsed.data, route), savedAt: row.saved_at, datasetVersion: row.dataset_version };
 }

@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { ROUTES, ROUTE_NAMES, type RouteContext } from '../../../shared/catalog';
 import type { Character } from '../../../shared/source_models';
 import type { ReferenceOverview } from '../../../shared/api';
-import { defaultSetup, fieldLabel, initialDrafts, setupIssues, skillLabel, type LibrarySetup } from '../../../shared/library_setup';
+import { applyColumnSort, defaultSetup, fieldLabel, initialDrafts, setupIssues, skillLabel, type LibrarySetup } from '../../../shared/library_setup';
 import { queryLibrary } from '../../../shared/library_query';
 import { ResultControls } from './result_controls';
 import { CharacterTable } from './character_table';
@@ -66,11 +66,7 @@ export function CharacterLibrary({ characters, overview }: { characters: Charact
     } catch { setError('Could not load this setup. Its stored data has been preserved and your draft is unchanged. The save may require another app version.'); }
     finally { setBusy(false); loadButton.current?.focus(); }
   }
-  function sortBy(field: string) {
-    const primary = setup.sorts[0];
-    const direction = primary?.field === field ? primary.direction === 'asc' ? 'desc' : 'asc' : field === 'name' || field.startsWith('availability:') ? 'asc' : 'desc';
-    change({ ...setup, sorts: [{ field, direction }, ...setup.sorts.filter(rule => rule.field !== field)] });
-  }
+  function sortBy(field: string, append = false) { change(applyColumnSort(setup, field, append)); }
   return <div className="library">
     <div className="library_heading"><div><h2>Character Library</h2><p>Explore your Act 1 candidates, one route at a time.</p></div><span className="dataset_badge">Dataset {overview.datasetVersion}</span></div>
     <fieldset disabled={busy} className="library_controls">
@@ -91,7 +87,7 @@ export function CharacterLibrary({ characters, overview }: { characters: Charact
       {setup.filters.map((rule, i) => <span key={i}>{rule.kind === 'number' ? `${fieldLabel(rule.field)} ${rule.unknown === 'only' ? 'unknown only' : `${rule.min === null ? '' : `≥ ${rule.min}`} ${rule.max === null ? '' : `≤ ${rule.max}`} (${rule.unknown} unknowns)`}` : `${skillLabel(rule.skill)}: ${rule.match === 'ability' ? 'related ability (partial coverage)' : rule.match.replace('_', ' ')}`}</span>)}
       <span className="sort_summary">Sort: {setup.sorts.map((r, i) => `${i + 1}. ${fieldLabel(r.field)} ${r.direction === 'asc' ? '↑' : '↓'}`).join(' · ') || 'Name ↑ (tie-breaker)'}</span>
     </div>
-    <div className="result_bar"><p role="status" id="result_count"><strong>{rows.length}</strong> of {scopeCount} candidates · {routeName}</p><div className="result_actions"><button className="quiet" disabled={busy} onClick={resetFilters}>Reset Filters</button><button className="quiet" disabled={busy} onClick={resetSorting}>Reset Sorting</button></div><span className="hint">Personal growths · — unknown</span></div>
+    <div className="result_bar"><p role="status" id="result_count"><strong>{rows.length}</strong> of {scopeCount} candidates · {routeName}</p><div className="result_actions"><button className="quiet" disabled={busy} onClick={resetFilters}>Reset Filters</button><button className="quiet" disabled={busy} onClick={resetSorting}>Reset Sorting</button></div><span className="hint">Personal growths · Shift-click a sort to add a priority · — unknown</span></div>
     <div className={`library_workspace ${selected ? 'with_details' : ''}`}>
       <div className="results">
         <CharacterTable characters={rows} route={route} setup={setup} selectedId={selectedId} onSelect={(id, button) => { lastSelectedButton.current = button; setSelectedId(id); }} onSort={sortBy} scrollRef={tableScroll} />

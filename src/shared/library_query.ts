@@ -1,6 +1,6 @@
 import { AVAILABLE_STATUSES, ROUTES, SKILLS, STATS, type Route, type RouteContext, type Skill, type Stat } from './catalog';
 import type { Character } from './source_models';
-import { type FilterRule, type LibrarySetup, numericFields, sortableFields, unresolvedFilter } from './library_setup';
+import { type FilterRule, type LibrarySetup, numericFields, parseRecruitmentSortField, sortableFields, unresolvedFilter } from './library_setup';
 import associationData from '../../data/ability_associations.json';
 
 export const ASSOCIATION_NOTE = associationData.note;
@@ -42,6 +42,8 @@ function matches(character: Character, rule: FilterRule, route: RouteContext): b
 function sortValue(character: Character, field: string, route: RouteContext): number | string | null {
   if (field === 'name') return character.name;
   if (field === 'status') return route === 'all' ? null : statusLabel(character.recruitment_by_route[route].status);
+  const recruitment = parseRecruitmentSortField(field);
+  if (recruitment) return character.recruitment_by_route[recruitment.route][recruitment.field];
   if (field.startsWith('affinity:')) return ({ boon: 0, neutral: 1, bane: 2, unknown: null })[affinity(character, field.slice(9))];
   if (field.startsWith('availability:')) {
     const status = character.recruitment_by_route[field.slice(13) as Route].status;

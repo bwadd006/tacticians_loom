@@ -3,9 +3,13 @@
 Standalone Electron/React/TypeScript desktop application. The reference-data
 foundation, Character Library, and Class Library are implemented. The Character
 Library provides its route selector, growth table, filters, prioritized sorting,
-details panel and saved per-route setups. The Class Library provides one
-all-class table with tier title rows, class dossiers, filters, ordered
-sorting, unlock evidence, and one global saved setup.
+details panel and saved per-route setups. Its ordered controls can sort by
+Chapter, Renown, or Support independently for every route even in All Routes,
+while the table retains one combined recruitment column per route. Ch, R, and
+S header buttons provide direct sorting, and Shift-click appends a priority.
+The Class
+Library provides one all-class table with tier title rows, class dossiers,
+filters, ordered sorting, unlock evidence, and one global saved setup.
 Portraits and skill affinity icons are bundled game artwork (see the asset
 manifest for attribution and the few documented gaps and derived recreations).
 

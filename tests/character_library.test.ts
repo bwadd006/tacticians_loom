@@ -6,7 +6,7 @@ import path from 'node:path';
 import { ROUTES, STATS, type Route, type Skill, type Stat } from '../src/shared/catalog';
 import type { Character } from '../src/shared/source_models';
 import { abilityMatches, affinity, availabilityLabel, queryLibrary, statusLabel } from '../src/shared/library_query';
-import { defaultSetup, fieldLabel, initialDrafts, setupIssues, setupSchema, skillLabel, type LibrarySetup } from '../src/shared/library_setup';
+import { applyColumnSort, defaultSetup, fieldLabel, initialDrafts, recruitmentSortField, setupIssues, setupSchema, skillLabel, sortableFields, type LibrarySetup } from '../src/shared/library_setup';
 import { loadSetup, openUserDatabase, saveSetup } from '../src/main/database/user_database';
 import { loadSqlite } from '../src/main/database/sqlite';
 
@@ -16,7 +16,9 @@ interface FixtureOptions {
   boons?: Skill[] | null;
   banes?: Skill[] | null;
   statuses?: Partial<Record<Route, Status>>;
+  chapters?: Partial<Record<Route, number | null>>;
   renown?: Partial<Record<Route, number | null>>;
+  support?: Partial<Record<Route, number | null>>;
   abilities?: { name: string; effect: string | null }[];
 }
 function fixture(id: string, name: string, options: FixtureOptions = {}): Character {
@@ -26,7 +28,7 @@ function fixture(id: string, name: string, options: FixtureOptions = {}): Charac
   for (const route of ROUTES) {
     recruitmentByRoute[route] = {
       status: options.statuses?.[route] ?? 'unavailable',
-      earliest_chapter: null, min_renown: options.renown?.[route] ?? null, min_support: null,
+      earliest_chapter: options.chapters?.[route] ?? null, min_renown: options.renown?.[route] ?? null, min_support: options.support?.[route] ?? null,
       requirements: [], missable: null, source: null,
     };
   }
@@ -128,6 +130,46 @@ test('availability sorting places available characters first, confirmed unavaila
   assert.deepEqual(ids(queryLibrary(roster, 'cai', setup)), ['fleet', 'brawn', 'enigma']);
 });
 
+test('route-qualified recruitment priorities work in All Routes and break ties in explicit order', () => {
+  const alpha = fixture('alpha', 'Alpha', { statuses: { cai: 'recruitable', dietrich: 'recruitable', theodora: 'recruitable', leda: 'recruitable' }, chapters: { cai: 3, dietrich: 4, theodora: 2, leda: 5 }, renown: { cai: 9, dietrich: 4, theodora: 5, leda: 7 } });
+  const beta = fixture('beta', 'Beta', { statuses: { cai: 'recruitable', dietrich: 'recruitable', theodora: 'recruitable', leda: 'recruitable' }, chapters: { cai: 3, dietrich: 9, theodora: 2, leda: 9 }, renown: { cai: 8, dietrich: 9, theodora: 5, leda: 9 } });
+  const gamma = fixture('gamma', 'Gamma', { statuses: { cai: 'recruitable', dietrich: 'recruitable', theodora: 'recruitable', leda: 'recruitable' }, chapters: { cai: 1, dietrich: 1, theodora: 2, leda: 1 }, renown: { cai: 1, dietrich: 1, theodora: 6, leda: 1 } });
+  const remote = fixture('remote_sort', 'Remote', { statuses: { cai: 'recruitable' }, chapters: { cai: 1 }, renown: { cai: 1 } });
+  const priorityRoutes = ['theodora', 'cai', 'dietrich', 'leda'] as const;
+  const sorts = priorityRoutes.flatMap(route => [
+    { field: recruitmentSortField(route, 'earliest_chapter'), direction: 'asc' as const },
+    { field: recruitmentSortField(route, 'min_renown'), direction: 'asc' as const },
+  ]);
+  assert.deepEqual(ids(queryLibrary([alpha, beta, gamma, remote], 'all', { ...defaultSetup(), sorts })), ['beta', 'alpha', 'gamma', 'remote_sort']);
+  assert.deepEqual(ids(queryLibrary([alpha, beta, gamma, remote], 'cai', { ...defaultSetup(), sorts })), ['beta', 'alpha', 'gamma', 'remote_sort']);
+});
+
+test('route-qualified recruitment unknowns stay last in either direction', () => {
+  const field = recruitmentSortField('cai', 'min_renown');
+  const asc = ids(queryLibrary(roster, 'all', { ...defaultSetup(), sorts: [{ field, direction: 'asc' }] }));
+  const desc = ids(queryLibrary(roster, 'all', { ...defaultSetup(), sorts: [{ field, direction: 'desc' }] }));
+  assert.deepEqual(asc, ['brawn', 'enigma', 'fleet', 'remote']);
+  assert.deepEqual(desc, ['brawn', 'enigma', 'fleet', 'remote']);
+});
+
+test('column shortcuts promote normally and Shift-append before the Name tie-breaker', () => {
+  const chapter = recruitmentSortField('theodora', 'earliest_chapter');
+  const renown = recruitmentSortField('theodora', 'min_renown');
+  const primary = applyColumnSort(defaultSetup(), chapter);
+  assert.deepEqual(primary.sorts, [{ field: chapter, direction: 'asc' }, { field: 'name', direction: 'asc' }]);
+  const appended = applyColumnSort(primary, renown, true);
+  assert.deepEqual(appended.sorts, [{ field: chapter, direction: 'asc' }, { field: renown, direction: 'asc' }, { field: 'name', direction: 'asc' }]);
+  assert.deepEqual(applyColumnSort(appended, renown, true).sorts, [{ field: chapter, direction: 'asc' }, { field: renown, direction: 'desc' }, { field: 'name', direction: 'asc' }]);
+  assert.deepEqual(applyColumnSort(appended, renown).sorts, [{ field: renown, direction: 'asc' }, { field: chapter, direction: 'asc' }, { field: 'name', direction: 'asc' }]);
+});
+
+test('automatic joins use documented chapters without inventing Renown values', () => {
+  const automatic = fixture('automatic', 'Automatic', { statuses: { cai: 'automatic' }, chapters: { cai: 2 } });
+  const recruit = fixture('recruit', 'Recruit', { statuses: { cai: 'recruitable' }, chapters: { cai: 3 }, renown: { cai: 4 } });
+  assert.deepEqual(ids(queryLibrary([recruit, automatic], 'all', { ...defaultSetup(), sorts: [{ field: recruitmentSortField('cai', 'earliest_chapter'), direction: 'asc' }] })), ['automatic', 'recruit']);
+  assert.deepEqual(ids(queryLibrary([recruit, automatic], 'all', { ...defaultSetup(), sorts: [{ field: recruitmentSortField('cai', 'min_renown'), direction: 'asc' }] })), ['recruit', 'automatic']);
+});
+
 test('route recruitment fields filter on a specific route and are unresolved on All Routes', () => {
   const rule = numberRule('min_renown', null, 100);
   assert.deepEqual(ids(queryLibrary(roster, 'cai', { ...defaultSetup(), filters: [rule] })), ['brawn']);
@@ -164,6 +206,10 @@ test('labels and affinity helpers reflect reported statuses and unknowns', () =>
   assert.equal(fieldLabel('affinity:swords'), 'Swords affinity');
   assert.equal(fieldLabel('availability:cai'), 'Cai availability');
   assert.equal(fieldLabel('min_renown'), 'Renown');
+  assert.equal(fieldLabel(recruitmentSortField('theodora', 'earliest_chapter')), 'Theodora — Chapter');
+  for (const route of ROUTES) for (const field of ['earliest_chapter', 'min_renown', 'min_support'] as const) {
+    assert.ok(sortableFields('all').includes(recruitmentSortField(route, field)));
+  }
 });
 
 test('setup schema accepts the default and rejects malformed or contradictory rules', () => {
@@ -202,6 +248,25 @@ test('saved setups round-trip per context, replace on re-save, and stay independ
     assert.equal(loadSetup(db, 'theodora'), null);
     assert.deepEqual(loadSetup(db, 'all')?.setup, custom);
     assert.deepEqual(loadSetup(db, 'cai')?.setup, defaultSetup());
+  } finally { db.close(); }
+});
+
+test('legacy selected-route recruitment sorts load as route-qualified priorities', () => {
+  const db = openUserDatabase(path.join(temporary, 'legacy_recruitment_sort.sqlite'));
+  try {
+    const legacy: LibrarySetup = { ...defaultSetup(), sorts: [
+      { field: 'earliest_chapter', direction: 'asc' },
+      { field: 'min_renown', direction: 'asc' },
+    ] };
+    const saved = saveSetup(db, 'theodora', legacy, 'dataset-v1');
+    assert.deepEqual(saved.setup.sorts, [
+      { field: recruitmentSortField('theodora', 'earliest_chapter'), direction: 'asc' },
+      { field: recruitmentSortField('theodora', 'min_renown'), direction: 'asc' },
+    ]);
+    assert.deepEqual(loadSetup(db, 'theodora')?.setup, saved.setup);
+
+    db.prepare('UPDATE library_setups SET setup_json = ? WHERE context = ?').run(JSON.stringify(legacy), 'theodora');
+    assert.deepEqual(loadSetup(db, 'theodora')?.setup.sorts, saved.setup.sorts);
   } finally { db.close(); }
 });
 
