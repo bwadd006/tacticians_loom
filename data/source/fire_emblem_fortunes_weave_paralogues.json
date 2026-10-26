@@ -1,0 +1,233 @@
+{
+  "metadata": {
+    "schema_version": "1.0.0",
+    "as_of_date": "2026-10-25",
+    "route_ids": ["cai", "dietrich", "theodora", "leda"],
+    "paralogue_count": 9,
+    "route_available_counts": { "cai": 4, "dietrich": 8, "theodora": 7, "leda": 4 }
+  },
+  "sources": [
+    { "key": "rpg_site", "name": "RPG Site — Fortune's Weave Paralogues", "url": "https://www.rpgsite.net/guide/21387-fire-emblem-fortunes-weave-paralogues-how-to-access-all-paralogue-battles-where-to-find-them", "accessed_at": "2026-10-25" },
+    { "key": "serenes_forest", "name": "Serenes Forest — Paralogues", "url": "https://serenesforest.net/fortunes-weave/miscellaneous/paralogues/", "accessed_at": "2026-10-25" },
+    { "key": "annas_notebook", "name": "Anna's Notebook — Paralogue List", "url": "https://annasnotebook.net/en/route/paralogues/", "accessed_at": "2026-10-25" },
+    { "key": "fw_companion", "name": "Fortune's Weave Companion — Paralogues", "url": "https://fortunesweave.co.uk/paralogues?route=all", "accessed_at": "2026-10-25" }
+  ],
+  "data_conflicts": [
+    { "paralogue_id": "missing-brave-warrior-statue", "route_id": "dietrich", "field": "route_availability.dietrich.acceptance_windows", "status": "source_conflict", "details": "Reported acceptance ends range from 9/8 to 9/15. The maintained window uses the narrower 9/3–9/8 arrangement window and preserves the 9/15 completion deadline.", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
+    { "paralogue_id": "friendly-match-with-brigids-king", "route_id": null, "field": "outcomes.unique_equipment", "status": "source_conflict", "details": "Anna's Notebook reports Large Bullion while RPG Site and the companion report Extra Large Bullion. Extra Large Bullion is retained with conflicting status.", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
+    { "paralogue_id": "golden-secret", "route_id": "dietrich", "field": "route_availability.dietrich.acceptance_windows", "status": "source_conflict", "details": "Sources disagree whether Dietrich can accept beginning 9/24 or 9/29. The broader 9/24 start is retained and marked conflicting; the 10/5 deadline agrees.", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
+    { "paralogue_id": "sealed-off-past", "route_id": "theodora", "field": "route_availability.theodora.timing", "status": "source_conflict", "details": "Reported acceptance endpoints vary, and the quest may list 11/1 even though Theodora's route ends free time on 10/24. Both listed and effective deadlines are retained.", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
+    { "paralogue_id": "sealed-off-past", "route_id": "leda", "field": "route_availability.leda.acceptance_windows", "status": "source_conflict", "details": "Reported Leda acceptance endpoints range from 10/22 through 11/1. The reviewed 10/16–10/29 window and 11/1 completion deadline are retained with conflicting status.", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
+    { "paralogue_id": "orchels-regret", "route_id": "cai", "field": "route_availability.cai.effective_completion_deadline", "status": "source_conflict", "details": "Sources report 10/20 or 10/21. The conservative effective deadline is 10/20 while the reported listed deadline remains 10/21.", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
+    { "paralogue_id": "orchels-regret", "route_id": "theodora", "field": "route_availability.theodora.effective_completion_deadline", "status": "source_conflict", "details": "Some listings extend to 10/27, but Theodora's route ends free time on 10/24. The listed and effective deadlines remain separate.", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] }
+  ],
+  "paralogues": [
+    {
+      "id": "diversionary-tactics",
+      "name": "Diversionary Tactics",
+      "associated_character_name": "Leda",
+      "associated_character_id": "leda",
+      "verification_status": "reported",
+      "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"],
+      "route_availability": {
+        "cai": { "status": "unavailable", "earliest_chapter": null, "acceptance_windows": [], "listed_completion_deadline": null, "effective_completion_deadline": null, "forced_start_date": null, "missable": null, "trigger": null, "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest", "fw_companion"], "note": null },
+        "dietrich": { "status": "available", "earliest_chapter": 9, "acceptance_windows": [{ "start": { "month": 9, "day": 2 }, "end": { "month": 9, "day": 8 }, "note": "Accept before the forced battle advances." }], "listed_completion_deadline": { "month": 9, "day": 8 }, "effective_completion_deadline": { "month": 9, "day": 8 }, "forced_start_date": { "month": 9, "day": 9 }, "missable": true, "trigger": "Speak with Leda outside Kalla's temple in Dagsion.", "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": "Accept Theodora's paralogue first if undertaking both on Dietrich's route." },
+        "theodora": { "status": "available", "earliest_chapter": 10, "acceptance_windows": [{ "start": { "month": 9, "day": 2 }, "end": { "month": 9, "day": 8 }, "note": "Accept before the forced battle advances." }], "listed_completion_deadline": { "month": 9, "day": 8 }, "effective_completion_deadline": { "month": 9, "day": 8 }, "forced_start_date": { "month": 9, "day": 9 }, "missable": true, "trigger": "Speak with Leda outside Kalla's temple in Dagsion.", "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": null },
+        "leda": { "status": "unavailable", "earliest_chapter": null, "acceptance_windows": [], "listed_completion_deadline": null, "effective_completion_deadline": null, "forced_start_date": null, "missable": null, "trigger": null, "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest", "fw_companion"], "note": null }
+      },
+      "requirements": [
+        { "type": "location_or_npc", "text": "Speak with Leda outside Kalla's temple in Dagsion.", "route_ids": ["dietrich", "theodora"], "character_id": "leda", "paralogue_id": null, "support_threshold": null, "verification_status": "reported", "source_keys": ["annas_notebook"] },
+        { "type": "prerequisite_quest", "text": "On Dietrich's route, accept Missing Brave-Warrior Statue before advancing Diversionary Tactics if undertaking both.", "route_ids": ["dietrich"], "character_id": null, "paralogue_id": "missing-brave-warrior-statue", "support_threshold": null, "verification_status": "reported", "source_keys": ["annas_notebook"] }
+      ],
+      "outcomes": [
+        { "type": "unique_equipment", "name": "Silver Shield", "quantity": 1, "text": "Silver Shield ×1", "route_ids": ["dietrich", "theodora"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
+        { "type": "currency", "name": "Gold", "quantity": 20000, "text": "20,000G", "route_ids": ["dietrich", "theodora"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
+        { "type": "renown", "name": "Renown", "quantity": 150, "text": "150 Renown", "route_ids": ["dietrich", "theodora"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
+        { "type": "recruited_character", "name": "Buccar recruitment requirement", "quantity": null, "text": "Satisfies Buccar's paralogue requirement; route-specific recruitment thresholds still apply.", "route_ids": ["dietrich", "theodora"], "character_id": "buccar", "class_id": null, "condition": "Meet Buccar's remaining route-specific requirements.", "verification_status": "reported", "source_keys": ["annas_notebook", "fw_companion"] }
+      ],
+      "notes": []
+    },
+    {
+      "id": "missing-brave-warrior-statue",
+      "name": "Missing Brave-Warrior Statue",
+      "associated_character_name": "Theodora",
+      "associated_character_id": "theodora",
+      "verification_status": "reported",
+      "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"],
+      "route_availability": {
+        "cai": { "status": "unavailable", "earliest_chapter": null, "acceptance_windows": [], "listed_completion_deadline": null, "effective_completion_deadline": null, "forced_start_date": null, "missable": null, "trigger": null, "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest"], "note": null },
+        "dietrich": { "status": "available", "earliest_chapter": 9, "acceptance_windows": [{ "start": { "month": 9, "day": 3 }, "end": { "month": 9, "day": 8 }, "note": "Sources differ on the last day the quest can be arranged." }], "listed_completion_deadline": { "month": 9, "day": 15 }, "effective_completion_deadline": { "month": 9, "day": 15 }, "forced_start_date": null, "missable": true, "trigger": "Speak with Bonaventure near the lower temple approach; battlefield at Purification Altar.", "verification_status": "conflicting", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": "Use the narrower arrangement window when scheduling around Diversionary Tactics." },
+        "theodora": { "status": "unavailable", "earliest_chapter": null, "acceptance_windows": [], "listed_completion_deadline": null, "effective_completion_deadline": null, "forced_start_date": null, "missable": null, "trigger": null, "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest"], "note": null },
+        "leda": { "status": "unavailable", "earliest_chapter": null, "acceptance_windows": [], "listed_completion_deadline": null, "effective_completion_deadline": null, "forced_start_date": null, "missable": null, "trigger": null, "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest"], "note": null }
+      },
+      "requirements": [{ "type": "location_or_npc", "text": "Speak with Bonaventure near the lower temple approach in Dagsion.", "route_ids": ["dietrich"], "character_id": null, "paralogue_id": null, "support_threshold": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook"] }],
+      "outcomes": [
+        { "type": "unique_equipment", "name": "Pilum", "quantity": 1, "text": "Pilum ×1", "route_ids": ["dietrich"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
+        { "type": "currency", "name": "Gold", "quantity": 20000, "text": "20,000G", "route_ids": ["dietrich"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
+        { "type": "renown", "name": "Renown", "quantity": 150, "text": "150 Renown", "route_ids": ["dietrich"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] }
+      ],
+      "notes": []
+    },
+    {
+      "id": "secret-of-the-vanished-carriage",
+      "name": "Secret of the Vanished Carriage",
+      "associated_character_name": "Talimun",
+      "associated_character_id": "talimun",
+      "verification_status": "reported",
+      "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"],
+      "route_availability": {
+        "cai": { "status": "available", "earliest_chapter": 10, "acceptance_windows": [{ "start": { "month": 9, "day": 17 }, "end": { "month": 9, "day": 22 }, "note": null }, { "start": { "month": 10, "day": 1 }, "end": { "month": 10, "day": 10 }, "note": "Second chance after the first window closes." }], "listed_completion_deadline": { "month": 10, "day": 12 }, "effective_completion_deadline": { "month": 10, "day": 12 }, "forced_start_date": null, "missable": true, "trigger": "Speak with Talimun near the lower harbor; battlefield at Dragton Ridge.", "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": null },
+        "dietrich": { "status": "available", "earliest_chapter": 9, "acceptance_windows": [{ "start": { "month": 9, "day": 17 }, "end": { "month": 9, "day": 19 }, "note": "Dietrich's first window is shorter than the other routes." }, { "start": { "month": 10, "day": 1 }, "end": { "month": 10, "day": 10 }, "note": "Second chance after the first window closes." }], "listed_completion_deadline": { "month": 10, "day": 12 }, "effective_completion_deadline": { "month": 10, "day": 12 }, "forced_start_date": null, "missable": true, "trigger": "Speak with Talimun near the lower harbor; battlefield at Dragton Ridge.", "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": null },
+        "theodora": { "status": "available", "earliest_chapter": 11, "acceptance_windows": [{ "start": { "month": 9, "day": 17 }, "end": { "month": 9, "day": 22 }, "note": null }, { "start": { "month": 10, "day": 1 }, "end": { "month": 10, "day": 10 }, "note": "Second chance after the first window closes." }], "listed_completion_deadline": { "month": 10, "day": 12 }, "effective_completion_deadline": { "month": 10, "day": 12 }, "forced_start_date": null, "missable": true, "trigger": "Speak with Talimun near the lower harbor; battlefield at Dragton Ridge.", "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": null },
+        "leda": { "status": "unavailable", "earliest_chapter": null, "acceptance_windows": [], "listed_completion_deadline": null, "effective_completion_deadline": null, "forced_start_date": null, "missable": null, "trigger": null, "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook"], "note": null }
+      },
+      "requirements": [{ "type": "location_or_npc", "text": "Speak with Talimun near Dagsion's lower harbor by the Vandahl Trading Company.", "route_ids": ["cai", "dietrich", "theodora"], "character_id": "talimun", "paralogue_id": null, "support_threshold": null, "verification_status": "reported", "source_keys": ["annas_notebook"] }],
+      "outcomes": [
+        { "type": "unique_equipment", "name": "Cleansing Blade", "quantity": 1, "text": "Cleansing Blade ×1", "route_ids": ["cai", "dietrich", "theodora"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
+        { "type": "currency", "name": "Gold", "quantity": 20000, "text": "20,000G", "route_ids": ["cai", "dietrich", "theodora"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
+        { "type": "renown", "name": "Renown", "quantity": 150, "text": "150 Renown", "route_ids": ["cai", "dietrich", "theodora"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
+        { "type": "recruited_character", "name": "Ursula recruitment requirement", "quantity": null, "text": "Satisfies Ursula's paralogue requirement; route-specific recruitment thresholds still apply.", "route_ids": ["cai", "dietrich", "theodora"], "character_id": "ursula", "class_id": null, "condition": "Meet Ursula's remaining route-specific requirements.", "verification_status": "reported", "source_keys": ["annas_notebook", "fw_companion"] }
+      ],
+      "notes": []
+    },
+    {
+      "id": "friendly-match-with-brigids-king",
+      "name": "Friendly Match with Brigid's King",
+      "associated_character_name": "Bertrand",
+      "associated_character_id": "bertrand",
+      "verification_status": "reported",
+      "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"],
+      "route_availability": {
+        "cai": { "status": "available", "earliest_chapter": 10, "acceptance_windows": [{ "start": { "month": 9, "day": 17 }, "end": { "month": 9, "day": 25 }, "note": null }], "listed_completion_deadline": { "month": 9, "day": 25 }, "effective_completion_deadline": { "month": 9, "day": 25 }, "forced_start_date": null, "missable": true, "trigger": "Speak with Gabriel outside Dagsion's great arena during the day.", "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": null },
+        "dietrich": { "status": "available", "earliest_chapter": 9, "acceptance_windows": [{ "start": { "month": 9, "day": 17 }, "end": { "month": 9, "day": 17 }, "note": "One day only." }], "listed_completion_deadline": { "month": 9, "day": 17 }, "effective_completion_deadline": { "month": 9, "day": 17 }, "forced_start_date": null, "missable": true, "trigger": "Speak with Gabriel outside Dagsion's great arena during the day after visiting Fezzan Gate.", "verification_status": "confirmed", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": "The one-day route-specific window is supported by in-game evidence reported by the companion." },
+        "theodora": { "status": "available", "earliest_chapter": 11, "acceptance_windows": [{ "start": { "month": 9, "day": 17 }, "end": { "month": 9, "day": 25 }, "note": null }], "listed_completion_deadline": { "month": 9, "day": 25 }, "effective_completion_deadline": { "month": 9, "day": 25 }, "forced_start_date": null, "missable": true, "trigger": "Speak with Gabriel outside Dagsion's great arena during the day.", "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": null },
+        "leda": { "status": "unavailable", "earliest_chapter": null, "acceptance_windows": [], "listed_completion_deadline": null, "effective_completion_deadline": null, "forced_start_date": null, "missable": null, "trigger": null, "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest"], "note": null }
+      },
+      "requirements": [
+        { "type": "location_or_npc", "text": "Speak with Gabriel outside Dagsion's great arena during the day.", "route_ids": ["cai", "dietrich", "theodora"], "character_id": null, "paralogue_id": null, "support_threshold": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook"] },
+        { "type": "story_trigger", "text": "On Dietrich's route, visit Fezzan Gate before speaking with Gabriel so the destination is available.", "route_ids": ["dietrich"], "character_id": null, "paralogue_id": null, "support_threshold": null, "verification_status": "reported", "source_keys": ["annas_notebook", "fw_companion"] }
+      ],
+      "outcomes": [
+        { "type": "unique_equipment", "name": "Extra Large Bullion", "quantity": 1, "text": "Extra Large Bullion ×1", "route_ids": ["cai", "dietrich", "theodora"], "character_id": null, "class_id": null, "condition": null, "verification_status": "conflicting", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
+        { "type": "currency", "name": "Gold", "quantity": 20000, "text": "20,000G", "route_ids": ["cai", "dietrich", "theodora"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
+        { "type": "renown", "name": "Renown", "quantity": 150, "text": "150 Renown", "route_ids": ["cai", "dietrich", "theodora"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
+        { "type": "recruited_character", "name": "Gaitz recruitment requirement", "quantity": null, "text": "Satisfies Gaitz's paralogue requirement on Dietrich's route; remaining requirements still apply.", "route_ids": ["dietrich"], "character_id": "gaitz", "class_id": null, "condition": "Meet Gaitz's remaining recruitment requirements.", "verification_status": "reported", "source_keys": ["annas_notebook", "fw_companion"] },
+        { "type": "recruited_character", "name": "Peppe recruitment requirement", "quantity": null, "text": "Satisfies Peppe's paralogue requirement; route-specific recruitment thresholds still apply.", "route_ids": ["cai", "dietrich", "theodora"], "character_id": "peppe", "class_id": null, "condition": "Meet Peppe's remaining route-specific requirements.", "verification_status": "reported", "source_keys": ["annas_notebook", "fw_companion"] }
+      ],
+      "notes": []
+    },
+    {
+      "id": "golden-secret",
+      "name": "Golden Secret",
+      "associated_character_name": "Anna",
+      "associated_character_id": null,
+      "verification_status": "conflicting",
+      "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"],
+      "route_availability": {
+        "cai": { "status": "available", "earliest_chapter": 10, "acceptance_windows": [{ "start": { "month": 9, "day": 24 }, "end": { "month": 10, "day": 5 }, "note": null }], "listed_completion_deadline": { "month": 10, "day": 5 }, "effective_completion_deadline": { "month": 10, "day": 5 }, "forced_start_date": null, "missable": true, "trigger": "Speak with Anna outside Dagda's temple at Dagsion Summit.", "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": null },
+        "dietrich": { "status": "available", "earliest_chapter": 10, "acceptance_windows": [{ "start": { "month": 9, "day": 24 }, "end": { "month": 10, "day": 5 }, "note": "Some route-specific prose reports a 9/29 start." }], "listed_completion_deadline": { "month": 10, "day": 5 }, "effective_completion_deadline": { "month": 10, "day": 5 }, "forced_start_date": null, "missable": true, "trigger": "Speak with Anna outside Dagda's temple at Dagsion Summit.", "verification_status": "conflicting", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": "The 10/5 deadline agrees; the opening date remains disputed." },
+        "theodora": { "status": "available", "earliest_chapter": 11, "acceptance_windows": [{ "start": { "month": 9, "day": 24 }, "end": { "month": 10, "day": 5 }, "note": null }], "listed_completion_deadline": { "month": 10, "day": 5 }, "effective_completion_deadline": { "month": 10, "day": 5 }, "forced_start_date": null, "missable": true, "trigger": "Speak with Anna outside Dagda's temple at Dagsion Summit.", "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": null },
+        "leda": { "status": "unavailable", "earliest_chapter": null, "acceptance_windows": [], "listed_completion_deadline": null, "effective_completion_deadline": null, "forced_start_date": null, "missable": null, "trigger": null, "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook"], "note": "Anna's nighttime shop may still become available independently; this does not make the paralogue available." }
+      },
+      "requirements": [{ "type": "location_or_npc", "text": "Speak with Anna outside Dagda's temple at Dagsion Summit.", "route_ids": ["cai", "dietrich", "theodora"], "character_id": null, "paralogue_id": null, "support_threshold": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook"] }],
+      "outcomes": [
+        { "type": "unique_equipment", "name": "Orichalcum", "quantity": 1, "text": "Orichalcum ×1", "route_ids": ["cai", "dietrich", "theodora"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
+        { "type": "currency", "name": "Gold", "quantity": 20000, "text": "20,000G", "route_ids": ["cai", "dietrich", "theodora"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
+        { "type": "renown", "name": "Renown", "quantity": 150, "text": "150 Renown", "route_ids": ["cai", "dietrich", "theodora"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
+        { "type": "other", "name": "Anna's nighttime shop", "quantity": null, "text": "Unlocks Anna's nighttime shop on Dagsion's upper level the following day.", "route_ids": ["cai", "dietrich", "theodora"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["annas_notebook", "fw_companion"] }
+      ],
+      "notes": ["Anna is a guest rather than a recruitable character, so this paralogue has no stable associated character ID."]
+    },
+    {
+      "id": "queen-of-the-erased",
+      "name": "Queen of the Erased",
+      "associated_character_name": "Anatolia",
+      "associated_character_id": "anatolia",
+      "verification_status": "reported",
+      "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"],
+      "route_availability": {
+        "cai": { "status": "unavailable", "earliest_chapter": null, "acceptance_windows": [], "listed_completion_deadline": null, "effective_completion_deadline": null, "forced_start_date": null, "missable": null, "trigger": null, "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest"], "note": null },
+        "dietrich": { "status": "available", "earliest_chapter": 11, "acceptance_windows": [{ "start": { "month": 10, "day": 5 }, "end": { "month": 10, "day": 14 }, "note": null }], "listed_completion_deadline": { "month": 10, "day": 17 }, "effective_completion_deadline": { "month": 10, "day": 17 }, "forced_start_date": null, "missable": true, "trigger": "Find Anatolia in northeastern Dagsion city.", "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": null },
+        "theodora": { "status": "unavailable", "earliest_chapter": null, "acceptance_windows": [], "listed_completion_deadline": null, "effective_completion_deadline": null, "forced_start_date": null, "missable": null, "trigger": null, "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest"], "note": null },
+        "leda": { "status": "available", "earliest_chapter": 10, "acceptance_windows": [{ "start": { "month": 10, "day": 5 }, "end": { "month": 10, "day": 14 }, "note": null }], "listed_completion_deadline": { "month": 10, "day": 17 }, "effective_completion_deadline": { "month": 10, "day": 17 }, "forced_start_date": null, "missable": true, "trigger": "Find Anatolia in northeastern Dagsion city.", "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": null }
+      },
+      "requirements": [{ "type": "location_or_npc", "text": "Find Anatolia in northeastern Dagsion city.", "route_ids": ["dietrich", "leda"], "character_id": "anatolia", "paralogue_id": null, "support_threshold": null, "verification_status": "reported", "source_keys": ["annas_notebook"] }],
+      "outcomes": [
+        { "type": "unique_equipment", "name": "Electron Agitator", "quantity": 1, "text": "Electron Agitator ×1", "route_ids": ["dietrich", "leda"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
+        { "type": "unique_equipment", "name": "Spellshard", "quantity": 1, "text": "Spellshard ×1", "route_ids": ["dietrich", "leda"], "character_id": null, "class_id": null, "condition": "Save all villagers.", "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook"] },
+        { "type": "unique_equipment", "name": "Dew of Peace", "quantity": 1, "text": "Dew of Peace ×1", "route_ids": ["dietrich", "leda"], "character_id": null, "class_id": null, "condition": "Save all villagers.", "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook"] },
+        { "type": "currency", "name": "Gold", "quantity": 20000, "text": "20,000G", "route_ids": ["dietrich", "leda"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
+        { "type": "renown", "name": "Renown", "quantity": 150, "text": "150 Renown", "route_ids": ["dietrich", "leda"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
+        { "type": "recruited_character", "name": "Sha Lan recruitment requirement", "quantity": null, "text": "Satisfies Sha Lan's paralogue requirement; route-specific recruitment thresholds still apply.", "route_ids": ["dietrich", "leda"], "character_id": "sha-lan", "class_id": null, "condition": "Meet Sha Lan's remaining route-specific requirements.", "verification_status": "reported", "source_keys": ["annas_notebook", "fw_companion"] }
+      ],
+      "notes": []
+    },
+    {
+      "id": "sealed-off-past",
+      "name": "Sealed-Off Past",
+      "associated_character_name": "Dietrich",
+      "associated_character_id": "dietrich",
+      "verification_status": "conflicting",
+      "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"],
+      "route_availability": {
+        "cai": { "status": "unavailable", "earliest_chapter": null, "acceptance_windows": [], "listed_completion_deadline": null, "effective_completion_deadline": null, "forced_start_date": null, "missable": null, "trigger": null, "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest"], "note": null },
+        "dietrich": { "status": "unavailable", "earliest_chapter": null, "acceptance_windows": [], "listed_completion_deadline": null, "effective_completion_deadline": null, "forced_start_date": null, "missable": null, "trigger": null, "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest"], "note": null },
+        "theodora": { "status": "available", "earliest_chapter": 12, "acceptance_windows": [{ "start": { "month": 10, "day": 16 }, "end": { "month": 10, "day": 21 }, "note": "Sources disagree on whether acceptance continues through 10/24." }], "listed_completion_deadline": { "month": 11, "day": 1 }, "effective_completion_deadline": { "month": 10, "day": 24 }, "forced_start_date": null, "missable": true, "trigger": "Speak with Fabio in the plaza before Dagsion's great arena; battlefield at Shadow Cavern.", "verification_status": "conflicting", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": "The quest may list 11/1, but Theodora's main story ends free time on 10/24." },
+        "leda": { "status": "available", "earliest_chapter": 11, "acceptance_windows": [{ "start": { "month": 10, "day": 16 }, "end": { "month": 10, "day": 29 }, "note": "Reported acceptance endpoints vary across guides." }], "listed_completion_deadline": { "month": 11, "day": 1 }, "effective_completion_deadline": { "month": 11, "day": 1 }, "forced_start_date": null, "missable": true, "trigger": "Speak with Fabio in the plaza before Dagsion's great arena; battlefield at Shadow Cavern.", "verification_status": "conflicting", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": null }
+      },
+      "requirements": [{ "type": "location_or_npc", "text": "Speak with Fabio in the plaza before Dagsion's great arena.", "route_ids": ["theodora", "leda"], "character_id": "fabio", "paralogue_id": null, "support_threshold": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook"] }],
+      "outcomes": [
+        { "type": "unique_equipment", "name": "Salamander", "quantity": 2, "text": "Salamander ×2", "route_ids": ["theodora"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "fw_companion"] },
+        { "type": "unique_equipment", "name": "Salamander", "quantity": 1, "text": "Salamander ×1", "route_ids": ["leda"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["annas_notebook", "fw_companion"] },
+        { "type": "currency", "name": "Gold", "quantity": 20000, "text": "20,000G", "route_ids": ["theodora", "leda"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
+        { "type": "renown", "name": "Renown", "quantity": 150, "text": "150 Renown", "route_ids": ["theodora", "leda"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
+        { "type": "recruited_character", "name": "Fabio recruitment requirement", "quantity": null, "text": "Satisfies Fabio's paralogue requirement on Leda's route; remaining requirements still apply.", "route_ids": ["leda"], "character_id": "fabio", "class_id": null, "condition": "Meet Fabio's remaining recruitment requirements.", "verification_status": "reported", "source_keys": ["annas_notebook", "fw_companion"] }
+      ],
+      "notes": []
+    },
+    {
+      "id": "great-escape",
+      "name": "Great Escape",
+      "associated_character_name": "Cai",
+      "associated_character_id": "cai",
+      "verification_status": "reported",
+      "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"],
+      "route_availability": {
+        "cai": { "status": "unavailable", "earliest_chapter": null, "acceptance_windows": [], "listed_completion_deadline": null, "effective_completion_deadline": null, "forced_start_date": null, "missable": null, "trigger": null, "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest"], "note": null },
+        "dietrich": { "status": "available", "earliest_chapter": 11, "acceptance_windows": [{ "start": { "month": 10, "day": 16 }, "end": { "month": 10, "day": 22 }, "note": "Accept before the forced battle advances." }], "listed_completion_deadline": { "month": 10, "day": 22 }, "effective_completion_deadline": { "month": 10, "day": 22 }, "forced_start_date": { "month": 10, "day": 23 }, "missable": true, "trigger": "Speak with Cai near the southeast exit of Dagsion's city district.", "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": null },
+        "theodora": { "status": "available", "earliest_chapter": 12, "acceptance_windows": [{ "start": { "month": 10, "day": 16 }, "end": { "month": 10, "day": 22 }, "note": "Accept before the forced battle advances." }], "listed_completion_deadline": { "month": 10, "day": 22 }, "effective_completion_deadline": { "month": 10, "day": 22 }, "forced_start_date": { "month": 10, "day": 23 }, "missable": true, "trigger": "Speak with Cai near the southeast exit of Dagsion's city district.", "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": null },
+        "leda": { "status": "available", "earliest_chapter": 11, "acceptance_windows": [{ "start": { "month": 10, "day": 16 }, "end": { "month": 10, "day": 22 }, "note": "Accept before the forced battle advances." }], "listed_completion_deadline": { "month": 10, "day": 22 }, "effective_completion_deadline": { "month": 10, "day": 22 }, "forced_start_date": { "month": 10, "day": 23 }, "missable": true, "trigger": "Speak with Cai near the southeast exit of Dagsion's city district.", "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": null }
+      },
+      "requirements": [{ "type": "location_or_npc", "text": "Speak with Cai near the southeast exit of Dagsion's city district.", "route_ids": ["dietrich", "theodora", "leda"], "character_id": "cai", "paralogue_id": null, "support_threshold": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook"] }],
+      "outcomes": [
+        { "type": "unique_equipment", "name": "Gem Box", "quantity": 1, "text": "Gem Box ×1", "route_ids": ["dietrich", "theodora", "leda"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
+        { "type": "currency", "name": "Gold", "quantity": 20000, "text": "20,000G", "route_ids": ["dietrich", "theodora", "leda"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
+        { "type": "renown", "name": "Renown", "quantity": 150, "text": "150 Renown", "route_ids": ["dietrich", "theodora", "leda"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
+        { "type": "recruited_character", "name": "Tialla recruitment requirement", "quantity": null, "text": "Satisfies Tialla's paralogue requirement; route-specific recruitment thresholds still apply.", "route_ids": ["dietrich", "theodora", "leda"], "character_id": "tialla", "class_id": null, "condition": "Meet Tialla's remaining route-specific requirements.", "verification_status": "reported", "source_keys": ["annas_notebook", "fw_companion"] }
+      ],
+      "notes": []
+    },
+    {
+      "id": "orchels-regret",
+      "name": "Orchel's Regret",
+      "associated_character_name": "Orchel",
+      "associated_character_id": "orchel",
+      "verification_status": "conflicting",
+      "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"],
+      "route_availability": {
+        "cai": { "status": "available", "earliest_chapter": 11, "acceptance_windows": [{ "start": { "month": 10, "day": 18 }, "end": { "month": 10, "day": 20 }, "note": "Short route-specific window." }], "listed_completion_deadline": { "month": 10, "day": 21 }, "effective_completion_deadline": { "month": 10, "day": 20 }, "forced_start_date": null, "missable": true, "trigger": "Speak with Orchel outside Credna's branch temple; battlefield at Fort Galca.", "verification_status": "conflicting", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": "Sources disagree by one day; the table uses the conservative effective cutoff." },
+        "dietrich": { "status": "available", "earliest_chapter": 11, "acceptance_windows": [{ "start": { "month": 10, "day": 18 }, "end": { "month": 10, "day": 25 }, "note": null }], "listed_completion_deadline": { "month": 10, "day": 27 }, "effective_completion_deadline": { "month": 10, "day": 27 }, "forced_start_date": null, "missable": true, "trigger": "Speak with Orchel outside Credna's branch temple; battlefield at Fort Galca.", "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": null },
+        "theodora": { "status": "available", "earliest_chapter": 12, "acceptance_windows": [{ "start": { "month": 10, "day": 18 }, "end": { "month": 10, "day": 22 }, "note": "Some guides report acceptance through 10/27." }], "listed_completion_deadline": { "month": 10, "day": 27 }, "effective_completion_deadline": { "month": 10, "day": 24 }, "forced_start_date": null, "missable": true, "trigger": "Speak with Orchel outside Credna's branch temple; battlefield at Fort Galca.", "verification_status": "conflicting", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": "Theodora's route ends free time on 10/24 despite later listed dates." },
+        "leda": { "status": "available", "earliest_chapter": 11, "acceptance_windows": [{ "start": { "month": 10, "day": 18 }, "end": { "month": 10, "day": 25 }, "note": null }], "listed_completion_deadline": { "month": 10, "day": 27 }, "effective_completion_deadline": { "month": 10, "day": 27 }, "forced_start_date": null, "missable": true, "trigger": "Speak with Orchel outside Credna's branch temple; battlefield at Fort Galca.", "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": null }
+      },
+      "requirements": [{ "type": "location_or_npc", "text": "Speak with Orchel outside Credna's branch temple on Dagsion's lower temple approach.", "route_ids": ["cai", "dietrich", "theodora", "leda"], "character_id": "orchel", "paralogue_id": null, "support_threshold": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook"] }],
+      "outcomes": [
+        { "type": "unique_equipment", "name": "Healing Staff", "quantity": 1, "text": "Healing Staff ×1", "route_ids": ["cai", "dietrich", "theodora", "leda"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
+        { "type": "currency", "name": "Gold", "quantity": 20000, "text": "20,000G", "route_ids": ["cai", "dietrich", "theodora", "leda"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
+        { "type": "renown", "name": "Renown", "quantity": 150, "text": "150 Renown", "route_ids": ["cai", "dietrich", "theodora", "leda"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
+        { "type": "recruited_character", "name": "Diego recruitment requirement", "quantity": null, "text": "Satisfies Diego's paralogue requirement; route-specific recruitment thresholds still apply.", "route_ids": ["cai", "dietrich", "theodora", "leda"], "character_id": "diego", "class_id": null, "condition": "Meet Diego's remaining route-specific requirements.", "verification_status": "reported", "source_keys": ["annas_notebook", "fw_companion"] }
+      ],
+      "notes": []
+    }
+  ]
+}

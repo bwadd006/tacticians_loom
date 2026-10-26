@@ -1,27 +1,28 @@
 import { useEffect, useRef, useState } from 'react';
-import type { ClassLibraryData, ReferenceApi, ReferenceOverview } from '../../shared/api';
+import type { ClassLibraryData, ParalogueLibraryData, ReferenceApi, ReferenceOverview } from '../../shared/api';
 import type { Character } from '../../shared/source_models';
 import { CharacterLibrary } from '../features/character_browser/character_library';
 import { ClassLibrary } from '../features/class_library/class_library';
 import type { CharacterPlanning } from '../../shared/character_planning';
 import { ShortlistWorkspace } from '../features/shortlist/shortlist_workspace';
 import type { PlanningController } from '../features/shortlist/types';
+import { ParalogueLibrary } from '../features/paralogue_library/paralogue_library';
 
 declare global { interface Window { loom: ReferenceApi } }
 export function App() {
-  const [data, setData] = useState<{ characters: Character[]; classes: ClassLibraryData; overview: ReferenceOverview }>();
+  const [data, setData] = useState<{ characters: Character[]; classes: ClassLibraryData; paralogues: ParalogueLibraryData; overview: ReferenceOverview }>();
   const [planning, setPlanning] = useState<CharacterPlanning[]>([]);
   const [pendingIds, setPendingIds] = useState<Set<string>>(new Set());
   const [planningError, setPlanningError] = useState('');
-  const [view, setView] = useState<'characters' | 'classes' | 'shortlist'>('characters');
+  const [view, setView] = useState<'characters' | 'classes' | 'paralogues' | 'shortlist'>('characters');
   const [error, setError] = useState(false);
   const [attempt, setAttempt] = useState(0);
   const planningQueues = useRef(new Map<string, Promise<void>>());
   useEffect(() => {
     let current = true;
     setError(false);
-    Promise.all([window.loom.characters('all'), window.loom.classLibrary(), window.loom.overview(), window.loom.listCharacterPlanning()])
-      .then(([characters, classes, overview, playerPlanning]) => { if (current) { setData({ characters, classes, overview }); setPlanning(playerPlanning); } })
+    Promise.all([window.loom.characters('all'), window.loom.classLibrary(), window.loom.paralogueLibrary(), window.loom.overview(), window.loom.listCharacterPlanning()])
+      .then(([characters, classes, paralogues, overview, playerPlanning]) => { if (current) { setData({ characters, classes, paralogues, overview }); setPlanning(playerPlanning); } })
       .catch(() => { if (current) setError(true); });
     return () => { current = false; };
   }, [attempt]);
@@ -50,8 +51,8 @@ export function App() {
   };
   const shortlistCount = planning.filter(record => record.shortlisted).length;
   return <main>
-    <header className="app_header"><div><p className="eyebrow">Fortune’s Weave · Local planner</p><h1>Tactician’s Loom</h1></div><nav className="app_navigation" aria-label="Planning views"><button aria-current={view === 'characters' ? 'page' : undefined} onClick={() => setView('characters')}>Character Library</button><button aria-current={view === 'classes' ? 'page' : undefined} onClick={() => setView('classes')}>Class Library</button><button aria-current={view === 'shortlist' ? 'page' : undefined} onClick={() => setView('shortlist')}>Shortlist &amp; Compare ({shortlistCount})</button></nav><span className="chapter_marker">{view === 'characters' ? 'Act 1 Characters' : view === 'classes' ? 'All Classes' : 'Player Shortlist'}</span></header>
+    <header className="app_header"><div><p className="eyebrow">Fortune’s Weave · Local planner</p><h1>Tactician’s Loom</h1></div><nav className="app_navigation" aria-label="Planning views"><button aria-current={view === 'characters' ? 'page' : undefined} onClick={() => setView('characters')}>Character Library</button><button aria-current={view === 'classes' ? 'page' : undefined} onClick={() => setView('classes')}>Class Library</button><button aria-current={view === 'paralogues' ? 'page' : undefined} onClick={() => setView('paralogues')}>Paralogue Library</button><button aria-current={view === 'shortlist' ? 'page' : undefined} onClick={() => setView('shortlist')}>Shortlist &amp; Compare ({shortlistCount})</button></nav><span className="chapter_marker">{view === 'characters' ? 'Act 1 Characters' : view === 'classes' ? 'All Classes' : view === 'paralogues' ? 'Act 1 Paralogues' : 'Player Shortlist'}</span></header>
     {error ? <div role="alert"><p>Reference data could not be loaded.</p><button onClick={() => setAttempt(attempt + 1)}>Try again</button></div>
-      : data ? <><section hidden={view !== 'characters'}><CharacterLibrary characters={data.characters} overview={data.overview} planning={planningController} /></section><section hidden={view !== 'classes'}><ClassLibrary data={data.classes} overview={data.overview} /></section><section hidden={view !== 'shortlist'}><ShortlistWorkspace characters={data.characters} overview={data.overview} planning={planningController} onBrowseCharacters={() => setView('characters')} /></section></> : <p role="status">Opening the libraries…</p>}
+      : data ? <><section hidden={view !== 'characters'}><CharacterLibrary characters={data.characters} overview={data.overview} planning={planningController} /></section><section hidden={view !== 'classes'}><ClassLibrary data={data.classes} overview={data.overview} /></section><section hidden={view !== 'paralogues'}><ParalogueLibrary data={data.paralogues} overview={data.overview} characters={data.characters} classes={data.classes.classes} /></section><section hidden={view !== 'shortlist'}><ShortlistWorkspace characters={data.characters} overview={data.overview} planning={planningController} onBrowseCharacters={() => setView('characters')} /></section></> : <p role="status">Opening the libraries…</p>}
   </main>;
 }

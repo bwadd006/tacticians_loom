@@ -8,11 +8,12 @@ import { buildDatabase } from '../scripts/database_builder';
 import { validateDatabase } from '../scripts/database_validation';
 import { ROUTES, STATS } from '../src/shared/catalog';
 import { validateSources } from '../src/shared/validate_sources';
-import { getCharacter, getClass, getClassLibrary, listCharacters, metadata, openReference } from '../src/main/database/reference_queries';
+import { getCharacter, getClass, getClassLibrary, getParalogueLibrary, listCharacters, metadata, openReference } from '../src/main/database/reference_queries';
 
 const appRoot = process.cwd();
 const characters = JSON.parse(fs.readFileSync(path.join(appRoot, 'data/source/fire_emblem_fortunes_weave_characters.json'), 'utf8'));
 const classes = JSON.parse(fs.readFileSync(path.join(appRoot, 'data/source/fire_emblem_fortunes_weave_classes.json'), 'utf8'));
+const paralogues = JSON.parse(fs.readFileSync(path.join(appRoot, 'data/source/fire_emblem_fortunes_weave_paralogues.json'), 'utf8'));
 let temporary: string;
 let database: Database.Database;
 before(() => {
@@ -38,6 +39,14 @@ test('Class Library query returns all tier rules, unlock evidence and maintenanc
   assert.ok(library.restrictions.note.includes('unverified'));
   assert.equal(library.conflicts.length, 6);
   assert.deepEqual(library.classes.slice(0, 2).map(characterClass => characterClass.tier), ['unique', 'unique']);
+});
+
+test('Paralogue Library query returns canonical records and retained conflicts', () => {
+  const library = getParalogueLibrary(database);
+  assert.equal(library.paralogues.length, 9);
+  assert.deepEqual(library.paralogues.map(paralogue => paralogue.name), [...library.paralogues.map(paralogue => paralogue.name)].sort((a, b) => a.localeCompare(b, 'en')));
+  assert.equal(library.conflicts.length, paralogues.data_conflicts.length);
+  assert.ok(library.conflicts.some(conflict => conflict.paralogueId === 'missing-brave-warrior-statue'));
 });
 
 test('All Routes is the distinct Act 1 union; route queries retain all four availability records', () => {
@@ -145,15 +154,15 @@ test('normalized growth and recruitment tables support a strong-and-fast route q
 
 test('import rejects duplicate IDs, missing routes/stats, invalid types and dangling links', () => {
   const duplicate = structuredClone(characters); duplicate.characters[1].id = duplicate.characters[0].id;
-  assert.throws(() => validateSources(duplicate, classes), /Duplicate character/);
+  assert.throws(() => validateSources(duplicate, classes, paralogues), /Duplicate character/);
   const missing = structuredClone(characters); delete missing.characters[0].growth_rates_percent.hp;
-  assert.throws(() => validateSources(missing, classes));
+  assert.throws(() => validateSources(missing, classes, paralogues));
   const route = structuredClone(characters); delete route.characters[0].recruitment_by_route.leda;
-  assert.throws(() => validateSources(route, classes));
+  assert.throws(() => validateSources(route, classes, paralogues));
   const type = structuredClone(characters); type.characters[0].growth_rates_percent.hp = '30';
-  assert.throws(() => validateSources(type, classes));
+  assert.throws(() => validateSources(type, classes, paralogues));
   const link = structuredClone(classes); link.route_unlocks[0].unlock_class_ids.push('missing_class');
-  assert.throws(() => validateSources(characters, link), /unknown class/);
+  assert.throws(() => validateSources(characters, link, paralogues), /unknown class/);
 });
 
 test('failed candidate preserves prior database and cleans up; corrected version rebuilds with a change report', () => {

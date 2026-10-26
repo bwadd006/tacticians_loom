@@ -4,6 +4,7 @@ import type Database from 'better-sqlite3';
 import { loadSqlite } from './sqlite';
 import { normalizeLegacyRecruitmentSorts, routeContextSchema, setupSchema, type SavedSetup } from '../../shared/library_setup';
 import { classSetupSchema, type SavedClassSetup } from '../../shared/class_library_setup';
+import { paralogueSetupSchema, type SavedParalogueSetup } from '../../shared/paralogue_library_setup';
 import { characterPlanningSchema, setCharacterNoteRequestSchema, setShortlistedRequestSchema, type CharacterPlanning } from '../../shared/character_planning';
 
 export function openUserDatabase(filename: string): Database.Database {
@@ -11,8 +12,8 @@ export function openUserDatabase(filename: string): Database.Database {
   const Sqlite = loadSqlite();
   const db = new Sqlite(filename);
   try {
-    const version = db.pragma('user_version', { simple: true });
-    if (version !== 0 && version !== 1 && version !== 2 && version !== 3) throw new Error('Saved planning data requires a newer application. Your data has been preserved.');
+    const version = Number(db.pragma('user_version', { simple: true }));
+    if (![0, 1, 2, 3, 4].includes(version)) throw new Error('Saved planning data requires a newer application. Your data has been preserved.');
     db.pragma('journal_mode = WAL');
     if (version === 0) db.transaction(() => {
       db.exec(`CREATE TABLE library_setups (
@@ -36,6 +37,12 @@ export function openUserDatabase(filename: string): Database.Database {
         updated_at TEXT NOT NULL,
         dataset_version_at_update TEXT NOT NULL
       ) STRICT; PRAGMA user_version = 3;`);
+    })();
+    if (version < 4) db.transaction(() => {
+      db.exec(`CREATE TABLE paralogue_library_setup (
+        singleton INTEGER PRIMARY KEY CHECK(singleton = 1),
+        setup_json TEXT NOT NULL CHECK(json_valid(setup_json)), saved_at TEXT NOT NULL, dataset_version TEXT NOT NULL
+      ) STRICT; PRAGMA user_version = 4;`);
     })();
     return db;
   } catch (error) { db.close(); throw error; }
@@ -102,6 +109,22 @@ export function loadClassSetup(db: Database.Database): SavedClassSetup | null {
   if (!row) return null;
   const parsed = classSetupSchema.safeParse(JSON.parse(row.setup_json));
   if (!parsed.success) throw new Error('This saved Class Library setup has an unsupported format. It has been preserved; your current view is unchanged.');
+  return { setup: parsed.data, savedAt: row.saved_at, datasetVersion: row.dataset_version };
+}
+export function saveParalogueSetup(db: Database.Database, input: unknown, datasetVersion: string): SavedParalogueSetup {
+  const setup = paralogueSetupSchema.parse(input);
+  const savedAt = new Date().toISOString();
+  db.transaction(() => {
+    db.prepare(`INSERT INTO paralogue_library_setup VALUES (1, ?, ?, ?) ON CONFLICT(singleton) DO UPDATE SET
+      setup_json = excluded.setup_json, saved_at = excluded.saved_at, dataset_version = excluded.dataset_version`).run(JSON.stringify(setup), savedAt, datasetVersion);
+  })();
+  return { setup, savedAt, datasetVersion };
+}
+export function loadParalogueSetup(db: Database.Database): SavedParalogueSetup | null {
+  const row = db.prepare('SELECT setup_json, saved_at, dataset_version FROM paralogue_library_setup WHERE singleton = 1').get() as { setup_json: string; saved_at: string; dataset_version: string } | undefined;
+  if (!row) return null;
+  const parsed = paralogueSetupSchema.safeParse(JSON.parse(row.setup_json));
+  if (!parsed.success) throw new Error('This saved Paralogue Library setup has an unsupported format. It has been preserved; your current view is unchanged.');
   return { setup: parsed.data, savedAt: row.saved_at, datasetVersion: row.dataset_version };
 }
 export function saveSetup(db: Database.Database, context: unknown, input: unknown, datasetVersion: string): SavedSetup {

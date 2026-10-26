@@ -6,11 +6,12 @@ import { app, BrowserWindow, dialog, ipcMain } from 'electron';
 import type Database from 'better-sqlite3';
 import { CHANNELS } from '../shared/api';
 import { ROUTES, type RouteContext } from '../shared/catalog';
-import { getCharacter, getClass, getClassLibrary, getOverview, listCharacters, openReference } from './database/reference_queries';
-import { clearCharacterNote, listCharacterPlanning, loadClassSetup, loadSetup, openUserDatabase, saveClassSetup, saveSetup, setCharacterNote, setCharacterShortlisted } from './database/user_database';
+import { getCharacter, getClass, getClassLibrary, getOverview, getParalogueLibrary, listCharacters, openReference } from './database/reference_queries';
+import { clearCharacterNote, listCharacterPlanning, loadClassSetup, loadParalogueSetup, loadSetup, openUserDatabase, saveClassSetup, saveParalogueSetup, saveSetup, setCharacterNote, setCharacterShortlisted } from './database/user_database';
 import { z } from 'zod';
 import { routeContextSchema, setupSchema } from '../shared/library_setup';
 import { classSetupSchema } from '../shared/class_library_setup';
+import { paralogueSetupSchema } from '../shared/paralogue_library_setup';
 import { setCharacterNoteRequestSchema, setShortlistedRequestSchema } from '../shared/character_planning';
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
@@ -92,6 +93,7 @@ app.whenReady().then(async () => {
   handle(CHANNELS.character, value => getCharacter(reference!, validateId(value)));
   handle(CHANNELS.characterClass, value => getClass(reference!, validateId(value)));
   handle(CHANNELS.classLibrary, () => getClassLibrary(reference!));
+  handle(CHANNELS.paralogueLibrary, () => getParalogueLibrary(reference!));
   handle(CHANNELS.conflicts, () => (reference!.prepare("SELECT raw_json FROM data_conflicts WHERE document_kind = 'characters'").all() as { raw_json: string }[]).map(r => JSON.parse(r.raw_json)));
   handle(CHANNELS.saveSetup, value => {
     const request = z.object({ route: routeContextSchema, setup: setupSchema }).strict().parse(value);
@@ -100,6 +102,8 @@ app.whenReady().then(async () => {
   handle(CHANNELS.loadSetup, value => loadSetup(getUserDatabase(), routeContextSchema.parse(value)));
   handle(CHANNELS.saveClassSetup, value => saveClassSetup(getUserDatabase(), classSetupSchema.parse(value), getOverview(reference!).datasetVersion));
   handle(CHANNELS.loadClassSetup, () => loadClassSetup(getUserDatabase()));
+  handle(CHANNELS.saveParalogueSetup, value => saveParalogueSetup(getUserDatabase(), paralogueSetupSchema.parse(value), getOverview(reference!).datasetVersion));
+  handle(CHANNELS.loadParalogueSetup, () => loadParalogueSetup(getUserDatabase()));
   handle(CHANNELS.listCharacterPlanning, () => listCharacterPlanning(getUserDatabase()));
   handle(CHANNELS.setCharacterShortlisted, value => setCharacterShortlisted(getUserDatabase(), setShortlistedRequestSchema.parse(value), getOverview(reference!).datasetVersion));
   handle(CHANNELS.setCharacterNote, value => setCharacterNote(getUserDatabase(), setCharacterNoteRequestSchema.parse(value), getOverview(reference!).datasetVersion));
@@ -118,7 +122,8 @@ app.whenReady().then(async () => {
           const character = await window.loom.character(roster[0].id);
           const characterClass = await window.loom.characterClass('commoner');
           const classLibrary = await window.loom.classLibrary();
-          if (!roster.length || !cai.length || character.id !== roster[0].id || !characterClass || classLibrary.classes.length !== overview.classCount || classLibrary.unlocks.length !== 19) throw new Error('Reference query failed');
+          const paralogueLibrary = await window.loom.paralogueLibrary();
+          if (!roster.length || !cai.length || character.id !== roster[0].id || !characterClass || classLibrary.classes.length !== overview.classCount || classLibrary.unlocks.length !== 19 || paralogueLibrary.paralogues.length !== overview.paralogueCount || overview.paralogueCount !== 9) throw new Error('Reference query failed');
           if (typeof window.require !== 'undefined') throw new Error('Node leaked into renderer');
           for (let attempt = 0; attempt < 40 && !document.querySelector('#result_count strong'); attempt++) await new Promise(resolve => setTimeout(resolve, 50));
           if (document.querySelector('#result_count strong')?.textContent !== String(overview.actOneCount)) throw new Error('Character Library did not render the Act 1 roster');
@@ -230,6 +235,24 @@ app.whenReady().then(async () => {
           const savedClassSetup = await window.loom.saveClassSetup(classSetup);
           const loadedClassSetup = await window.loom.loadClassSetup();
           if (savedClassSetup.datasetVersion !== overview.datasetVersion || !loadedClassSetup || loadedClassSetup.setup.tiers.length !== 6) throw new Error('Class Library setup save/load round trip failed');
+          const paralogueNavigation = [...document.querySelectorAll('.app_navigation button')].find(button => button.textContent?.trim() === 'Paralogue Library');
+          if (!(paralogueNavigation instanceof HTMLButtonElement)) throw new Error('Paralogue Library navigation missing');
+          paralogueNavigation.click();
+          for (let attempt = 0; attempt < 40 && !document.querySelector('#paralogue_result_count strong'); attempt++) await new Promise(resolve => setTimeout(resolve, 50));
+          if (document.querySelector('#paralogue_result_count strong')?.textContent !== String(overview.paralogueCount)) throw new Error('Paralogue Library did not render all nine paralogues');
+          const paralogueRouteHeaders = [...document.querySelectorAll('.paralogue_route_heading .route_title')].map(header => header.textContent?.trim() ?? '');
+          if (paralogueRouteHeaders.join('|') !== ['Cai', 'Dietrich', 'Theodora', 'Leda'].join('|')) throw new Error('Paralogue route columns are missing or out of order');
+          if (document.querySelectorAll('.paralogue_route_heading .paralogue_sort_shortcuts button').length !== 12) throw new Error('Paralogue timing sort shortcuts are incomplete');
+          const carriage = document.querySelector('[data-paralogue-id="secret-of-the-vanished-carriage"] .paralogue_name');
+          if (!(carriage instanceof HTMLButtonElement)) throw new Error('Paralogue row control missing');
+          carriage.click();
+          for (let attempt = 0; attempt < 40 && !document.querySelector('#paralogue_details'); attempt++) await new Promise(resolve => setTimeout(resolve, 50));
+          if (document.activeElement?.id !== 'paralogue_detail_name' || document.querySelectorAll('#paralogue_details .paralogue_route_card').length !== 4) throw new Error('Paralogue details did not open with four routes and heading focus');
+          if (!document.querySelector('#paralogue_details')?.textContent?.includes('Notable outcomes') || !document.querySelector('#paralogue_details')?.textContent?.includes('10/1–10/10') || document.querySelector('.paralogue_table')?.textContent?.includes('Renown')) throw new Error('Paralogue timing/outcome placement is incomplete');
+          const paralogueSetup = { version: 1, search: '', route: 'all', mode: 'all', filters: [], sorts: [{ field: 'name', direction: 'asc' }] };
+          const savedParalogueSetup = await window.loom.saveParalogueSetup(paralogueSetup);
+          const loadedParalogueSetup = await window.loom.loadParalogueSetup();
+          if (savedParalogueSetup.datasetVersion !== overview.datasetVersion || !loadedParalogueSetup || loadedParalogueSetup.setup.sorts[0]?.field !== 'name') throw new Error('Paralogue Library setup save/load round trip failed');
           const characterNavigation = [...document.querySelectorAll('.app_navigation button')].find(button => button.textContent?.trim() === 'Character Library');
           if (!(characterNavigation instanceof HTMLButtonElement)) throw new Error('Character Library navigation missing');
           characterNavigation.click();

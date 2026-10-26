@@ -942,6 +942,7 @@
           "requirements": [
             {
               "type": "paralogue",
+              "paralogue_id": "diversionary-tactics",
               "detail": "Leda"
             }
           ],
@@ -956,6 +957,7 @@
           "requirements": [
             {
               "type": "paralogue",
+              "paralogue_id": "diversionary-tactics",
               "detail": "Leda"
             }
           ],
@@ -1757,6 +1759,7 @@
           "requirements": [
             {
               "type": "paralogue",
+              "paralogue_id": "orchels-regret",
               "detail": "Orchel"
             }
           ],
@@ -1771,6 +1774,7 @@
           "requirements": [
             {
               "type": "paralogue",
+              "paralogue_id": "orchels-regret",
               "detail": "Orchel"
             }
           ],
@@ -1785,6 +1789,7 @@
           "requirements": [
             {
               "type": "paralogue",
+              "paralogue_id": "orchels-regret",
               "detail": "Orchel"
             }
           ],
@@ -1799,6 +1804,7 @@
           "requirements": [
             {
               "type": "paralogue",
+              "paralogue_id": "orchels-regret",
               "detail": "Orchel"
             }
           ],
@@ -2280,6 +2286,7 @@
           "requirements": [
             {
               "type": "paralogue",
+              "paralogue_id": "sealed-off-past",
               "detail": "Dietrich"
             },
             {
@@ -2544,6 +2551,7 @@
           "requirements": [
             {
               "type": "paralogue",
+              "paralogue_id": "friendly-match-with-brigids-king",
               "detail": "Bertrand"
             },
             {
@@ -6104,6 +6112,7 @@
           "requirements": [
             {
               "type": "paralogue",
+              "paralogue_id": "friendly-match-with-brigids-king",
               "detail": "Bertrand"
             }
           ],
@@ -6118,6 +6127,7 @@
           "requirements": [
             {
               "type": "paralogue",
+              "paralogue_id": "friendly-match-with-brigids-king",
               "detail": "Bertrand"
             }
           ],
@@ -6132,6 +6142,7 @@
           "requirements": [
             {
               "type": "paralogue",
+              "paralogue_id": "friendly-match-with-brigids-king",
               "detail": "Bertrand"
             }
           ],
@@ -6526,6 +6537,7 @@
           "requirements": [
             {
               "type": "paralogue",
+              "paralogue_id": "queen-of-the-erased",
               "detail": "Anatolia: Queen of the Erased (accept Oct 5-14; finish by Oct 17)"
             },
             {
@@ -6544,6 +6556,7 @@
           "requirements": [
             {
               "type": "paralogue",
+              "paralogue_id": "queen-of-the-erased",
               "detail": "Anatolia: Queen of the Erased (accept Oct 5-14; finish by Oct 17)"
             },
             {
@@ -7395,6 +7408,7 @@
           "requirements": [
             {
               "type": "paralogue",
+              "paralogue_id": "great-escape",
               "detail": "Cai: Great Escape (accept Oct 16-22)"
             },
             {
@@ -7413,6 +7427,7 @@
           "requirements": [
             {
               "type": "paralogue",
+              "paralogue_id": "great-escape",
               "detail": "Cai: Great Escape (accept Oct 16-22)"
             },
             {
@@ -7431,6 +7446,7 @@
           "requirements": [
             {
               "type": "paralogue",
+              "paralogue_id": "great-escape",
               "detail": "Cai: Great Escape (accept Oct 16-22)"
             },
             {
@@ -7897,6 +7913,7 @@
           "requirements": [
             {
               "type": "paralogue",
+              "paralogue_id": "secret-of-the-vanished-carriage",
               "detail": "Talimun: Secret of the Vanished Carriage (finish by Oct 12)"
             },
             {
@@ -7915,6 +7932,7 @@
           "requirements": [
             {
               "type": "paralogue",
+              "paralogue_id": "secret-of-the-vanished-carriage",
               "detail": "Talimun: Secret of the Vanished Carriage (finish by Oct 12)"
             },
             {
@@ -7933,6 +7951,7 @@
           "requirements": [
             {
               "type": "paralogue",
+              "paralogue_id": "secret-of-the-vanished-carriage",
               "detail": "Talimun: Secret of the Vanished Carriage (finish by Oct 12)"
             },
             {

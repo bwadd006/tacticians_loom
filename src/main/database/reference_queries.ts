@@ -1,7 +1,7 @@
 import type Database from 'better-sqlite3';
-import { REFERENCE_SCHEMA_VERSION, ROUTES, ROUTE_NAMES, type RouteContext } from '../../shared/catalog';
-import type { ClassLibraryData, ReferenceOverview } from '../../shared/api';
-import type { Character, CharacterClass, CertificationRules, ClassesDocument, ClassUnlock } from '../../shared/source_models';
+import { REFERENCE_SCHEMA_VERSION, ROUTES, ROUTE_NAMES, type Route, type RouteContext } from '../../shared/catalog';
+import type { ClassLibraryData, ParalogueLibraryData, ReferenceOverview } from '../../shared/api';
+import type { Character, CharacterClass, CertificationRules, ClassesDocument, ClassUnlock, Paralogue } from '../../shared/source_models';
 import { loadSqlite } from './sqlite';
 
 type JsonRow = { raw_json: string };
@@ -52,6 +52,16 @@ export function getClassLibrary(db: Database.Database): ClassLibraryData {
     .map(row => ({ classId: row.class_id, field: row.field, status: row.status }));
   return { classes, certificationRules, unlocks, restrictions: { verified: restrictions.global_character_class_restrictions_verified, note: restrictions.note }, conflicts };
 }
+export function getParalogueLibrary(db: Database.Database): ParalogueLibraryData {
+  const paralogues = (db.prepare('SELECT raw_json FROM paralogues ORDER BY name COLLATE NOCASE, id').all() as JsonRow[])
+    .map(row => JSON.parse(row.raw_json) as Paralogue);
+  const conflicts = (db.prepare("SELECT paralogue_id, raw_json FROM data_conflicts WHERE document_kind = 'paralogues' ORDER BY ordinal").all() as { paralogue_id: string; raw_json: string }[])
+    .map(row => {
+      const conflict = JSON.parse(row.raw_json) as { route_id: Route | null; field: string; status: string; details: string };
+      return { paralogueId: row.paralogue_id, routeId: conflict.route_id, field: conflict.field, status: conflict.status, details: conflict.details };
+    });
+  return { paralogues, conflicts };
+}
 export function getOverview(db: Database.Database): ReferenceOverview {
   const count = (sql: string) => (db.prepare(sql).get() as { count: number }).count;
   return {
@@ -60,6 +70,7 @@ export function getOverview(db: Database.Database): ReferenceOverview {
     characterCount: count('SELECT count(*) AS count FROM characters'),
     actOneCount: count('SELECT count(*) AS count FROM act_1_roster'),
     classCount: count('SELECT count(*) AS count FROM classes'),
+    paralogueCount: count('SELECT count(*) AS count FROM paralogues'),
     conflictCount: count('SELECT count(*) AS count FROM data_conflicts'),
     routes: ROUTES.map(id => ({ id, name: ROUTE_NAMES[id], count: listCharacters(db, id).length })),
   };

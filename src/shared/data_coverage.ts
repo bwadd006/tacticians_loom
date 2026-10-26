@@ -1,5 +1,5 @@
 import { AVAILABLE_STATUSES, ROUTES } from './catalog';
-import type { CharactersDocument, ClassesDocument } from './source_models';
+import type { CharactersDocument, ClassesDocument, ParaloguesDocument } from './source_models';
 
 export interface CoverageCount {
   known: number;
@@ -16,7 +16,7 @@ const count = (known: number, total: number): CoverageCount => ({
 const complete = (values: Record<string, number | null> | null) =>
   values !== null && Object.values(values).every(value => value !== null);
 
-export function buildDataCoverageReport(characters: CharactersDocument, classes: ClassesDocument) {
+export function buildDataCoverageReport(characters: CharactersDocument, classes: ClassesDocument, paralogues?: ParaloguesDocument) {
   const characterRecords = characters.characters;
   const classRecords = classes.classes;
   const abilities = characterRecords.flatMap(character => character.personal_abilities);
@@ -24,11 +24,15 @@ export function buildDataCoverageReport(characters: CharactersDocument, classes:
   const availableRecruitment = characterRecords.flatMap(character =>
     ROUTES.map(route => character.recruitment_by_route[route]),
   ).filter(record => (AVAILABLE_STATUSES as readonly string[]).includes(record.status));
+  const paralogueRecords = paralogues?.paralogues ?? [];
+  const paralogueAvailability = paralogueRecords.flatMap(paralogue => ROUTES.map(route => paralogue.route_availability[route]));
+  const availableParalogueRoutes = paralogueAvailability.filter(record => record.status === 'available');
 
   return {
     generated_from: {
       character_as_of_date: characters.metadata.as_of_date,
       class_as_of_date: classes.metadata.as_of_date,
+      paralogue_as_of_date: paralogues?.metadata.as_of_date ?? null,
     },
     characters: {
       records: characterRecords.length,
@@ -67,11 +71,24 @@ export function buildDataCoverageReport(characters: CharactersDocument, classes:
       missability: count(classes.route_unlocks.filter(unlock => unlock.missable !== null).length, classes.route_unlocks.length),
       cross_route_persistence: count(classes.route_unlocks.filter(unlock => unlock.persists_across_routes !== null).length, classes.route_unlocks.length),
     },
+    paralogues: {
+      records: paralogueRecords.length,
+      route_records: paralogueAvailability.length,
+      available_route_records: availableParalogueRoutes.length,
+      opening_chapter: count(availableParalogueRoutes.filter(record => record.earliest_chapter !== null).length, availableParalogueRoutes.length),
+      acceptance_windows: count(availableParalogueRoutes.filter(record => record.acceptance_windows.length > 0).length, availableParalogueRoutes.length),
+      effective_deadline: count(availableParalogueRoutes.filter(record => record.effective_completion_deadline !== null).length, availableParalogueRoutes.length),
+      missability: count(availableParalogueRoutes.filter(record => record.missable !== null).length, availableParalogueRoutes.length),
+      requirements: paralogueRecords.reduce((total, paralogue) => total + paralogue.requirements.length, 0),
+      outcomes: paralogueRecords.reduce((total, paralogue) => total + paralogue.outcomes.length, 0),
+    },
     provenance: {
       character_sources: characters.sources.length,
       class_sources: classes.sources.length,
       character_conflicts: characters.data_conflicts.length,
       class_conflicts: classes.data_conflicts.length,
+      paralogue_sources: paralogues?.sources.length ?? 0,
+      paralogue_conflicts: paralogues?.data_conflicts.length ?? 0,
     },
   };
 }

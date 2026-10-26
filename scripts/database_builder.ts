@@ -18,8 +18,9 @@ export function buildDatabase(appRoot: string, outputFile = path.join(appRoot, '
   const manifest = datasetManifestSchema.parse(JSON.parse(fs.readFileSync(path.join(appRoot, 'data/dataset_manifest.json'), 'utf8')));
   const characterText = fs.readFileSync(path.join(appRoot, 'data/source', manifest.source_files.characters), 'utf8');
   const classText = fs.readFileSync(path.join(appRoot, 'data/source', manifest.source_files.classes), 'utf8');
-  const { characters, classes } = validateSources(JSON.parse(characterText), JSON.parse(classText));
-  const hashes = { characters: hash(characterText), classes: hash(classText) };
+  const paralogueText = fs.readFileSync(path.join(appRoot, 'data/source', manifest.source_files.paralogues), 'utf8');
+  const { characters, classes, paralogues } = validateSources(JSON.parse(characterText), JSON.parse(classText), JSON.parse(paralogueText));
+  const hashes = { characters: hash(characterText), classes: hash(classText), paralogues: hash(paralogueText) };
   const Sqlite = loadSqlite();
   let previous: Record<string, unknown> | undefined;
   if (fs.existsSync(outputFile)) {
@@ -31,7 +32,7 @@ export function buildDatabase(appRoot: string, outputFile = path.join(appRoot, '
       previous = Object.fromEntries((old.prepare('SELECT kind, raw_json FROM source_documents').all() as { kind: string; raw_json: string }[]).map(r => [r.kind, JSON.parse(r.raw_json)]));
     } finally { old.close(); }
   }
-  const changeReport = compareSources(previous, { characters, classes });
+  const changeReport = compareSources(previous, { characters, classes, paralogues });
   const schema = fs.readFileSync(path.join(appRoot, 'database/reference_schema.sql'), 'utf8');
   fs.mkdirSync(path.dirname(outputFile), { recursive: true });
   const candidate = `${outputFile}.${randomUUID()}.tmp`;
@@ -60,6 +61,7 @@ export function buildDatabase(appRoot: string, outputFile = path.join(appRoot, '
       for (const [key, value] of Object.entries(buildMetadata)) insert('build_metadata', key, json(value));
       insert('source_documents', 'characters', manifest.source_files.characters, hashes.characters, characters.metadata.schema_version, characterText);
       insert('source_documents', 'classes', manifest.source_files.classes, hashes.classes, classes.metadata.schema_version, classText);
+      insert('source_documents', 'paralogues', manifest.source_files.paralogues, hashes.paralogues, paralogues.metadata.schema_version, paralogueText);
       ROUTES.forEach(id => insert('routes', id, ROUTE_NAMES[id], 1));
       STATS.forEach((id, index) => insert('stats', id, index));
       SKILLS.forEach(id => insert('skills', id));
@@ -93,9 +95,37 @@ export function buildDatabase(appRoot: string, outputFile = path.join(appRoot, '
         insert('route_unlocks', u.id, u.route_id, u.part, u.earliest_chapter, json(u));
         for (const classId of u.unlock_class_ids) insert('class_unlocks', classId, u.id);
       }
-      for (const [kind, doc] of Object.entries({ characters, classes })) {
+      for (const paralogue of paralogues.paralogues) {
+        insert('paralogues', paralogue.id, paralogue.name, paralogue.associated_character_name, paralogue.associated_character_id, paralogue.verification_status, json(paralogue));
+        for (const route of ROUTES) {
+          const availability = paralogue.route_availability[route];
+          insert('paralogue_availability', paralogue.id, route, availability.status, availability.earliest_chapter,
+            availability.listed_completion_deadline?.month ?? null, availability.listed_completion_deadline?.day ?? null,
+            availability.effective_completion_deadline?.month ?? null, availability.effective_completion_deadline?.day ?? null,
+            availability.forced_start_date?.month ?? null, availability.forced_start_date?.day ?? null,
+            boolean(availability.missable), availability.verification_status, json(availability));
+          availability.acceptance_windows.forEach((window, index) => insert('paralogue_acceptance_windows', paralogue.id, route, index,
+            window.start?.month ?? null, window.start?.day ?? null, window.end?.month ?? null, window.end?.day ?? null, json(window)));
+        }
+      }
+      // All canonical paralogues exist before prerequisite foreign keys are inserted.
+      for (const paralogue of paralogues.paralogues) {
+        paralogue.requirements.forEach((requirement, index) => {
+          insert('paralogue_requirements', paralogue.id, index, requirement.type, requirement.character_id, requirement.paralogue_id, json(requirement));
+          requirement.route_ids.forEach(route => insert('paralogue_requirement_routes', paralogue.id, index, route));
+        });
+        paralogue.outcomes.forEach((outcome, index) => {
+          insert('paralogue_outcomes', paralogue.id, index, outcome.type, outcome.character_id, outcome.class_id, outcome.name, outcome.quantity, outcome.verification_status, json(outcome));
+          outcome.route_ids.forEach(route => insert('paralogue_outcome_routes', paralogue.id, index, route));
+        });
+      }
+      for (const [kind, doc] of Object.entries({ characters, classes, paralogues })) {
         doc.sources.forEach((s, i) => insert('source_references', kind, i, s.name, s.url, json(s)));
-        doc.data_conflicts.forEach((c, i) => insert('data_conflicts', kind, i, typeof c.character_id === 'string' ? c.character_id : null, typeof c.class_id === 'string' ? c.class_id : null, c.field, c.status, json(c)));
+        doc.data_conflicts.forEach((c, i) => insert('data_conflicts', kind, i,
+          'character_id' in c && typeof c.character_id === 'string' ? c.character_id : null,
+          'class_id' in c && typeof c.class_id === 'string' ? c.class_id : null,
+          'paralogue_id' in c && typeof c.paralogue_id === 'string' ? c.paralogue_id : null,
+          c.field, c.status, json(c)));
       }
     })();
     const report = validateDatabase(database);
@@ -112,7 +142,7 @@ export function buildDatabase(appRoot: string, outputFile = path.join(appRoot, '
 
 function compareSources(previous: Record<string, unknown> | undefined, next: Record<string, unknown>) {
   const report: Record<string, unknown> = {};
-  for (const kind of ['characters', 'classes']) {
+  for (const kind of ['characters', 'classes', 'paralogues']) {
     const oldDoc = previous?.[kind] as Record<string, unknown> | undefined;
     const newDoc = next[kind] as Record<string, unknown>;
     const oldRows = new Map(((oldDoc?.[kind] ?? []) as { id: string }[]).map(r => [r.id, r]));

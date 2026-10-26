@@ -85,13 +85,81 @@ export const classesDocumentSchema = z.object({
   character_restrictions: z.object({ global_character_class_restrictions_verified: z.boolean(), exceptions: z.array(object), note: z.string() }).passthrough(),
   classes: z.array(classSchema).min(1),
 }).passthrough();
+
+export const gameDateSchema = z.object({
+  month: z.number().int().min(1).max(12), day: z.number().int().min(1).max(31),
+}).strict();
+export const paralogueVerificationSchema = z.enum(['confirmed', 'reported', 'conflicting', 'unknown']);
+export const paralogueAvailabilityStatusSchema = z.enum(['available', 'unavailable', 'unknown']);
+export const paralogueRequirementTypeSchema = z.enum([
+  'required_recruited_character', 'required_participant', 'required_support',
+  'prerequisite_paralogue', 'prerequisite_quest', 'story_trigger',
+  'location_or_npc', 'other',
+]);
+export const paralogueOutcomeTypeSchema = z.enum([
+  'recruited_character', 'class_unlock', 'unique_equipment', 'battalion',
+  'ability', 'currency', 'renown', 'other',
+]);
+const sourceKeys = z.array(id).min(1).refine(values => new Set(values).size === values.length, 'Source keys must be distinct');
+const routeIds = z.array(z.enum(ROUTES)).min(1).refine(values => new Set(values).size === values.length, 'Route IDs must be distinct');
+export const paralogueAvailabilitySchema = z.object({
+  status: paralogueAvailabilityStatusSchema,
+  earliest_chapter: threshold,
+  acceptance_windows: z.array(z.object({ start: gameDateSchema.nullable(), end: gameDateSchema.nullable(), note: z.string().nullable() }).strict()),
+  listed_completion_deadline: gameDateSchema.nullable(),
+  effective_completion_deadline: gameDateSchema.nullable(),
+  forced_start_date: gameDateSchema.nullable(),
+  missable: z.boolean().nullable(), trigger: z.string().nullable(),
+  verification_status: paralogueVerificationSchema, source_keys: sourceKeys,
+  note: z.string().nullable(),
+}).strict();
+export const paralogueSchema = z.object({
+  id, name: z.string().min(1), associated_character_name: z.string().min(1),
+  associated_character_id: id.nullable(), verification_status: paralogueVerificationSchema,
+  source_keys: sourceKeys,
+  route_availability: z.record(z.enum(ROUTES), paralogueAvailabilitySchema),
+  requirements: z.array(z.object({
+    type: paralogueRequirementTypeSchema, text: z.string().min(1), route_ids: routeIds,
+    character_id: id.nullable(), paralogue_id: id.nullable(), support_threshold: threshold,
+    verification_status: paralogueVerificationSchema, source_keys: sourceKeys,
+  }).strict()),
+  outcomes: z.array(z.object({
+    type: paralogueOutcomeTypeSchema, name: z.string().min(1), quantity: z.number().int().positive().nullable(),
+    text: z.string().min(1), route_ids: routeIds, character_id: id.nullable(), class_id: id.nullable(),
+    condition: z.string().nullable(), verification_status: paralogueVerificationSchema, source_keys: sourceKeys,
+  }).strict()),
+  notes: z.array(z.string()),
+}).strict();
+export const paraloguesDocumentSchema = z.object({
+  metadata: z.object({
+    schema_version: z.literal('1.0.0'), as_of_date: z.string(), route_ids: z.array(z.enum(ROUTES)),
+    paralogue_count: z.number().int().nonnegative(),
+    route_available_counts: z.record(z.enum(ROUTES), z.number().int().nonnegative()),
+  }).strict(),
+  sources: z.array(z.object({ key: id, name: z.string().min(1), url: z.string().url(), accessed_at: z.string() }).strict()),
+  data_conflicts: z.array(z.object({
+    paralogue_id: id, route_id: z.enum(ROUTES).nullable(), field: z.string().min(1),
+    status: z.string().min(1), details: z.string().min(1), source_keys: sourceKeys,
+  }).strict()),
+  paralogues: z.array(paralogueSchema),
+}).strict();
 export const datasetManifestSchema = z.object({
   dataset_version: z.string().min(1), change_summary: z.string().min(1),
-  source_files: z.object({ characters: z.literal('fire_emblem_fortunes_weave_characters.json'), classes: z.literal('fire_emblem_fortunes_weave_classes.json') }),
+  source_files: z.object({
+    characters: z.literal('fire_emblem_fortunes_weave_characters.json'),
+    classes: z.literal('fire_emblem_fortunes_weave_classes.json'),
+    paralogues: z.literal('fire_emblem_fortunes_weave_paralogues.json'),
+  }),
 });
 export type Character = z.infer<typeof characterSchema>;
 export type CharacterClass = z.infer<typeof classSchema>;
 export type CharactersDocument = z.infer<typeof charactersDocumentSchema>;
 export type ClassesDocument = z.infer<typeof classesDocumentSchema>;
+export type GameDate = z.infer<typeof gameDateSchema>;
+export type Paralogue = z.infer<typeof paralogueSchema>;
+export type ParaloguesDocument = z.infer<typeof paraloguesDocumentSchema>;
+export type ParalogueAvailability = z.infer<typeof paralogueAvailabilitySchema>;
+export type ParalogueRequirement = Paralogue['requirements'][number];
+export type ParalogueOutcome = Paralogue['outcomes'][number];
 export type CertificationRules = ClassesDocument['certification_rules'];
 export type ClassUnlock = ClassesDocument['route_unlocks'][number];

@@ -1,8 +1,8 @@
 # Tactician's Loom
 
 Standalone Electron/React/TypeScript desktop application. The reference-data
-foundation, Character Library, Class Library, and Shortlist & Compare workspace
-are implemented. The Character Library provides its route selector, growth
+foundation, Character Library, Class Library, Shortlist & Compare workspace,
+and Paralogue Library are implemented. The Character Library provides its route selector, growth
 table, filters, prioritized sorting,
 details panel and saved per-route setups. Its ordered controls can sort by
 Chapter, Renown, or Support independently for every route even in All Routes,
@@ -16,10 +16,15 @@ notes, a temporary Character Library shortlist scope, a sortable compact list,
 and an unlimited session comparison with focus fields, collapsible evidence,
 route focus, and accessible column reordering. It compares growths, affinities,
 personal abilities, and four-route recruitment facts without scoring candidates.
+The Paralogue Library compares all nine reviewed Act 1 paralogues in permanent
+Cai, Dietrich, Theodora, and Leda columns, including chapters, disjoint
+acceptance windows, deadlines, forced starts, and requirements. Its detail panel
+shows full route facts, linked records, notable outcomes, and visible conflicts;
+one global browsing setup is saved without completion or shortlist state.
 Portraits and skill affinity icons are bundled game artwork (see the asset
 manifest for attribution and the few documented gaps and derived recreations).
 
-The current interface uses desktop navigation among all three planning views and a
+The current interface uses desktop navigation among all four planning views and a
 responsive deep-dark layout with a 16-pixel text
 baseline and enlarged local artwork. Its table always ends with recruitment for
 Cai, Dietrich, Theodora, and Leda. Recruitable/tutorial entries show Chapter,
@@ -64,7 +69,7 @@ Run packaging and runtime checks on Windows before distributing a Windows build.
 Installer formats and automatic updates are deferred.
 
 The executable accepts `--smoke-test` to exercise the packaged renderer, preload,
-IPC, both libraries' reference queries, saved-setup and shortlist/note round
+IPC, all libraries' reference queries, saved-setup and shortlist/note round
 trips, comparison rendering, bundled-image loading,
 print `SMOKE_PASSED` and exit. A graphical desktop is normally required; a CI
 environment may supply a virtual display.
@@ -89,18 +94,20 @@ environment may supply a virtual display.
 - Runtime reference access is read-only. Player saves (library setups,
   shortlist membership, and notes) use a separate `user_data.sqlite` in the
   operating system's application-data directory. Active comparison selection
-  and presentation focus are session-only.
+  and open detail-panel selection are session-only. Paralogue progress is not
+  tracked.
 
 Design documents and agent instructions live outside this application directory.
 
 ## Roadmap
 
-The recommended next feature is cross-route recruitment planning. Later phases
-are:
+The recommended next feature is the cross-route recruitment planner. Later
+phases are:
 
-1. Saved route team building with optional roles, classes, and notes.
-2. Coverage, overlap, and player-directed swap comparison.
-3. Windows validation, migrations, export/import, and release hardening.
+1. Cross-route recruitment planning.
+2. Saved route team building with optional roles, classes, and notes.
+3. Coverage, overlap, and player-directed swap comparison.
+4. Windows validation, migrations, export/import, and release hardening.
 
 These are planned phases, not implemented features. Act 2 mechanics, repeated
 route history, automatic team optimization, combat simulation, cloud sync, and

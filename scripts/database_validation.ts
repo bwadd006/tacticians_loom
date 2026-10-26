@@ -3,7 +3,7 @@ import { createHash } from 'node:crypto';
 import type Database from 'better-sqlite3';
 import { REFERENCE_SCHEMA_VERSION, ROUTES, STATS } from '../src/shared/catalog';
 import { validateSources } from '../src/shared/validate_sources';
-import { getCharacter, getClass, getOverview, listCharacters } from '../src/main/database/reference_queries';
+import { getCharacter, getClass, getOverview, getParalogueLibrary, listCharacters } from '../src/main/database/reference_queries';
 
 export function validateDatabase(db: Database.Database) {
   assert.equal(db.pragma('user_version', { simple: true }), REFERENCE_SCHEMA_VERSION);
@@ -14,7 +14,7 @@ export function validateDatabase(db: Database.Database) {
     assert.equal(createHash('sha256').update(row.raw_json).digest('hex'), row.sha256);
     return [row.kind, JSON.parse(row.raw_json)];
   }));
-  const { characters, classes } = validateSources(docs.characters, docs.classes);
+  const { characters, classes, paralogues } = validateSources(docs.characters, docs.classes, docs.paralogues);
   const count = (table: string) => (db.prepare(`SELECT count(*) AS n FROM ${table}`).get() as { n: number }).n;
   assert.equal(count('characters'), characters.characters.length);
   assert.equal(count('classes'), classes.classes.length);
@@ -23,7 +23,12 @@ export function validateDatabase(db: Database.Database) {
   assert.equal(count('class_growths'), classes.classes.length * STATS.length);
   assert.equal(count('personal_abilities'), characters.characters.reduce((n, c) => n + c.personal_abilities.length, 0));
   assert.equal(count('route_unlocks'), classes.route_unlocks.length);
-  assert.equal(count('data_conflicts'), characters.data_conflicts.length + classes.data_conflicts.length);
+  assert.equal(count('paralogues'), paralogues.paralogues.length);
+  assert.equal(count('paralogue_availability'), paralogues.paralogues.length * ROUTES.length);
+  assert.equal(count('paralogue_acceptance_windows'), paralogues.paralogues.reduce((total, paralogue) => total + Object.values(paralogue.route_availability).reduce((sum, availability) => sum + availability.acceptance_windows.length, 0), 0));
+  assert.equal(count('paralogue_requirements'), paralogues.paralogues.reduce((total, paralogue) => total + paralogue.requirements.length, 0));
+  assert.equal(count('paralogue_outcomes'), paralogues.paralogues.reduce((total, paralogue) => total + paralogue.outcomes.length, 0));
+  assert.equal(count('data_conflicts'), characters.data_conflicts.length + classes.data_conflicts.length + paralogues.data_conflicts.length);
   assert.equal(count('recruitment_requirements'), characters.characters.reduce((n, c) => n + Object.values(c.recruitment_by_route).reduce((sum, r) => sum + r.requirements.length, 0), 0));
   const growth = db.prepare('SELECT personal, effective_personal FROM character_growths WHERE character_id = ? AND stat_id = ?');
   const classGrowth = db.prepare('SELECT modifier FROM class_growths WHERE class_id = ? AND stat_id = ?');
@@ -37,5 +42,6 @@ export function validateDatabase(db: Database.Database) {
   }
   for (const route of ROUTES) assert.equal(listCharacters(db, route).length, characters.metadata.part_1_recruitment_records_by_route[route]);
   assert.equal(listCharacters(db, 'all').length, characters.characters.filter(c => c.flags.recruitable_or_joins_in_part_1).length);
+  assert.deepEqual(getParalogueLibrary(db).paralogues, [...paralogues.paralogues].sort((a, b) => a.name.localeCompare(b.name, 'en')));
   return { validation: 'passed', overview: getOverview(db) };
 }

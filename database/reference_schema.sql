@@ -1,9 +1,9 @@
 PRAGMA foreign_keys = ON;
-PRAGMA user_version = 1;
+PRAGMA user_version = 2;
 
 CREATE TABLE build_metadata (key TEXT PRIMARY KEY, value_json TEXT NOT NULL CHECK(json_valid(value_json))) STRICT;
 CREATE TABLE source_documents (
-  kind TEXT PRIMARY KEY CHECK(kind IN ('characters', 'classes')),
+  kind TEXT PRIMARY KEY CHECK(kind IN ('characters', 'classes', 'paralogues')),
   filename TEXT NOT NULL, sha256 TEXT NOT NULL, schema_version TEXT NOT NULL,
   raw_json TEXT NOT NULL CHECK(json_valid(raw_json))
 ) STRICT;
@@ -91,6 +91,60 @@ CREATE TABLE class_unlocks (
   class_id TEXT NOT NULL REFERENCES classes(id), unlock_id TEXT NOT NULL REFERENCES route_unlocks(id),
   PRIMARY KEY(class_id, unlock_id)
 ) STRICT;
+CREATE TABLE paralogues (
+  id TEXT PRIMARY KEY, name TEXT NOT NULL,
+  associated_character_name TEXT NOT NULL,
+  associated_character_id TEXT REFERENCES characters(id),
+  verification_status TEXT NOT NULL CHECK(verification_status IN ('confirmed','reported','conflicting','unknown')),
+  raw_json TEXT NOT NULL CHECK(json_valid(raw_json))
+) STRICT;
+CREATE INDEX paralogues_by_name ON paralogues(name COLLATE NOCASE, id);
+CREATE INDEX paralogues_by_character ON paralogues(associated_character_id, name COLLATE NOCASE);
+CREATE TABLE paralogue_availability (
+  paralogue_id TEXT NOT NULL REFERENCES paralogues(id), route_id TEXT NOT NULL REFERENCES routes(id),
+  status TEXT NOT NULL CHECK(status IN ('available','unavailable','unknown')),
+  earliest_chapter INTEGER,
+  listed_deadline_month INTEGER, listed_deadline_day INTEGER,
+  effective_deadline_month INTEGER, effective_deadline_day INTEGER,
+  forced_start_month INTEGER, forced_start_day INTEGER,
+  missable INTEGER CHECK(missable IN (0,1)),
+  verification_status TEXT NOT NULL CHECK(verification_status IN ('confirmed','reported','conflicting','unknown')),
+  raw_json TEXT NOT NULL CHECK(json_valid(raw_json)),
+  PRIMARY KEY(paralogue_id, route_id)
+) STRICT;
+CREATE INDEX paralogue_availability_by_route ON paralogue_availability(route_id, status, earliest_chapter, effective_deadline_month, effective_deadline_day, paralogue_id);
+CREATE TABLE paralogue_acceptance_windows (
+  paralogue_id TEXT NOT NULL, route_id TEXT NOT NULL, ordinal INTEGER NOT NULL,
+  start_month INTEGER, start_day INTEGER, end_month INTEGER, end_day INTEGER,
+  raw_json TEXT NOT NULL CHECK(json_valid(raw_json)),
+  PRIMARY KEY(paralogue_id, route_id, ordinal),
+  FOREIGN KEY(paralogue_id, route_id) REFERENCES paralogue_availability(paralogue_id, route_id)
+) STRICT;
+CREATE TABLE paralogue_requirements (
+  paralogue_id TEXT NOT NULL REFERENCES paralogues(id), ordinal INTEGER NOT NULL,
+  type TEXT NOT NULL, character_id TEXT REFERENCES characters(id),
+  prerequisite_paralogue_id TEXT REFERENCES paralogues(id),
+  raw_json TEXT NOT NULL CHECK(json_valid(raw_json)),
+  PRIMARY KEY(paralogue_id, ordinal)
+) STRICT;
+CREATE TABLE paralogue_requirement_routes (
+  paralogue_id TEXT NOT NULL, requirement_ordinal INTEGER NOT NULL, route_id TEXT NOT NULL REFERENCES routes(id),
+  PRIMARY KEY(paralogue_id, requirement_ordinal, route_id),
+  FOREIGN KEY(paralogue_id, requirement_ordinal) REFERENCES paralogue_requirements(paralogue_id, ordinal)
+) STRICT;
+CREATE TABLE paralogue_outcomes (
+  paralogue_id TEXT NOT NULL REFERENCES paralogues(id), ordinal INTEGER NOT NULL,
+  type TEXT NOT NULL, character_id TEXT REFERENCES characters(id), class_id TEXT REFERENCES classes(id),
+  name TEXT NOT NULL, quantity INTEGER,
+  verification_status TEXT NOT NULL CHECK(verification_status IN ('confirmed','reported','conflicting','unknown')),
+  raw_json TEXT NOT NULL CHECK(json_valid(raw_json)),
+  PRIMARY KEY(paralogue_id, ordinal)
+) STRICT;
+CREATE TABLE paralogue_outcome_routes (
+  paralogue_id TEXT NOT NULL, outcome_ordinal INTEGER NOT NULL, route_id TEXT NOT NULL REFERENCES routes(id),
+  PRIMARY KEY(paralogue_id, outcome_ordinal, route_id),
+  FOREIGN KEY(paralogue_id, outcome_ordinal) REFERENCES paralogue_outcomes(paralogue_id, ordinal)
+) STRICT;
 CREATE TABLE source_references (
   document_kind TEXT NOT NULL REFERENCES source_documents(kind), ordinal INTEGER NOT NULL,
   name TEXT NOT NULL, url TEXT NOT NULL, raw_json TEXT NOT NULL CHECK(json_valid(raw_json)),
@@ -99,6 +153,7 @@ CREATE TABLE source_references (
 CREATE TABLE data_conflicts (
   document_kind TEXT NOT NULL REFERENCES source_documents(kind), ordinal INTEGER NOT NULL,
   character_id TEXT REFERENCES characters(id), class_id TEXT REFERENCES classes(id),
+  paralogue_id TEXT REFERENCES paralogues(id),
   field TEXT NOT NULL, status TEXT NOT NULL, raw_json TEXT NOT NULL CHECK(json_valid(raw_json)),
   PRIMARY KEY(document_kind, ordinal)
 ) STRICT;

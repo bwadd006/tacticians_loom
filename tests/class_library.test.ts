@@ -78,7 +78,7 @@ after(() => { if (temporary) fs.rmSync(temporary, { recursive: true, force: true
 test('global Class Library setup round-trips independently from Character Library setups', () => {
   const db = openUserDatabase(path.join(temporary, 'round_trip.sqlite'));
   try {
-    assert.equal(db.pragma('user_version', { simple: true }), 3);
+    assert.equal(db.pragma('user_version', { simple: true }), 4);
     assert.equal(loadClassSetup(db), null);
     const custom: ClassLibrarySetup = { ...defaultClassSetup(), search: 'knight', tiers: ['advanced', 'master'], filters: [{ kind: 'movement', tag: 'cavalry' }], sorts: [{ field: 'speed', direction: 'desc' }] };
     saveSetup(db, 'cai', defaultSetup(), 'dataset-v1');
@@ -104,7 +104,7 @@ test('version-one user databases migrate without changing Character Library save
   legacy.close();
   const migrated = openUserDatabase(file);
   try {
-    assert.equal(migrated.pragma('user_version', { simple: true }), 3);
+    assert.equal(migrated.pragma('user_version', { simple: true }), 4);
     assert.deepEqual(loadSetup(migrated, 'leda')?.setup, defaultSetup());
     assert.equal(loadClassSetup(migrated), null);
   } finally { migrated.close(); }
