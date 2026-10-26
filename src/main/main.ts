@@ -1,18 +1,50 @@
 import path from 'node:path';
+import fs from 'node:fs';
+import os from 'node:os';
+import { spawn } from 'node:child_process';
 import { app, BrowserWindow, dialog, ipcMain } from 'electron';
 import type Database from 'better-sqlite3';
 import { CHANNELS } from '../shared/api';
 import { ROUTES, type RouteContext } from '../shared/catalog';
 import { getCharacter, getClass, getClassLibrary, getOverview, listCharacters, openReference } from './database/reference_queries';
-import { loadClassSetup, loadSetup, openUserDatabase, saveClassSetup, saveSetup } from './database/user_database';
+import { clearCharacterNote, listCharacterPlanning, loadClassSetup, loadSetup, openUserDatabase, saveClassSetup, saveSetup, setCharacterNote, setCharacterShortlisted } from './database/user_database';
 import { z } from 'zod';
 import { routeContextSchema, setupSchema } from '../shared/library_setup';
 import { classSetupSchema } from '../shared/class_library_setup';
+import { setCharacterNoteRequestSchema, setShortlistedRequestSchema } from '../shared/character_planning';
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
 let reference: Database.Database | undefined;
 let userDatabase: Database.Database | undefined;
+const smokeTest = process.argv.includes('--smoke-test');
+const smokeUserData = smokeTest ? fs.mkdtempSync(path.join(os.tmpdir(), 'tacticians_loom_smoke_')) : undefined;
+if (smokeUserData) {
+  app.setPath('userData', smokeUserData);
+  // Electron may write session files after its quit event. A detached Node-mode
+  // helper waits for this process to end before removing the isolated profile.
+  const cleanupScript = `
+    const fs = require('node:fs');
+    const target = process.argv[1];
+    const parentPid = Number(process.argv[2]);
+    function cleanAfterExit() {
+      try { process.kill(parentPid, 0); setTimeout(cleanAfterExit, 50); }
+      catch { fs.rmSync(target, { recursive: true, force: true }); }
+    }
+    cleanAfterExit();
+  `;
+  const cleanup = spawn(process.execPath, ['-e', cleanupScript, smokeUserData, String(process.pid)], {
+    detached: true, stdio: 'ignore', windowsHide: true,
+    env: { ...process.env, ELECTRON_RUN_AS_NODE: '1' },
+  });
+  cleanup.unref();
+}
+function closeDatabases() {
+  reference?.close();
+  userDatabase?.close();
+  reference = undefined;
+  userDatabase = undefined;
+}
 function getUserDatabase() {
   return userDatabase ??= openUserDatabase(path.join(app.getPath('userData'), 'user_data.sqlite'));
 }
@@ -68,9 +100,13 @@ app.whenReady().then(async () => {
   handle(CHANNELS.loadSetup, value => loadSetup(getUserDatabase(), routeContextSchema.parse(value)));
   handle(CHANNELS.saveClassSetup, value => saveClassSetup(getUserDatabase(), classSetupSchema.parse(value), getOverview(reference!).datasetVersion));
   handle(CHANNELS.loadClassSetup, () => loadClassSetup(getUserDatabase()));
+  handle(CHANNELS.listCharacterPlanning, () => listCharacterPlanning(getUserDatabase()));
+  handle(CHANNELS.setCharacterShortlisted, value => setCharacterShortlisted(getUserDatabase(), setShortlistedRequestSchema.parse(value), getOverview(reference!).datasetVersion));
+  handle(CHANNELS.setCharacterNote, value => setCharacterNote(getUserDatabase(), setCharacterNoteRequestSchema.parse(value), getOverview(reference!).datasetVersion));
+  handle(CHANNELS.clearCharacterNote, value => clearCharacterNote(getUserDatabase(), validateId(value), getOverview(reference!).datasetVersion));
   const window = createWindow();
   // Bounded integration check uses the actual packaged renderer, preload, IPC and SQLite.
-  if (process.argv.includes('--smoke-test')) {
+  if (smokeTest) {
     window.webContents.on('console-message', event => console.error('RENDERER:', event.message));
     const timeout = setTimeout(() => { console.error('SMOKE_FAILED: renderer timed out'); app.exit(1); }, 20000);
     window.webContents.once('did-finish-load', async () => {
@@ -132,7 +168,7 @@ app.whenReady().then(async () => {
           for (let attempt = 0; attempt < 40 && !document.querySelector('.sort_summary')?.textContent?.includes('1. Theodora — Chapter ↑'); attempt++) await new Promise(resolve => setTimeout(resolve, 50));
           const theodoraRenown = document.querySelector('[aria-label="Sort by Theodora Renown"]');
           if (!(theodoraRenown instanceof HTMLButtonElement)) throw new Error('Recruitment Renown header sort shortcut is missing');
-          theodoraRenown.dispatchEvent(new MouseEvent('click', { bubbles: true, shiftKey: true }));
+          theodoraRenown.click();
           for (let attempt = 0; attempt < 40 && !document.querySelector('.sort_summary')?.textContent?.includes('2. Theodora — Renown ↑'); attempt++) await new Promise(resolve => setTimeout(resolve, 50));
           const recruitmentSortSummary = document.querySelector('.sort_summary')?.textContent ?? '';
           if (!recruitmentSortSummary.includes('1. Theodora — Chapter ↑') || !recruitmentSortSummary.includes('2. Theodora — Renown ↑') || !recruitmentSortSummary.includes('3. Name ↑')) throw new Error('Recruitment header shortcuts did not create the expected priority order: ' + recruitmentSortSummary);
@@ -199,17 +235,51 @@ app.whenReady().then(async () => {
           characterNavigation.click();
           const retainedSearch = document.querySelector('input[aria-label="Search characters"]');
           if (!(retainedSearch instanceof HTMLInputElement) || retainedSearch.value !== '__no_character_matches_this__') throw new Error('Library navigation discarded the unsaved Character Library draft');
+          valueSetter?.call(retainedSearch, 'Alexandra');
+          retainedSearch.dispatchEvent(new Event('input', { bubbles: true }));
+          for (let attempt = 0; attempt < 40 && !document.querySelector('[data-character-id="alexandra"] .shortlist_toggle'); attempt++) await new Promise(resolve => setTimeout(resolve, 50));
+          const shortlistToggle = document.querySelector('[data-character-id="alexandra"] .shortlist_toggle');
+          if (!(shortlistToggle instanceof HTMLButtonElement)) throw new Error('Character shortlist control missing');
+          if (shortlistToggle.getAttribute('aria-pressed') !== 'true') shortlistToggle.click();
+          for (let attempt = 0; attempt < 40 && shortlistToggle.getAttribute('aria-pressed') !== 'true'; attempt++) await new Promise(resolve => setTimeout(resolve, 50));
+          if (shortlistToggle.getAttribute('aria-pressed') !== 'true') throw new Error('Character shortlist state did not update');
+          const shortlistNavigation = [...document.querySelectorAll('.app_navigation button')].find(button => button.textContent?.startsWith('Shortlist & Compare'));
+          if (!(shortlistNavigation instanceof HTMLButtonElement)) throw new Error('Shortlist navigation missing');
+          shortlistNavigation.click();
+          for (let attempt = 0; attempt < 40 && !document.querySelector('[data-shortlist-id="alexandra"]'); attempt++) await new Promise(resolve => setTimeout(resolve, 50));
+          const shortlistRow = document.querySelector('[data-shortlist-id="alexandra"]');
+          if (!shortlistRow) throw new Error('Shortlisted character did not render');
+          const note = shortlistRow.querySelector('textarea');
+          if (!(note instanceof HTMLTextAreaElement)) throw new Error('Character note editor missing');
+          const noteSetter = Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value')?.set;
+          noteSetter?.call(note, 'Smoke comparison note');
+          note.dispatchEvent(new Event('input', { bubbles: true }));
+          note.dispatchEvent(new FocusEvent('blur', { bubbles: true }));
+          for (let attempt = 0; attempt < 40 && !(await window.loom.listCharacterPlanning()).some(record => record.characterId === 'alexandra' && record.note === 'Smoke comparison note'); attempt++) await new Promise(resolve => setTimeout(resolve, 50));
+          const compareChoice = shortlistRow.querySelector('input[type="checkbox"]');
+          if (!(compareChoice instanceof HTMLInputElement)) throw new Error('Comparison selection control missing');
+          compareChoice.click();
+          for (let attempt = 0; attempt < 40 && !document.querySelector('.comparison_table'); attempt++) await new Promise(resolve => setTimeout(resolve, 50));
+          const comparison = document.querySelector('.comparison_table');
+          if (!comparison || !comparison.textContent?.includes('Alexandra') || !comparison.textContent?.includes('Personal growths') || !comparison.textContent?.includes('Skill affinities') || !comparison.textContent?.includes('Recruitment by route')) throw new Error('Comparison matrix is incomplete');
+          if (comparison.textContent?.includes('Class growth')) throw new Error('Deferred class planning leaked into character comparison');
+          await window.loom.setCharacterShortlisted('alexandra', false);
+          const retainedPlanning = (await window.loom.listCharacterPlanning()).find(record => record.characterId === 'alexandra');
+          if (retainedPlanning?.shortlisted !== false || retainedPlanning.note !== 'Smoke comparison note') throw new Error('Unshortlisting did not retain the character note');
           return { overview, rosterCount: roster.length, classCount: classLibrary.classes.length, title: document.title };
         })()`);
         console.log('SMOKE_PASSED', JSON.stringify(result));
-        clearTimeout(timeout); app.quit();
+        clearTimeout(timeout);
+        window.destroy();
+        closeDatabases();
+        app.exit(0);
       } catch (error) { console.error('SMOKE_FAILED', error); clearTimeout(timeout); app.exit(1); }
     });
   }
 }).catch(error => {
   console.error(error);
-  if (!process.argv.includes('--smoke-test')) dialog.showErrorBox("Tactician's Loom could not start", String(error));
+  if (!smokeTest) dialog.showErrorBox("Tactician's Loom could not start", String(error));
   app.exit(1);
 });
 app.on('window-all-closed', () => app.quit());
-app.on('will-quit', () => { reference?.close(); userDatabase?.close(); });
+app.on('will-quit', closeDatabases);

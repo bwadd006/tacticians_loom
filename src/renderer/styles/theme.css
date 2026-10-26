@@ -70,7 +70,7 @@ small, .hint { font-size: 14px; color: var(--muted); }
 .warning { color: var(--warning); padding: 8px 0; }
 .feedback { color: var(--positive); }
 .eyebrow { color: var(--accent); font-size: 12px; letter-spacing: .13em; text-transform: uppercase; margin: 0; }
-.app_header { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
+.app_header { display: flex; align-items: center; justify-content: space-between; gap: 14px; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
 .chapter_marker { color: var(--accent); border-bottom: 2px solid var(--accent); padding: 12px 0; }
 .button_row { display: flex; flex-wrap: wrap; gap: 8px; }
 .visually_hidden { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }

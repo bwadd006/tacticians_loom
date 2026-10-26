@@ -23,7 +23,7 @@ export function ClassTable({ classes, allClasses, certificationRules, unlocks, s
 }) {
   function heading(field: string, text: string, className?: string) {
     const index = setup.sorts.findIndex(rule => rule.field === field), sort = setup.sorts[index];
-    return <th key={field} scope="col" className={className} aria-sort={index === 0 ? sort.direction === 'asc' ? 'ascending' : 'descending' : undefined}><button onClick={() => onSort(field)} aria-label={`Sort by ${classFieldLabel(field)}`} title={`Sort by ${classFieldLabel(field)}; click again to reverse`}>{text}{index >= 0 && <small> {sort.direction === 'asc' ? '↑' : '↓'}{index + 1}</small>}</button></th>;
+    return <th key={field} scope="col" className={className} aria-sort={index === 0 ? sort.direction === 'asc' ? 'ascending' : 'descending' : undefined}><button onClick={() => onSort(field)} aria-label={`Sort by ${classFieldLabel(field)}`} title={`Add ${classFieldLabel(field)} as the next sort priority; click again to reverse`}>{text}{index >= 0 && <small> {sort.direction === 'asc' ? '↑' : '↓'}{index + 1}</small>}</button></th>;
   }
   function row(characterClass: CharacterClass) {
     const classUnlocks = unlocksFor(characterClass, unlocks);

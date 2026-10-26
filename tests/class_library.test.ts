@@ -5,7 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { classesDocumentSchema, type CharacterClass } from '../src/shared/source_models';
 import { queryClassLibrary, unlocksFor } from '../src/shared/class_library_query';
-import { classSetupIssues, classSetupSchema, defaultClassSetup, type ClassFilterRule, type ClassLibrarySetup } from '../src/shared/class_library_setup';
+import { applyClassColumnSort, classSetupIssues, classSetupSchema, defaultClassSetup, type ClassFilterRule, type ClassLibrarySetup } from '../src/shared/class_library_setup';
 import { loadClassSetup, loadSetup, openUserDatabase, saveClassSetup, saveSetup } from '../src/main/database/user_database';
 import { defaultSetup } from '../src/shared/library_setup';
 import { loadSqlite } from '../src/main/database/sqlite';
@@ -32,6 +32,14 @@ test('growth filters preserve unknown values and growth sorting keeps unknowns l
     const sorted = queryClassLibrary(classes, unlocks, { ...defaultClassSetup(), tiers: ['advanced'], sorts: [{ field: 'hp', direction }] });
     assert.deepEqual(sorted.slice(-2).map(row => row.id).sort(), ['cataphract', 'dancer']);
   }
+});
+
+test('Class Library column shortcuts append in click order before the Name tie-breaker', () => {
+  const hpFirst = applyClassColumnSort(defaultClassSetup(), 'hp');
+  assert.deepEqual(hpFirst.sorts, [{ field: 'hp', direction: 'desc' }, { field: 'name', direction: 'asc' }]);
+  const strengthSecond = applyClassColumnSort(hpFirst, 'strength');
+  assert.deepEqual(strengthSecond.sorts, [{ field: 'hp', direction: 'desc' }, { field: 'strength', direction: 'desc' }, { field: 'name', direction: 'asc' }]);
+  assert.deepEqual(applyClassColumnSort(strengthSecond, 'hp').sorts, [{ field: 'hp', direction: 'asc' }, { field: 'strength', direction: 'desc' }, { field: 'name', direction: 'asc' }]);
 });
 
 test('training, certification, mastery and unlock filters use only documented evidence', () => {
@@ -70,7 +78,7 @@ after(() => { if (temporary) fs.rmSync(temporary, { recursive: true, force: true
 test('global Class Library setup round-trips independently from Character Library setups', () => {
   const db = openUserDatabase(path.join(temporary, 'round_trip.sqlite'));
   try {
-    assert.equal(db.pragma('user_version', { simple: true }), 2);
+    assert.equal(db.pragma('user_version', { simple: true }), 3);
     assert.equal(loadClassSetup(db), null);
     const custom: ClassLibrarySetup = { ...defaultClassSetup(), search: 'knight', tiers: ['advanced', 'master'], filters: [{ kind: 'movement', tag: 'cavalry' }], sorts: [{ field: 'speed', direction: 'desc' }] };
     saveSetup(db, 'cai', defaultSetup(), 'dataset-v1');
@@ -96,7 +104,7 @@ test('version-one user databases migrate without changing Character Library save
   legacy.close();
   const migrated = openUserDatabase(file);
   try {
-    assert.equal(migrated.pragma('user_version', { simple: true }), 2);
+    assert.equal(migrated.pragma('user_version', { simple: true }), 3);
     assert.deepEqual(loadSetup(migrated, 'leda')?.setup, defaultSetup());
     assert.equal(loadClassSetup(migrated), null);
   } finally { migrated.close(); }

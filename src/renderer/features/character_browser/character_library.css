@@ -4,6 +4,7 @@
 .library_controls { border: 0; padding: 0; margin: 0; min-width: 0; }
 .toolbar { display: flex; align-items: end; gap: 16px; padding: 15px; background: var(--surface); border: 1px solid var(--border); border-radius: 5px; }
 .toolbar select { min-width: 155px; }
+.shortlisted_only { flex-direction: row; align-items: center; white-space: nowrap; padding-bottom: 8px; }
 .search_label { flex: 1; max-width: 390px; min-width: 150px; }
 .setup_actions { margin-left: auto; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
 .setup_actions span { font-size: 14px; }
@@ -39,7 +40,12 @@
 .character_table th, .character_table td { border-bottom: 1px solid var(--table-divider); padding: 10px 9px; vertical-align: middle; }
 .character_table thead th { position: sticky; top: 0; background: var(--table-header); z-index: 2; white-space: nowrap; }
 .character_table thead button { font-size: var(--table-font-size); padding: 4px 0; border: 0; background: transparent; text-align: left; min-width: 32px; }
-.character_table .name_cell { position: sticky; left: 0; z-index: 1; background: var(--surface-alt); min-width: 180px; border-right: 1px solid var(--border); }
+.character_table .name_cell { position: sticky; left: 74px; z-index: 1; background: var(--surface-alt); min-width: 180px; border-right: 1px solid var(--border); }
+.shortlist_column { width: 74px; min-width: 74px; text-align: center; }
+.character_table tbody .shortlist_column { position: sticky; left: 0; z-index: 1; background: var(--surface-alt); }
+.character_table thead .shortlist_column { position: sticky; left: 0; z-index: 4; background: var(--table-header); }
+.shortlist_toggle { min-width: 38px; color: var(--muted); font-size: 18px; padding: 5px 8px; }
+.shortlist_toggle.selected { color: var(--accent); border-color: var(--accent-soft); }
 .character_table thead .name_cell { z-index: 3; background: var(--table-header); }
 .character_table tbody tr { background: var(--table-row); }
 .character_table tbody tr:nth-child(even) { background: var(--table-row-alt); }

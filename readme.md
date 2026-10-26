@@ -1,19 +1,25 @@
 # Tactician's Loom
 
 Standalone Electron/React/TypeScript desktop application. The reference-data
-foundation, Character Library, and Class Library are implemented. The Character
-Library provides its route selector, growth table, filters, prioritized sorting,
+foundation, Character Library, Class Library, and Shortlist & Compare workspace
+are implemented. The Character Library provides its route selector, growth
+table, filters, prioritized sorting,
 details panel and saved per-route setups. Its ordered controls can sort by
 Chapter, Renown, or Support independently for every route even in All Routes,
 while the table retains one combined recruitment column per route. Ch, R, and
-S header buttons provide direct sorting, and Shift-click appends a priority.
-The Class
-Library provides one all-class table with tier title rows, class dossiers,
+S header buttons provide direct sorting. Successive column clicks append sort
+priorities in click order, while clicking an active column reverses its direction.
+The Class Library provides one all-class table with tier title rows, class dossiers,
 filters, ordered sorting, unlock evidence, and one global saved setup.
+The shared shortlist adds immediate persistent membership, retained global
+notes, a temporary Character Library shortlist scope, a sortable compact list,
+and an unlimited session comparison with focus fields, collapsible evidence,
+route focus, and accessible column reordering. It compares growths, affinities,
+personal abilities, and four-route recruitment facts without scoring candidates.
 Portraits and skill affinity icons are bundled game artwork (see the asset
 manifest for attribution and the few documented gaps and derived recreations).
 
-The current interface uses desktop navigation between both libraries and a
+The current interface uses desktop navigation among all three planning views and a
 responsive deep-dark layout with a 16-pixel text
 baseline and enlarged local artwork. Its table always ends with recruitment for
 Cai, Dietrich, Theodora, and Leda. Recruitable/tutorial entries show Chapter,
@@ -58,8 +64,8 @@ Run packaging and runtime checks on Windows before distributing a Windows build.
 Installer formats and automatic updates are deferred.
 
 The executable accepts `--smoke-test` to exercise the packaged renderer, preload,
-IPC, both libraries' reference queries and saved-setup round trips, bundled-image
-loading,
+IPC, both libraries' reference queries, saved-setup and shortlist/note round
+trips, comparison rendering, bundled-image loading,
 print `SMOKE_PASSED` and exit. A graphical desktop is normally required; a CI
 environment may supply a virtual display.
 
@@ -80,21 +86,21 @@ environment may supply a virtual display.
   recreations marked `derived_composite` in the manifest. Artwork is
   © Nintendo / Intelligent Systems / Koei Tecmo and is bundled for this
   private, non-distributed app only.
-- Runtime reference access is read-only. Player saves (library setups) use a
-  separate `user_data.sqlite` in the operating system's application-data
-  directory.
+- Runtime reference access is read-only. Player saves (library setups,
+  shortlist membership, and notes) use a separate `user_data.sqlite` in the
+  operating system's application-data directory. Active comparison selection
+  and presentation focus are session-only.
 
 Design documents and agent instructions live outside this application directory.
 
 ## Roadmap
 
-The recommended next feature is shared shortlisting and side-by-side character
-comparison. Later phases are:
+The recommended next feature is cross-route recruitment planning. Later phases
+are:
 
-1. Cross-route recruitment planning.
-2. Saved route team building with optional roles, classes, and notes.
-3. Coverage, overlap, and player-directed swap comparison.
-4. Windows validation, migrations, export/import, and release hardening.
+1. Saved route team building with optional roles, classes, and notes.
+2. Coverage, overlap, and player-directed swap comparison.
+3. Windows validation, migrations, export/import, and release hardening.
 
 These are planned phases, not implemented features. Act 2 mechanics, repeated
 route history, automatic team optimization, combat simulation, cloud sync, and

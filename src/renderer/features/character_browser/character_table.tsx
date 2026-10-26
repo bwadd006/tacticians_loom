@@ -28,9 +28,10 @@ function requirementLabel(requirement: Requirement): string {
   return details ? `${skillLabel(requirement.type)}: ${details}` : skillLabel(requirement.type);
 }
 
-export function CharacterTable({ characters, route, setup, selectedId, onSelect, onSort, scrollRef }: {
+export function CharacterTable({ characters, route, setup, selectedId, shortlistedIds, pendingIds, onToggleShortlist, onSelect, onSort, scrollRef }: {
   characters: Character[]; route: RouteContext; setup: LibrarySetup; selectedId: string | null;
-  onSelect: (id: string, target: HTMLButtonElement) => void; onSort: (field: string, append?: boolean) => void;
+  shortlistedIds: Set<string>; pendingIds: Set<string>; onToggleShortlist: (id: string, shortlisted: boolean) => Promise<void>;
+  onSelect: (id: string, target: HTMLButtonElement) => void; onSort: (field: string) => void;
   scrollRef: RefObject<HTMLDivElement | null>;
 }) {
   function sortMarker(field: string) {
@@ -42,7 +43,7 @@ export function CharacterTable({ characters, route, setup, selectedId, onSelect,
     const index = setup.sorts.findIndex(r => r.field === field);
     const sort = setup.sorts[index];
     return <th key={field} scope="col" className={className} aria-sort={index === 0 ? sort.direction === 'asc' ? 'ascending' : 'descending' : undefined}>
-      <button onClick={event => onSort(field, event.shiftKey)} title={`Sort by ${fieldLabel(field)}; Shift-click to add a priority` } aria-label={`Sort by ${fieldLabel(field)}`}>{label}{sortMarker(field)}</button>
+      <button onClick={() => onSort(field)} title={`Add ${fieldLabel(field)} as the next sort priority; click again to reverse`} aria-label={`Sort by ${fieldLabel(field)}`}>{label}{sortMarker(field)}</button>
     </th>;
   }
   function routeHeading(routeId: Route) {
@@ -53,12 +54,12 @@ export function CharacterTable({ characters, route, setup, selectedId, onSelect,
     const shortcuts = { earliest_chapter: 'Ch', min_renown: 'R', min_support: 'S' } as const;
     return <th key={routeId} scope="col" className="route_summary_column" aria-sort={primaryApplies ? primary.direction === 'asc' ? 'ascending' : 'descending' : undefined}>
       <div className="route_column_heading">
-        <button onClick={event => onSort(availabilityField, event.shiftKey)} title={`Sort by ${ROUTE_NAMES[routeId]} availability; Shift-click to add a priority`} aria-label={`Sort by ${ROUTE_NAMES[routeId]} availability`}>{ROUTE_NAMES[routeId]}{sortMarker(availabilityField)}</button>
+        <button onClick={() => onSort(availabilityField)} title={`Add ${ROUTE_NAMES[routeId]} availability as the next sort priority; click again to reverse`} aria-label={`Sort by ${ROUTE_NAMES[routeId]} availability`}>{ROUTE_NAMES[routeId]}{sortMarker(availabilityField)}</button>
         <div className="route_sort_shortcuts" aria-label={`${ROUTE_NAMES[routeId]} recruitment sorts`}>
           {RECRUITMENT_FIELDS.map(requirement => {
             const field = recruitmentSortField(routeId, requirement);
             const active = setup.sorts.some(rule => rule.field === field);
-            return <button key={requirement} className={active ? 'active' : ''} aria-pressed={active} onClick={event => onSort(field, event.shiftKey)} title={`Sort by ${ROUTE_NAMES[routeId]} ${fieldLabel(requirement)}; Shift-click to add a priority`} aria-label={`Sort by ${ROUTE_NAMES[routeId]} ${fieldLabel(requirement)}`}>{shortcuts[requirement]}{sortMarker(field)}</button>;
+            return <button key={requirement} className={active ? 'active' : ''} aria-pressed={active} onClick={() => onSort(field)} title={`Add ${ROUTE_NAMES[routeId]} ${fieldLabel(requirement)} as the next sort priority; click again to reverse`} aria-label={`Sort by ${ROUTE_NAMES[routeId]} ${fieldLabel(requirement)}`}>{shortcuts[requirement]}{sortMarker(field)}</button>;
           })}
         </div>
       </div>
@@ -66,8 +67,9 @@ export function CharacterTable({ characters, route, setup, selectedId, onSelect,
   }
   return <div className="table_scroll" ref={scrollRef} role="region" aria-label="Character results, scroll horizontally for all columns" tabIndex={0}>
     <table className="character_table" aria-label="Act 1 characters">
-      <thead><tr>{heading('name', 'Character', 'name_cell')}{STATS.map(stat => heading(stat, STAT_HEADERS[stat]))}<th scope="col">Skill affinities</th>{ROUTES.map(routeHeading)}</tr></thead>
+      <thead><tr><th scope="col" className="shortlist_column">Shortlist</th>{heading('name', 'Character', 'name_cell')}{STATS.map(stat => heading(stat, STAT_HEADERS[stat]))}<th scope="col">Skill affinities</th>{ROUTES.map(routeHeading)}</tr></thead>
       <tbody>{characters.map(c => <tr key={c.id} data-character-id={c.id} className={selectedId === c.id ? 'selected' : ''}>
+        <td className="shortlist_column"><button className={`shortlist_toggle ${shortlistedIds.has(c.id) ? 'selected' : ''}`} disabled={pendingIds.has(c.id)} aria-pressed={shortlistedIds.has(c.id)} aria-label={`${shortlistedIds.has(c.id) ? 'Remove' : 'Add'} ${c.name} ${shortlistedIds.has(c.id) ? 'from' : 'to'} shortlist`} title={shortlistedIds.has(c.id) ? 'Remove from shortlist' : 'Add to shortlist'} onClick={() => void onToggleShortlist(c.id, !shortlistedIds.has(c.id))}>{shortlistedIds.has(c.id) ? '★' : '☆'}</button></td>
         <th scope="row" className="name_cell"><button className="character_name" aria-expanded={selectedId === c.id} aria-controls={selectedId === c.id ? 'character_details' : undefined} onClick={e => onSelect(c.id, e.currentTarget)}><Portrait id={c.id} name={c.name} variant="table" /><span>{c.name}</span></button></th>
         {STATS.map(stat => <td key={stat} className="growth" aria-label={`${STAT_LABELS[stat]}: ${c.growth_rates_percent[stat] ?? 'Unknown'}`}>{c.growth_rates_percent[stat] ?? <span title="Unknown">—</span>}</td>)}
         <td className="affinities"><div className="boons">+ {c.skill_proficiencies.boons === null ? 'Unknown' : c.skill_proficiencies.boons.length === 0 ? 'None' : c.skill_proficiencies.boons.map(s => <SkillIcon key={s} skill={s} variant="boon" />)}</div><div className="banes">− {c.skill_proficiencies.banes === null ? 'Unknown' : c.skill_proficiencies.banes.length === 0 ? 'None' : c.skill_proficiencies.banes.map(s => <SkillIcon key={s} skill={s} variant="bane" />)}</div>

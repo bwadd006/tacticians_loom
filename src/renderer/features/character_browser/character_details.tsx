@@ -5,6 +5,7 @@ import { skillLabel, STAT_HEADERS } from '../../../shared/library_setup';
 import { isAvailable, statusLabel } from '../../../shared/library_query';
 import { Portrait } from '../../components/portrait';
 import { SkillIcon } from '../../components/skill_icon';
+import type { CharacterPlanning } from '../../../shared/character_planning';
 
 function ReadableValue({ value }: { value: unknown }) {
   if (value === null || value === undefined) return <span className="muted">Unknown</span>;
@@ -13,11 +14,11 @@ function ReadableValue({ value }: { value: unknown }) {
   if (typeof value === 'object') return <dl className="fact_list">{Object.entries(value).map(([key, v]) => <div key={key}><dt>{skillLabel(key)}</dt><dd><ReadableValue value={v} /></dd></div>)}</dl>;
   return <>{String(value)}</>;
 }
-export function CharacterDetails({ character: c, route, onClose }: { character: Character; route: RouteContext; onClose: () => void }) {
+export function CharacterDetails({ character: c, route, planning, pending, onToggleShortlist, onClose }: { character: Character; route: RouteContext; planning?: CharacterPlanning; pending: boolean; onToggleShortlist: (shortlisted: boolean) => Promise<void>; onClose: () => void }) {
   const title = useRef<HTMLHeadingElement>(null);
   useEffect(() => { title.current?.focus({ preventScroll: true }); title.current?.closest('aside')?.scrollTo(0, 0); }, [c.id]);
   return <aside id="character_details" className="details_panel" aria-labelledby="detail_name" onKeyDown={e => { if (e.key === 'Escape') { e.stopPropagation(); onClose(); } }}>
-    <div className="panel_header"><div className="detail_identity"><Portrait id={c.id} name={c.name} variant="details" /><div><p className="eyebrow">Character dossier</p><h2 id="detail_name" tabIndex={-1} ref={title}>{c.name}</h2></div></div><button aria-label="Close character details" onClick={onClose}>Close</button></div>
+    <div className="panel_header"><div className="detail_identity"><Portrait id={c.id} name={c.name} variant="details" /><div><p className="eyebrow">Character dossier</p><h2 id="detail_name" tabIndex={-1} ref={title}>{c.name}</h2></div></div><div className="button_row"><button className={planning?.shortlisted ? 'shortlist_toggle selected' : 'shortlist_toggle'} disabled={pending} aria-pressed={planning?.shortlisted ?? false} onClick={() => void onToggleShortlist(!(planning?.shortlisted ?? false))}>{planning?.shortlisted ? '★ Shortlisted' : '☆ Add to shortlist'}</button><button aria-label="Close character details" onClick={onClose}>Close</button></div></div>
     <section><h3>Personal growths</h3><p className="hint">Personal level-up growth rates. Class modifiers are excluded.</p><dl className="stat_strip">{STATS.map(stat => <div key={stat}><dt>{STAT_HEADERS[stat]}</dt><dd>{c.growth_rates_percent[stat] ?? '—'}</dd></div>)}</dl>
       {c.effective_personal_growth_rates_percent && <><h4>With personal ability adjustment</h4><dl className="stat_strip">{STATS.map(stat => <div key={stat}><dt>{STAT_HEADERS[stat]}</dt><dd>{c.effective_personal_growth_rates_percent![stat] ?? '—'}</dd></div>)}</dl><p>{c.effective_growth_rates_note}</p></>}
     </section>

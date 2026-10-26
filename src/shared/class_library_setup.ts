@@ -36,6 +36,13 @@ export const CLASS_DATA_STATES = ['unknown_growths', 'incomplete_certification',
 export function defaultClassSetup(): ClassLibrarySetup {
   return { version: 1, search: '', tiers: [...TIERS], mode: 'all', filters: [], sorts: [{ field: 'name', direction: 'asc' }] };
 }
+export function applyClassColumnSort(setup: ClassLibrarySetup, field: string): ClassLibrarySetup {
+  const existing = setup.sorts.findIndex(rule => rule.field === field);
+  if (existing >= 0) return { ...setup, sorts: setup.sorts.map((rule, index) => index === existing ? { ...rule, direction: rule.direction === 'asc' ? 'desc' : 'asc' } : rule) };
+  const direction = field === 'name' ? 'asc' : 'desc';
+  const insertion = setup.sorts.at(-1)?.field === 'name' ? setup.sorts.length - 1 : setup.sorts.length;
+  return { ...setup, sorts: [...setup.sorts.slice(0, insertion), { field, direction }, ...setup.sorts.slice(insertion)] };
+}
 export function classSortableFields(): string[] {
   return ['name', 'movement', ...STATS, ...SKILLS.map(skill => `training:${skill}`), 'certification', 'mastery', 'unlock'];
 }

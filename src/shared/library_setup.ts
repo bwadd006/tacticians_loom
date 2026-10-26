@@ -56,17 +56,12 @@ export function normalizeLegacyRecruitmentSorts(setup: LibrarySetup, route: Rout
   });
   return sorts.length === setup.sorts.length && sorts.every((rule, index) => rule.field === setup.sorts[index]?.field) ? setup : { ...setup, sorts };
 }
-export function applyColumnSort(setup: LibrarySetup, field: string, append = false): LibrarySetup {
+export function applyColumnSort(setup: LibrarySetup, field: string): LibrarySetup {
   const existing = setup.sorts.findIndex(rule => rule.field === field);
-  if (append) {
-    if (existing >= 0) return { ...setup, sorts: setup.sorts.map((rule, index) => index === existing ? { ...rule, direction: rule.direction === 'asc' ? 'desc' : 'asc' } : rule) };
-    const direction = field === 'name' || field.startsWith('availability:') || parseRecruitmentSortField(field) ? 'asc' : 'desc';
-    const insertion = setup.sorts.at(-1)?.field === 'name' ? setup.sorts.length - 1 : setup.sorts.length;
-    return { ...setup, sorts: [...setup.sorts.slice(0, insertion), { field, direction }, ...setup.sorts.slice(insertion)] };
-  }
-  const primary = setup.sorts[0];
-  const direction = primary?.field === field ? primary.direction === 'asc' ? 'desc' : 'asc' : field === 'name' || field.startsWith('availability:') || parseRecruitmentSortField(field) ? 'asc' : 'desc';
-  return { ...setup, sorts: [{ field, direction }, ...setup.sorts.filter(rule => rule.field !== field)] };
+  if (existing >= 0) return { ...setup, sorts: setup.sorts.map((rule, index) => index === existing ? { ...rule, direction: rule.direction === 'asc' ? 'desc' : 'asc' } : rule) };
+  const direction = field === 'name' || field.startsWith('availability:') || parseRecruitmentSortField(field) ? 'asc' : 'desc';
+  const insertion = setup.sorts.at(-1)?.field === 'name' ? setup.sorts.length - 1 : setup.sorts.length;
+  return { ...setup, sorts: [...setup.sorts.slice(0, insertion), { field, direction }, ...setup.sorts.slice(insertion)] };
 }
 export function unresolvedFilter(rule: FilterRule, route: RouteContext): string | null {
   if (rule.kind === 'number' && !numericFields(route).includes(rule.field)) return `Unavailable field: ${rule.field}`;

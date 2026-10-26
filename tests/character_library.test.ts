@@ -152,15 +152,15 @@ test('route-qualified recruitment unknowns stay last in either direction', () =>
   assert.deepEqual(desc, ['brawn', 'enigma', 'fleet', 'remote']);
 });
 
-test('column shortcuts promote normally and Shift-append before the Name tie-breaker', () => {
+test('column shortcuts append in click order before the Name tie-breaker', () => {
   const chapter = recruitmentSortField('theodora', 'earliest_chapter');
   const renown = recruitmentSortField('theodora', 'min_renown');
   const primary = applyColumnSort(defaultSetup(), chapter);
   assert.deepEqual(primary.sorts, [{ field: chapter, direction: 'asc' }, { field: 'name', direction: 'asc' }]);
-  const appended = applyColumnSort(primary, renown, true);
+  const appended = applyColumnSort(primary, renown);
   assert.deepEqual(appended.sorts, [{ field: chapter, direction: 'asc' }, { field: renown, direction: 'asc' }, { field: 'name', direction: 'asc' }]);
-  assert.deepEqual(applyColumnSort(appended, renown, true).sorts, [{ field: chapter, direction: 'asc' }, { field: renown, direction: 'desc' }, { field: 'name', direction: 'asc' }]);
-  assert.deepEqual(applyColumnSort(appended, renown).sorts, [{ field: renown, direction: 'asc' }, { field: chapter, direction: 'asc' }, { field: 'name', direction: 'asc' }]);
+  assert.deepEqual(applyColumnSort(appended, renown).sorts, [{ field: chapter, direction: 'asc' }, { field: renown, direction: 'desc' }, { field: 'name', direction: 'asc' }]);
+  assert.deepEqual(applyColumnSort(appended, 'strength').sorts, [{ field: chapter, direction: 'asc' }, { field: renown, direction: 'asc' }, { field: 'strength', direction: 'desc' }, { field: 'name', direction: 'asc' }]);
 });
 
 test('automatic joins use documented chapters without inventing Renown values', () => {
@@ -297,13 +297,13 @@ test('a database from a newer schema version is refused without data loss', () =
   const file = path.join(temporary, 'newer.sqlite');
   const db = openUserDatabase(file);
   saveSetup(db, 'cai', defaultSetup(), 'dataset-v1');
-  db.pragma('user_version = 3');
+  db.pragma('user_version = 4');
   db.close();
   assert.throws(() => openUserDatabase(file), /newer application/);
   const Sqlite = loadSqlite();
   const raw = new Sqlite(file);
   try {
-    raw.pragma('user_version = 2');
+    raw.pragma('user_version = 3');
     assert.deepEqual(raw.prepare('SELECT context FROM library_setups').pluck().all(), ['cai']);
   } finally { raw.close(); }
   // Reopening a current-version database preserves saved setups.

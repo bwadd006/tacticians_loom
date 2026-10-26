@@ -46,7 +46,7 @@
 .detail_facts dd { margin: 4px 0 0; }
 .detail_facts .wide_fact { grid-column: 1 / -1; }
 .unlock_details { margin: 10px 0; padding: 12px; border: 1px solid var(--border); border-radius: 4px; background: var(--surface-alt); }
-.app_navigation { display: flex; gap: 6px; }
+.app_navigation { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
 .app_navigation button { background: transparent; border-color: transparent; color: var(--muted); }
 .app_navigation button[aria-current="page"] { color: var(--accent); border-color: var(--accent-soft); background: var(--surface); }
 
@@ -57,6 +57,8 @@
   .class_icon_details { width: 62px; height: 62px; }
 }
 @media (max-width: 900px) {
+  .app_header { flex-wrap: wrap; }
+  .app_navigation { order: 3; flex-basis: 100%; justify-content: flex-start; }
   .tier_heading { grid-template-columns: 1fr auto; }
   .tier_rule { grid-column: 1 / -1; grid-row: 2; text-align: left; }
   .detail_facts { grid-template-columns: 1fr; }
