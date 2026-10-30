@@ -1,233 +1,2084 @@
 {
-  "metadata": {
-    "schema_version": "1.0.0",
-    "as_of_date": "2026-10-25",
-    "route_ids": ["cai", "dietrich", "theodora", "leda"],
-    "paralogue_count": 9,
-    "route_available_counts": { "cai": 4, "dietrich": 8, "theodora": 7, "leda": 4 }
-  },
-  "sources": [
-    { "key": "rpg_site", "name": "RPG Site — Fortune's Weave Paralogues", "url": "https://www.rpgsite.net/guide/21387-fire-emblem-fortunes-weave-paralogues-how-to-access-all-paralogue-battles-where-to-find-them", "accessed_at": "2026-10-25" },
-    { "key": "serenes_forest", "name": "Serenes Forest — Paralogues", "url": "https://serenesforest.net/fortunes-weave/miscellaneous/paralogues/", "accessed_at": "2026-10-25" },
-    { "key": "annas_notebook", "name": "Anna's Notebook — Paralogue List", "url": "https://annasnotebook.net/en/route/paralogues/", "accessed_at": "2026-10-25" },
-    { "key": "fw_companion", "name": "Fortune's Weave Companion — Paralogues", "url": "https://fortunesweave.co.uk/paralogues?route=all", "accessed_at": "2026-10-25" }
+  "format_version": "2.0.0",
+  "family": "paralogues",
+  "capture_ids": [
+    "yuphas_2026_10_28",
+    "prior_reference_2026_10_29",
+    "artwork_2026_10_29",
+    "prior_artwork_2026_10_29"
   ],
-  "data_conflicts": [
-    { "paralogue_id": "missing-brave-warrior-statue", "route_id": "dietrich", "field": "route_availability.dietrich.acceptance_windows", "status": "source_conflict", "details": "Reported acceptance ends range from 9/8 to 9/15. The maintained window uses the narrower 9/3–9/8 arrangement window and preserves the 9/15 completion deadline.", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
-    { "paralogue_id": "friendly-match-with-brigids-king", "route_id": null, "field": "outcomes.unique_equipment", "status": "source_conflict", "details": "Anna's Notebook reports Large Bullion while RPG Site and the companion report Extra Large Bullion. Extra Large Bullion is retained with conflicting status.", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
-    { "paralogue_id": "golden-secret", "route_id": "dietrich", "field": "route_availability.dietrich.acceptance_windows", "status": "source_conflict", "details": "Sources disagree whether Dietrich can accept beginning 9/24 or 9/29. The broader 9/24 start is retained and marked conflicting; the 10/5 deadline agrees.", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
-    { "paralogue_id": "sealed-off-past", "route_id": "theodora", "field": "route_availability.theodora.timing", "status": "source_conflict", "details": "Reported acceptance endpoints vary, and the quest may list 11/1 even though Theodora's route ends free time on 10/24. Both listed and effective deadlines are retained.", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
-    { "paralogue_id": "sealed-off-past", "route_id": "leda", "field": "route_availability.leda.acceptance_windows", "status": "source_conflict", "details": "Reported Leda acceptance endpoints range from 10/22 through 11/1. The reviewed 10/16–10/29 window and 11/1 completion deadline are retained with conflicting status.", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
-    { "paralogue_id": "orchels-regret", "route_id": "cai", "field": "route_availability.cai.effective_completion_deadline", "status": "source_conflict", "details": "Sources report 10/20 or 10/21. The conservative effective deadline is 10/20 while the reported listed deadline remains 10/21.", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
-    { "paralogue_id": "orchels-regret", "route_id": "theodora", "field": "route_availability.theodora.effective_completion_deadline", "status": "source_conflict", "details": "Some listings extend to 10/27, but Theodora's route ends free time on 10/24. The listed and effective deadlines remain separate.", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] }
-  ],
-  "paralogues": [
+  "records": [
     {
-      "id": "diversionary-tactics",
-      "name": "Diversionary Tactics",
-      "associated_character_name": "Leda",
-      "associated_character_id": "leda",
-      "verification_status": "reported",
-      "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"],
-      "route_availability": {
-        "cai": { "status": "unavailable", "earliest_chapter": null, "acceptance_windows": [], "listed_completion_deadline": null, "effective_completion_deadline": null, "forced_start_date": null, "missable": null, "trigger": null, "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest", "fw_companion"], "note": null },
-        "dietrich": { "status": "available", "earliest_chapter": 9, "acceptance_windows": [{ "start": { "month": 9, "day": 2 }, "end": { "month": 9, "day": 8 }, "note": "Accept before the forced battle advances." }], "listed_completion_deadline": { "month": 9, "day": 8 }, "effective_completion_deadline": { "month": 9, "day": 8 }, "forced_start_date": { "month": 9, "day": 9 }, "missable": true, "trigger": "Speak with Leda outside Kalla's temple in Dagsion.", "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": "Accept Theodora's paralogue first if undertaking both on Dietrich's route." },
-        "theodora": { "status": "available", "earliest_chapter": 10, "acceptance_windows": [{ "start": { "month": 9, "day": 2 }, "end": { "month": 9, "day": 8 }, "note": "Accept before the forced battle advances." }], "listed_completion_deadline": { "month": 9, "day": 8 }, "effective_completion_deadline": { "month": 9, "day": 8 }, "forced_start_date": { "month": 9, "day": 9 }, "missable": true, "trigger": "Speak with Leda outside Kalla's temple in Dagsion.", "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": null },
-        "leda": { "status": "unavailable", "earliest_chapter": null, "acceptance_windows": [], "listed_completion_deadline": null, "effective_completion_deadline": null, "forced_start_date": null, "missable": null, "trigger": null, "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest", "fw_companion"], "note": null }
-      },
-      "requirements": [
-        { "type": "location_or_npc", "text": "Speak with Leda outside Kalla's temple in Dagsion.", "route_ids": ["dietrich", "theodora"], "character_id": "leda", "paralogue_id": null, "support_threshold": null, "verification_status": "reported", "source_keys": ["annas_notebook"] },
-        { "type": "prerequisite_quest", "text": "On Dietrich's route, accept Missing Brave-Warrior Statue before advancing Diversionary Tactics if undertaking both.", "route_ids": ["dietrich"], "character_id": null, "paralogue_id": "missing-brave-warrior-statue", "support_threshold": null, "verification_status": "reported", "source_keys": ["annas_notebook"] }
-      ],
-      "outcomes": [
-        { "type": "unique_equipment", "name": "Silver Shield", "quantity": 1, "text": "Silver Shield ×1", "route_ids": ["dietrich", "theodora"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
-        { "type": "currency", "name": "Gold", "quantity": 20000, "text": "20,000G", "route_ids": ["dietrich", "theodora"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
-        { "type": "renown", "name": "Renown", "quantity": 150, "text": "150 Renown", "route_ids": ["dietrich", "theodora"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
-        { "type": "recruited_character", "name": "Buccar recruitment requirement", "quantity": null, "text": "Satisfies Buccar's paralogue requirement; route-specific recruitment thresholds still apply.", "route_ids": ["dietrich", "theodora"], "character_id": "buccar", "class_id": null, "condition": "Meet Buccar's remaining route-specific requirements.", "verification_status": "reported", "source_keys": ["annas_notebook", "fw_companion"] }
-      ],
-      "notes": []
+      "id": "activities:86da6384623bda9545f6a619",
+      "record_kind": "activities",
+      "entity_id": "activity:12fb2a57d77fb441ec88f3ab",
+      "context_id": null,
+      "body": {
+        "id": "activity:12fb2a57d77fb441ec88f3ab",
+        "activity_kind": "class_unlock_source",
+        "profile_record_id": "annotations:ad53402a1c1870c6b7e60392"
+      }
     },
     {
-      "id": "missing-brave-warrior-statue",
-      "name": "Missing Brave-Warrior Statue",
-      "associated_character_name": "Theodora",
-      "associated_character_id": "theodora",
-      "verification_status": "reported",
-      "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"],
-      "route_availability": {
-        "cai": { "status": "unavailable", "earliest_chapter": null, "acceptance_windows": [], "listed_completion_deadline": null, "effective_completion_deadline": null, "forced_start_date": null, "missable": null, "trigger": null, "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest"], "note": null },
-        "dietrich": { "status": "available", "earliest_chapter": 9, "acceptance_windows": [{ "start": { "month": 9, "day": 3 }, "end": { "month": 9, "day": 8 }, "note": "Sources differ on the last day the quest can be arranged." }], "listed_completion_deadline": { "month": 9, "day": 15 }, "effective_completion_deadline": { "month": 9, "day": 15 }, "forced_start_date": null, "missable": true, "trigger": "Speak with Bonaventure near the lower temple approach; battlefield at Purification Altar.", "verification_status": "conflicting", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": "Use the narrower arrangement window when scheduling around Diversionary Tactics." },
-        "theodora": { "status": "unavailable", "earliest_chapter": null, "acceptance_windows": [], "listed_completion_deadline": null, "effective_completion_deadline": null, "forced_start_date": null, "missable": null, "trigger": null, "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest"], "note": null },
-        "leda": { "status": "unavailable", "earliest_chapter": null, "acceptance_windows": [], "listed_completion_deadline": null, "effective_completion_deadline": null, "forced_start_date": null, "missable": null, "trigger": null, "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest"], "note": null }
-      },
-      "requirements": [{ "type": "location_or_npc", "text": "Speak with Bonaventure near the lower temple approach in Dagsion.", "route_ids": ["dietrich"], "character_id": null, "paralogue_id": null, "support_threshold": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook"] }],
-      "outcomes": [
-        { "type": "unique_equipment", "name": "Pilum", "quantity": 1, "text": "Pilum ×1", "route_ids": ["dietrich"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
-        { "type": "currency", "name": "Gold", "quantity": 20000, "text": "20,000G", "route_ids": ["dietrich"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
-        { "type": "renown", "name": "Renown", "quantity": 150, "text": "150 Renown", "route_ids": ["dietrich"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] }
-      ],
-      "notes": []
+      "id": "activity_outcomes:757ca5a0f557e4779ecacc89",
+      "record_kind": "activity_outcomes",
+      "entity_id": "dancer",
+      "context_id": "ctx:50b5e24f35faf39e4b4264ab",
+      "body": {
+        "target_id": "dancer",
+        "condition_id": "condition:9157587ee06124a8c7f1f8cf",
+        "activity_id": "activity:12fb2a57d77fb441ec88f3ab",
+        "outcome_kind": "class_unlock",
+        "label": "Great Dancer's Sucessor",
+        "quantity_json": {
+          "raw": null,
+          "state": "source_missing",
+          "number": null,
+          "lower": null,
+          "upper": null,
+          "unit": null,
+          "qualifier": "unknown"
+        }
+      }
     },
     {
-      "id": "secret-of-the-vanished-carriage",
-      "name": "Secret of the Vanished Carriage",
-      "associated_character_name": "Talimun",
-      "associated_character_id": "talimun",
-      "verification_status": "reported",
-      "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"],
-      "route_availability": {
-        "cai": { "status": "available", "earliest_chapter": 10, "acceptance_windows": [{ "start": { "month": 9, "day": 17 }, "end": { "month": 9, "day": 22 }, "note": null }, { "start": { "month": 10, "day": 1 }, "end": { "month": 10, "day": 10 }, "note": "Second chance after the first window closes." }], "listed_completion_deadline": { "month": 10, "day": 12 }, "effective_completion_deadline": { "month": 10, "day": 12 }, "forced_start_date": null, "missable": true, "trigger": "Speak with Talimun near the lower harbor; battlefield at Dragton Ridge.", "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": null },
-        "dietrich": { "status": "available", "earliest_chapter": 9, "acceptance_windows": [{ "start": { "month": 9, "day": 17 }, "end": { "month": 9, "day": 19 }, "note": "Dietrich's first window is shorter than the other routes." }, { "start": { "month": 10, "day": 1 }, "end": { "month": 10, "day": 10 }, "note": "Second chance after the first window closes." }], "listed_completion_deadline": { "month": 10, "day": 12 }, "effective_completion_deadline": { "month": 10, "day": 12 }, "forced_start_date": null, "missable": true, "trigger": "Speak with Talimun near the lower harbor; battlefield at Dragton Ridge.", "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": null },
-        "theodora": { "status": "available", "earliest_chapter": 11, "acceptance_windows": [{ "start": { "month": 9, "day": 17 }, "end": { "month": 9, "day": 22 }, "note": null }, { "start": { "month": 10, "day": 1 }, "end": { "month": 10, "day": 10 }, "note": "Second chance after the first window closes." }], "listed_completion_deadline": { "month": 10, "day": 12 }, "effective_completion_deadline": { "month": 10, "day": 12 }, "forced_start_date": null, "missable": true, "trigger": "Speak with Talimun near the lower harbor; battlefield at Dragton Ridge.", "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": null },
-        "leda": { "status": "unavailable", "earliest_chapter": null, "acceptance_windows": [], "listed_completion_deadline": null, "effective_completion_deadline": null, "forced_start_date": null, "missable": null, "trigger": null, "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook"], "note": null }
-      },
-      "requirements": [{ "type": "location_or_npc", "text": "Speak with Talimun near Dagsion's lower harbor by the Vandahl Trading Company.", "route_ids": ["cai", "dietrich", "theodora"], "character_id": "talimun", "paralogue_id": null, "support_threshold": null, "verification_status": "reported", "source_keys": ["annas_notebook"] }],
-      "outcomes": [
-        { "type": "unique_equipment", "name": "Cleansing Blade", "quantity": 1, "text": "Cleansing Blade ×1", "route_ids": ["cai", "dietrich", "theodora"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
-        { "type": "currency", "name": "Gold", "quantity": 20000, "text": "20,000G", "route_ids": ["cai", "dietrich", "theodora"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
-        { "type": "renown", "name": "Renown", "quantity": 150, "text": "150 Renown", "route_ids": ["cai", "dietrich", "theodora"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
-        { "type": "recruited_character", "name": "Ursula recruitment requirement", "quantity": null, "text": "Satisfies Ursula's paralogue requirement; route-specific recruitment thresholds still apply.", "route_ids": ["cai", "dietrich", "theodora"], "character_id": "ursula", "class_id": null, "condition": "Meet Ursula's remaining route-specific requirements.", "verification_status": "reported", "source_keys": ["annas_notebook", "fw_companion"] }
-      ],
-      "notes": []
+      "id": "activities:24cfb11a1fcd09f9a813c099",
+      "record_kind": "activities",
+      "entity_id": "activity:defb7cbda441183452f932fa",
+      "context_id": null,
+      "body": {
+        "id": "activity:defb7cbda441183452f932fa",
+        "activity_kind": "class_unlock_source",
+        "profile_record_id": "annotations:a0833f11311aa2a05d7efa64"
+      }
     },
     {
-      "id": "friendly-match-with-brigids-king",
-      "name": "Friendly Match with Brigid's King",
-      "associated_character_name": "Bertrand",
-      "associated_character_id": "bertrand",
-      "verification_status": "reported",
-      "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"],
-      "route_availability": {
-        "cai": { "status": "available", "earliest_chapter": 10, "acceptance_windows": [{ "start": { "month": 9, "day": 17 }, "end": { "month": 9, "day": 25 }, "note": null }], "listed_completion_deadline": { "month": 9, "day": 25 }, "effective_completion_deadline": { "month": 9, "day": 25 }, "forced_start_date": null, "missable": true, "trigger": "Speak with Gabriel outside Dagsion's great arena during the day.", "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": null },
-        "dietrich": { "status": "available", "earliest_chapter": 9, "acceptance_windows": [{ "start": { "month": 9, "day": 17 }, "end": { "month": 9, "day": 17 }, "note": "One day only." }], "listed_completion_deadline": { "month": 9, "day": 17 }, "effective_completion_deadline": { "month": 9, "day": 17 }, "forced_start_date": null, "missable": true, "trigger": "Speak with Gabriel outside Dagsion's great arena during the day after visiting Fezzan Gate.", "verification_status": "confirmed", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": "The one-day route-specific window is supported by in-game evidence reported by the companion." },
-        "theodora": { "status": "available", "earliest_chapter": 11, "acceptance_windows": [{ "start": { "month": 9, "day": 17 }, "end": { "month": 9, "day": 25 }, "note": null }], "listed_completion_deadline": { "month": 9, "day": 25 }, "effective_completion_deadline": { "month": 9, "day": 25 }, "forced_start_date": null, "missable": true, "trigger": "Speak with Gabriel outside Dagsion's great arena during the day.", "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": null },
-        "leda": { "status": "unavailable", "earliest_chapter": null, "acceptance_windows": [], "listed_completion_deadline": null, "effective_completion_deadline": null, "forced_start_date": null, "missable": null, "trigger": null, "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest"], "note": null }
-      },
-      "requirements": [
-        { "type": "location_or_npc", "text": "Speak with Gabriel outside Dagsion's great arena during the day.", "route_ids": ["cai", "dietrich", "theodora"], "character_id": null, "paralogue_id": null, "support_threshold": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook"] },
-        { "type": "story_trigger", "text": "On Dietrich's route, visit Fezzan Gate before speaking with Gabriel so the destination is available.", "route_ids": ["dietrich"], "character_id": null, "paralogue_id": null, "support_threshold": null, "verification_status": "reported", "source_keys": ["annas_notebook", "fw_companion"] }
-      ],
-      "outcomes": [
-        { "type": "unique_equipment", "name": "Extra Large Bullion", "quantity": 1, "text": "Extra Large Bullion ×1", "route_ids": ["cai", "dietrich", "theodora"], "character_id": null, "class_id": null, "condition": null, "verification_status": "conflicting", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
-        { "type": "currency", "name": "Gold", "quantity": 20000, "text": "20,000G", "route_ids": ["cai", "dietrich", "theodora"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
-        { "type": "renown", "name": "Renown", "quantity": 150, "text": "150 Renown", "route_ids": ["cai", "dietrich", "theodora"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
-        { "type": "recruited_character", "name": "Gaitz recruitment requirement", "quantity": null, "text": "Satisfies Gaitz's paralogue requirement on Dietrich's route; remaining requirements still apply.", "route_ids": ["dietrich"], "character_id": "gaitz", "class_id": null, "condition": "Meet Gaitz's remaining recruitment requirements.", "verification_status": "reported", "source_keys": ["annas_notebook", "fw_companion"] },
-        { "type": "recruited_character", "name": "Peppe recruitment requirement", "quantity": null, "text": "Satisfies Peppe's paralogue requirement; route-specific recruitment thresholds still apply.", "route_ids": ["cai", "dietrich", "theodora"], "character_id": "peppe", "class_id": null, "condition": "Meet Peppe's remaining route-specific requirements.", "verification_status": "reported", "source_keys": ["annas_notebook", "fw_companion"] }
-      ],
-      "notes": []
+      "id": "activity_outcomes:7c142db0df882852a7a319d2",
+      "record_kind": "activity_outcomes",
+      "entity_id": "ranger",
+      "context_id": "ctx:8c190596ee86a2ea830966ce",
+      "body": {
+        "target_id": "ranger",
+        "condition_id": "condition:e5823a9138456488ff0e85c2",
+        "activity_id": "activity:defb7cbda441183452f932fa",
+        "outcome_kind": "class_unlock",
+        "label": "Dread Warrior Challenge: Oko",
+        "quantity_json": {
+          "raw": null,
+          "state": "source_missing",
+          "number": null,
+          "lower": null,
+          "upper": null,
+          "unit": null,
+          "qualifier": "unknown"
+        }
+      }
     },
     {
-      "id": "golden-secret",
-      "name": "Golden Secret",
-      "associated_character_name": "Anna",
-      "associated_character_id": null,
-      "verification_status": "conflicting",
-      "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"],
-      "route_availability": {
-        "cai": { "status": "available", "earliest_chapter": 10, "acceptance_windows": [{ "start": { "month": 9, "day": 24 }, "end": { "month": 10, "day": 5 }, "note": null }], "listed_completion_deadline": { "month": 10, "day": 5 }, "effective_completion_deadline": { "month": 10, "day": 5 }, "forced_start_date": null, "missable": true, "trigger": "Speak with Anna outside Dagda's temple at Dagsion Summit.", "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": null },
-        "dietrich": { "status": "available", "earliest_chapter": 10, "acceptance_windows": [{ "start": { "month": 9, "day": 24 }, "end": { "month": 10, "day": 5 }, "note": "Some route-specific prose reports a 9/29 start." }], "listed_completion_deadline": { "month": 10, "day": 5 }, "effective_completion_deadline": { "month": 10, "day": 5 }, "forced_start_date": null, "missable": true, "trigger": "Speak with Anna outside Dagda's temple at Dagsion Summit.", "verification_status": "conflicting", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": "The 10/5 deadline agrees; the opening date remains disputed." },
-        "theodora": { "status": "available", "earliest_chapter": 11, "acceptance_windows": [{ "start": { "month": 9, "day": 24 }, "end": { "month": 10, "day": 5 }, "note": null }], "listed_completion_deadline": { "month": 10, "day": 5 }, "effective_completion_deadline": { "month": 10, "day": 5 }, "forced_start_date": null, "missable": true, "trigger": "Speak with Anna outside Dagda's temple at Dagsion Summit.", "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": null },
-        "leda": { "status": "unavailable", "earliest_chapter": null, "acceptance_windows": [], "listed_completion_deadline": null, "effective_completion_deadline": null, "forced_start_date": null, "missable": null, "trigger": null, "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook"], "note": "Anna's nighttime shop may still become available independently; this does not make the paralogue available." }
-      },
-      "requirements": [{ "type": "location_or_npc", "text": "Speak with Anna outside Dagda's temple at Dagsion Summit.", "route_ids": ["cai", "dietrich", "theodora"], "character_id": null, "paralogue_id": null, "support_threshold": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook"] }],
-      "outcomes": [
-        { "type": "unique_equipment", "name": "Orichalcum", "quantity": 1, "text": "Orichalcum ×1", "route_ids": ["cai", "dietrich", "theodora"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
-        { "type": "currency", "name": "Gold", "quantity": 20000, "text": "20,000G", "route_ids": ["cai", "dietrich", "theodora"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
-        { "type": "renown", "name": "Renown", "quantity": 150, "text": "150 Renown", "route_ids": ["cai", "dietrich", "theodora"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
-        { "type": "other", "name": "Anna's nighttime shop", "quantity": null, "text": "Unlocks Anna's nighttime shop on Dagsion's upper level the following day.", "route_ids": ["cai", "dietrich", "theodora"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["annas_notebook", "fw_companion"] }
-      ],
-      "notes": ["Anna is a guest rather than a recruitable character, so this paralogue has no stable associated character ID."]
+      "id": "activities:d0701ef1d72142d3795a2240",
+      "record_kind": "activities",
+      "entity_id": "activity:40b77ab49b24a12a32998a81",
+      "context_id": null,
+      "body": {
+        "id": "activity:40b77ab49b24a12a32998a81",
+        "activity_kind": "class_unlock_source",
+        "profile_record_id": "annotations:c214c0243163a23ddf543565"
+      }
     },
     {
-      "id": "queen-of-the-erased",
-      "name": "Queen of the Erased",
-      "associated_character_name": "Anatolia",
-      "associated_character_id": "anatolia",
-      "verification_status": "reported",
-      "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"],
-      "route_availability": {
-        "cai": { "status": "unavailable", "earliest_chapter": null, "acceptance_windows": [], "listed_completion_deadline": null, "effective_completion_deadline": null, "forced_start_date": null, "missable": null, "trigger": null, "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest"], "note": null },
-        "dietrich": { "status": "available", "earliest_chapter": 11, "acceptance_windows": [{ "start": { "month": 10, "day": 5 }, "end": { "month": 10, "day": 14 }, "note": null }], "listed_completion_deadline": { "month": 10, "day": 17 }, "effective_completion_deadline": { "month": 10, "day": 17 }, "forced_start_date": null, "missable": true, "trigger": "Find Anatolia in northeastern Dagsion city.", "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": null },
-        "theodora": { "status": "unavailable", "earliest_chapter": null, "acceptance_windows": [], "listed_completion_deadline": null, "effective_completion_deadline": null, "forced_start_date": null, "missable": null, "trigger": null, "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest"], "note": null },
-        "leda": { "status": "available", "earliest_chapter": 10, "acceptance_windows": [{ "start": { "month": 10, "day": 5 }, "end": { "month": 10, "day": 14 }, "note": null }], "listed_completion_deadline": { "month": 10, "day": 17 }, "effective_completion_deadline": { "month": 10, "day": 17 }, "forced_start_date": null, "missable": true, "trigger": "Find Anatolia in northeastern Dagsion city.", "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": null }
-      },
-      "requirements": [{ "type": "location_or_npc", "text": "Find Anatolia in northeastern Dagsion city.", "route_ids": ["dietrich", "leda"], "character_id": "anatolia", "paralogue_id": null, "support_threshold": null, "verification_status": "reported", "source_keys": ["annas_notebook"] }],
-      "outcomes": [
-        { "type": "unique_equipment", "name": "Electron Agitator", "quantity": 1, "text": "Electron Agitator ×1", "route_ids": ["dietrich", "leda"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
-        { "type": "unique_equipment", "name": "Spellshard", "quantity": 1, "text": "Spellshard ×1", "route_ids": ["dietrich", "leda"], "character_id": null, "class_id": null, "condition": "Save all villagers.", "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook"] },
-        { "type": "unique_equipment", "name": "Dew of Peace", "quantity": 1, "text": "Dew of Peace ×1", "route_ids": ["dietrich", "leda"], "character_id": null, "class_id": null, "condition": "Save all villagers.", "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook"] },
-        { "type": "currency", "name": "Gold", "quantity": 20000, "text": "20,000G", "route_ids": ["dietrich", "leda"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
-        { "type": "renown", "name": "Renown", "quantity": 150, "text": "150 Renown", "route_ids": ["dietrich", "leda"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
-        { "type": "recruited_character", "name": "Sha Lan recruitment requirement", "quantity": null, "text": "Satisfies Sha Lan's paralogue requirement; route-specific recruitment thresholds still apply.", "route_ids": ["dietrich", "leda"], "character_id": "sha-lan", "class_id": null, "condition": "Meet Sha Lan's remaining route-specific requirements.", "verification_status": "reported", "source_keys": ["annas_notebook", "fw_companion"] }
-      ],
-      "notes": []
+      "id": "activity_outcomes:8e85b3925b513f1be58f88b9",
+      "record_kind": "activity_outcomes",
+      "entity_id": "ranger",
+      "context_id": "ctx:11ec5a078406e54e37c7f7f2",
+      "body": {
+        "target_id": "ranger",
+        "condition_id": "condition:c41e7cb7e6cec1a3e2e31487",
+        "activity_id": "activity:40b77ab49b24a12a32998a81",
+        "outcome_kind": "class_unlock",
+        "label": "Elegant Drink Recipes",
+        "quantity_json": {
+          "raw": null,
+          "state": "source_missing",
+          "number": null,
+          "lower": null,
+          "upper": null,
+          "unit": null,
+          "qualifier": "unknown"
+        }
+      }
     },
     {
-      "id": "sealed-off-past",
-      "name": "Sealed-Off Past",
-      "associated_character_name": "Dietrich",
-      "associated_character_id": "dietrich",
-      "verification_status": "conflicting",
-      "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"],
-      "route_availability": {
-        "cai": { "status": "unavailable", "earliest_chapter": null, "acceptance_windows": [], "listed_completion_deadline": null, "effective_completion_deadline": null, "forced_start_date": null, "missable": null, "trigger": null, "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest"], "note": null },
-        "dietrich": { "status": "unavailable", "earliest_chapter": null, "acceptance_windows": [], "listed_completion_deadline": null, "effective_completion_deadline": null, "forced_start_date": null, "missable": null, "trigger": null, "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest"], "note": null },
-        "theodora": { "status": "available", "earliest_chapter": 12, "acceptance_windows": [{ "start": { "month": 10, "day": 16 }, "end": { "month": 10, "day": 21 }, "note": "Sources disagree on whether acceptance continues through 10/24." }], "listed_completion_deadline": { "month": 11, "day": 1 }, "effective_completion_deadline": { "month": 10, "day": 24 }, "forced_start_date": null, "missable": true, "trigger": "Speak with Fabio in the plaza before Dagsion's great arena; battlefield at Shadow Cavern.", "verification_status": "conflicting", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": "The quest may list 11/1, but Theodora's main story ends free time on 10/24." },
-        "leda": { "status": "available", "earliest_chapter": 11, "acceptance_windows": [{ "start": { "month": 10, "day": 16 }, "end": { "month": 10, "day": 29 }, "note": "Reported acceptance endpoints vary across guides." }], "listed_completion_deadline": { "month": 11, "day": 1 }, "effective_completion_deadline": { "month": 11, "day": 1 }, "forced_start_date": null, "missable": true, "trigger": "Speak with Fabio in the plaza before Dagsion's great arena; battlefield at Shadow Cavern.", "verification_status": "conflicting", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": null }
-      },
-      "requirements": [{ "type": "location_or_npc", "text": "Speak with Fabio in the plaza before Dagsion's great arena.", "route_ids": ["theodora", "leda"], "character_id": "fabio", "paralogue_id": null, "support_threshold": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook"] }],
-      "outcomes": [
-        { "type": "unique_equipment", "name": "Salamander", "quantity": 2, "text": "Salamander ×2", "route_ids": ["theodora"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "fw_companion"] },
-        { "type": "unique_equipment", "name": "Salamander", "quantity": 1, "text": "Salamander ×1", "route_ids": ["leda"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["annas_notebook", "fw_companion"] },
-        { "type": "currency", "name": "Gold", "quantity": 20000, "text": "20,000G", "route_ids": ["theodora", "leda"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
-        { "type": "renown", "name": "Renown", "quantity": 150, "text": "150 Renown", "route_ids": ["theodora", "leda"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
-        { "type": "recruited_character", "name": "Fabio recruitment requirement", "quantity": null, "text": "Satisfies Fabio's paralogue requirement on Leda's route; remaining requirements still apply.", "route_ids": ["leda"], "character_id": "fabio", "class_id": null, "condition": "Meet Fabio's remaining recruitment requirements.", "verification_status": "reported", "source_keys": ["annas_notebook", "fw_companion"] }
-      ],
-      "notes": []
+      "id": "activities:6a04e56aec91b5f48bc8f26a",
+      "record_kind": "activities",
+      "entity_id": "activity:bdcfcfcafae73ada3f7ca7ce",
+      "context_id": null,
+      "body": {
+        "id": "activity:bdcfcfcafae73ada3f7ca7ce",
+        "activity_kind": "class_unlock_source",
+        "profile_record_id": "annotations:1c791c478ab431ff6b226b77"
+      }
     },
     {
-      "id": "great-escape",
-      "name": "Great Escape",
-      "associated_character_name": "Cai",
-      "associated_character_id": "cai",
-      "verification_status": "reported",
-      "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"],
-      "route_availability": {
-        "cai": { "status": "unavailable", "earliest_chapter": null, "acceptance_windows": [], "listed_completion_deadline": null, "effective_completion_deadline": null, "forced_start_date": null, "missable": null, "trigger": null, "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest"], "note": null },
-        "dietrich": { "status": "available", "earliest_chapter": 11, "acceptance_windows": [{ "start": { "month": 10, "day": 16 }, "end": { "month": 10, "day": 22 }, "note": "Accept before the forced battle advances." }], "listed_completion_deadline": { "month": 10, "day": 22 }, "effective_completion_deadline": { "month": 10, "day": 22 }, "forced_start_date": { "month": 10, "day": 23 }, "missable": true, "trigger": "Speak with Cai near the southeast exit of Dagsion's city district.", "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": null },
-        "theodora": { "status": "available", "earliest_chapter": 12, "acceptance_windows": [{ "start": { "month": 10, "day": 16 }, "end": { "month": 10, "day": 22 }, "note": "Accept before the forced battle advances." }], "listed_completion_deadline": { "month": 10, "day": 22 }, "effective_completion_deadline": { "month": 10, "day": 22 }, "forced_start_date": { "month": 10, "day": 23 }, "missable": true, "trigger": "Speak with Cai near the southeast exit of Dagsion's city district.", "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": null },
-        "leda": { "status": "available", "earliest_chapter": 11, "acceptance_windows": [{ "start": { "month": 10, "day": 16 }, "end": { "month": 10, "day": 22 }, "note": "Accept before the forced battle advances." }], "listed_completion_deadline": { "month": 10, "day": 22 }, "effective_completion_deadline": { "month": 10, "day": 22 }, "forced_start_date": { "month": 10, "day": 23 }, "missable": true, "trigger": "Speak with Cai near the southeast exit of Dagsion's city district.", "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": null }
-      },
-      "requirements": [{ "type": "location_or_npc", "text": "Speak with Cai near the southeast exit of Dagsion's city district.", "route_ids": ["dietrich", "theodora", "leda"], "character_id": "cai", "paralogue_id": null, "support_threshold": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook"] }],
-      "outcomes": [
-        { "type": "unique_equipment", "name": "Gem Box", "quantity": 1, "text": "Gem Box ×1", "route_ids": ["dietrich", "theodora", "leda"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
-        { "type": "currency", "name": "Gold", "quantity": 20000, "text": "20,000G", "route_ids": ["dietrich", "theodora", "leda"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
-        { "type": "renown", "name": "Renown", "quantity": 150, "text": "150 Renown", "route_ids": ["dietrich", "theodora", "leda"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
-        { "type": "recruited_character", "name": "Tialla recruitment requirement", "quantity": null, "text": "Satisfies Tialla's paralogue requirement; route-specific recruitment thresholds still apply.", "route_ids": ["dietrich", "theodora", "leda"], "character_id": "tialla", "class_id": null, "condition": "Meet Tialla's remaining route-specific requirements.", "verification_status": "reported", "source_keys": ["annas_notebook", "fw_companion"] }
-      ],
-      "notes": []
+      "id": "activity_outcomes:687d7e464b58133fc94a9a68",
+      "record_kind": "activity_outcomes",
+      "entity_id": "guardian",
+      "context_id": "ctx:21c86cdb8ba85bcfc0617759",
+      "body": {
+        "target_id": "guardian",
+        "condition_id": "condition:56b94dcf4587d4162f4b75de",
+        "activity_id": "activity:bdcfcfcafae73ada3f7ca7ce",
+        "outcome_kind": "class_unlock",
+        "label": "Dread Warrior Challenge: Il-Lara",
+        "quantity_json": {
+          "raw": null,
+          "state": "source_missing",
+          "number": null,
+          "lower": null,
+          "upper": null,
+          "unit": null,
+          "qualifier": "unknown"
+        }
+      }
     },
     {
-      "id": "orchels-regret",
-      "name": "Orchel's Regret",
-      "associated_character_name": "Orchel",
-      "associated_character_id": "orchel",
-      "verification_status": "conflicting",
-      "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"],
-      "route_availability": {
-        "cai": { "status": "available", "earliest_chapter": 11, "acceptance_windows": [{ "start": { "month": 10, "day": 18 }, "end": { "month": 10, "day": 20 }, "note": "Short route-specific window." }], "listed_completion_deadline": { "month": 10, "day": 21 }, "effective_completion_deadline": { "month": 10, "day": 20 }, "forced_start_date": null, "missable": true, "trigger": "Speak with Orchel outside Credna's branch temple; battlefield at Fort Galca.", "verification_status": "conflicting", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": "Sources disagree by one day; the table uses the conservative effective cutoff." },
-        "dietrich": { "status": "available", "earliest_chapter": 11, "acceptance_windows": [{ "start": { "month": 10, "day": 18 }, "end": { "month": 10, "day": 25 }, "note": null }], "listed_completion_deadline": { "month": 10, "day": 27 }, "effective_completion_deadline": { "month": 10, "day": 27 }, "forced_start_date": null, "missable": true, "trigger": "Speak with Orchel outside Credna's branch temple; battlefield at Fort Galca.", "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": null },
-        "theodora": { "status": "available", "earliest_chapter": 12, "acceptance_windows": [{ "start": { "month": 10, "day": 18 }, "end": { "month": 10, "day": 22 }, "note": "Some guides report acceptance through 10/27." }], "listed_completion_deadline": { "month": 10, "day": 27 }, "effective_completion_deadline": { "month": 10, "day": 24 }, "forced_start_date": null, "missable": true, "trigger": "Speak with Orchel outside Credna's branch temple; battlefield at Fort Galca.", "verification_status": "conflicting", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": "Theodora's route ends free time on 10/24 despite later listed dates." },
-        "leda": { "status": "available", "earliest_chapter": 11, "acceptance_windows": [{ "start": { "month": 10, "day": 18 }, "end": { "month": 10, "day": 25 }, "note": null }], "listed_completion_deadline": { "month": 10, "day": 27 }, "effective_completion_deadline": { "month": 10, "day": 27 }, "forced_start_date": null, "missable": true, "trigger": "Speak with Orchel outside Credna's branch temple; battlefield at Fort Galca.", "verification_status": "reported", "source_keys": ["rpg_site", "serenes_forest", "annas_notebook", "fw_companion"], "note": null }
-      },
-      "requirements": [{ "type": "location_or_npc", "text": "Speak with Orchel outside Credna's branch temple on Dagsion's lower temple approach.", "route_ids": ["cai", "dietrich", "theodora", "leda"], "character_id": "orchel", "paralogue_id": null, "support_threshold": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook"] }],
-      "outcomes": [
-        { "type": "unique_equipment", "name": "Healing Staff", "quantity": 1, "text": "Healing Staff ×1", "route_ids": ["cai", "dietrich", "theodora", "leda"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
-        { "type": "currency", "name": "Gold", "quantity": 20000, "text": "20,000G", "route_ids": ["cai", "dietrich", "theodora", "leda"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
-        { "type": "renown", "name": "Renown", "quantity": 150, "text": "150 Renown", "route_ids": ["cai", "dietrich", "theodora", "leda"], "character_id": null, "class_id": null, "condition": null, "verification_status": "reported", "source_keys": ["rpg_site", "annas_notebook", "fw_companion"] },
-        { "type": "recruited_character", "name": "Diego recruitment requirement", "quantity": null, "text": "Satisfies Diego's paralogue requirement; route-specific recruitment thresholds still apply.", "route_ids": ["cai", "dietrich", "theodora", "leda"], "character_id": "diego", "class_id": null, "condition": "Meet Diego's remaining route-specific requirements.", "verification_status": "reported", "source_keys": ["annas_notebook", "fw_companion"] }
-      ],
-      "notes": []
+      "id": "activities:c428a5d5624552420104011d",
+      "record_kind": "activities",
+      "entity_id": "activity:c01ff51ea74bf0f8b7d0b560",
+      "context_id": null,
+      "body": {
+        "id": "activity:c01ff51ea74bf0f8b7d0b560",
+        "activity_kind": "class_unlock_source",
+        "profile_record_id": "annotations:82f6af121cbcd650e2f81301"
+      }
+    },
+    {
+      "id": "activity_outcomes:6750814db7cf62f3068e461a",
+      "record_kind": "activity_outcomes",
+      "entity_id": "guardian",
+      "context_id": "ctx:931e60f52d95947d7776baa8",
+      "body": {
+        "target_id": "guardian",
+        "condition_id": "condition:a804951fa3704e4d398b3485",
+        "activity_id": "activity:c01ff51ea74bf0f8b7d0b560",
+        "outcome_kind": "class_unlock",
+        "label": "Send Supplies: Roca and Kothar Gar",
+        "quantity_json": {
+          "raw": null,
+          "state": "source_missing",
+          "number": null,
+          "lower": null,
+          "upper": null,
+          "unit": null,
+          "qualifier": "unknown"
+        }
+      }
+    },
+    {
+      "id": "activities:8db62a7fa99f2605f23b85ab",
+      "record_kind": "activities",
+      "entity_id": "activity:f28228e0e5f5252afff83557",
+      "context_id": null,
+      "body": {
+        "id": "activity:f28228e0e5f5252afff83557",
+        "activity_kind": "class_unlock_source",
+        "profile_record_id": "annotations:74859fd4bebbaf663fc3f1a7"
+      }
+    },
+    {
+      "id": "activity_outcomes:d11e089ade57d6e6c6d45cb8",
+      "record_kind": "activity_outcomes",
+      "entity_id": "cataphract",
+      "context_id": "ctx:b998abf731c67652369451e0",
+      "body": {
+        "target_id": "cataphract",
+        "condition_id": "condition:cfaebea2668806da3165fe8f",
+        "activity_id": "activity:f28228e0e5f5252afff83557",
+        "outcome_kind": "class_unlock",
+        "label": "Send Supplies: Landon Loach and Steel Fish",
+        "quantity_json": {
+          "raw": null,
+          "state": "source_missing",
+          "number": null,
+          "lower": null,
+          "upper": null,
+          "unit": null,
+          "qualifier": "unknown"
+        }
+      }
+    },
+    {
+      "id": "activities:d824b43af982865cd04fa37e",
+      "record_kind": "activities",
+      "entity_id": "activity:fc645a7ad7e3284ff5b91da0",
+      "context_id": null,
+      "body": {
+        "id": "activity:fc645a7ad7e3284ff5b91da0",
+        "activity_kind": "class_unlock_source",
+        "profile_record_id": "annotations:bba49d7fbbbd916d27819c34"
+      }
+    },
+    {
+      "id": "activity_outcomes:f8caccca0612e5ab252928a0",
+      "record_kind": "activity_outcomes",
+      "entity_id": "caladrius",
+      "context_id": "ctx:eba98775a1b5f99a2ebab4e1",
+      "body": {
+        "target_id": "caladrius",
+        "condition_id": "condition:8f74e1f460e3400ed35000be",
+        "activity_id": "activity:fc645a7ad7e3284ff5b91da0",
+        "outcome_kind": "class_unlock",
+        "label": "Castor's Mentoring Quest",
+        "quantity_json": {
+          "raw": null,
+          "state": "source_missing",
+          "number": null,
+          "lower": null,
+          "upper": null,
+          "unit": null,
+          "qualifier": "unknown"
+        }
+      }
+    },
+    {
+      "id": "activities:31ebc21503185079cc8454c4",
+      "record_kind": "activities",
+      "entity_id": "activity:ecbed3ae93ea707afdeb068d",
+      "context_id": null,
+      "body": {
+        "id": "activity:ecbed3ae93ea707afdeb068d",
+        "activity_kind": "class_access_assertion",
+        "profile_record_id": "annotations:57a61e8e831a168eb90ee0f7"
+      }
+    },
+    {
+      "id": "activity_outcomes:b9c651d4bc3d4d497d033f21",
+      "record_kind": "activity_outcomes",
+      "entity_id": "elephant-rider",
+      "context_id": "ctx:9a18861294c6033416385c51",
+      "body": {
+        "target_id": "elephant-rider",
+        "condition_id": "condition:b9c651d4bc3d4d497d033f21",
+        "activity_id": "activity:ecbed3ae93ea707afdeb068d",
+        "outcome_kind": "class_unlock",
+        "label": "Part 3 Unlock",
+        "quantity_json": {
+          "raw": null,
+          "state": "source_missing",
+          "number": null,
+          "lower": null,
+          "upper": null,
+          "unit": null,
+          "qualifier": "unknown"
+        }
+      }
+    },
+    {
+      "id": "activities:d92a211fc7a609571e06c5bf",
+      "record_kind": "activities",
+      "entity_id": "activity:10145d74eac6f78b0c7a1a62",
+      "context_id": null,
+      "body": {
+        "id": "activity:10145d74eac6f78b0c7a1a62",
+        "activity_kind": "class_unlock_source",
+        "profile_record_id": "annotations:ab75d22174d8f7a91c18758b"
+      }
+    },
+    {
+      "id": "activity_outcomes:68b6d0b8a4fc428bd0416de6",
+      "record_kind": "activity_outcomes",
+      "entity_id": "dragoon",
+      "context_id": "ctx:ea2575a05655fb46990efb1f",
+      "body": {
+        "target_id": "dragoon",
+        "condition_id": "condition:68ccc9df0ec2bdfac2d14c31",
+        "activity_id": "activity:10145d74eac6f78b0c7a1a62",
+        "outcome_kind": "class_unlock",
+        "label": "Aurora's Mentoring Quest",
+        "quantity_json": {
+          "raw": null,
+          "state": "source_missing",
+          "number": null,
+          "lower": null,
+          "upper": null,
+          "unit": null,
+          "qualifier": "unknown"
+        }
+      }
+    },
+    {
+      "id": "activities:6cb1e6ad243026893d391c7a",
+      "record_kind": "activities",
+      "entity_id": "activity:06e4aae702ba9438bf86e2ac",
+      "context_id": null,
+      "body": {
+        "id": "activity:06e4aae702ba9438bf86e2ac",
+        "activity_kind": "class_unlock_source",
+        "profile_record_id": "annotations:1390a19343632a965168f249"
+      }
+    },
+    {
+      "id": "activity_outcomes:5f57d2ed734820247a2ac5d7",
+      "record_kind": "activity_outcomes",
+      "entity_id": "dragoon",
+      "context_id": "ctx:3285c613ca02b68db4f10432",
+      "body": {
+        "target_id": "dragoon",
+        "condition_id": "condition:86c9edc73882091bfdbd18cd",
+        "activity_id": "activity:06e4aae702ba9438bf86e2ac",
+        "outcome_kind": "class_unlock",
+        "label": "Send Supplies",
+        "quantity_json": {
+          "raw": null,
+          "state": "source_missing",
+          "number": null,
+          "lower": null,
+          "upper": null,
+          "unit": null,
+          "qualifier": "unknown"
+        }
+      }
+    },
+    {
+      "id": "activities:4213822712610746d298714b",
+      "record_kind": "activities",
+      "entity_id": "activity:5046608134ce8224e3a014ef",
+      "context_id": null,
+      "body": {
+        "id": "activity:5046608134ce8224e3a014ef",
+        "activity_kind": "class_unlock_source",
+        "profile_record_id": "annotations:208f6bd2a2217b0c796acd55"
+      }
+    },
+    {
+      "id": "activity_outcomes:4b6e4a7815ca750a9429476f",
+      "record_kind": "activity_outcomes",
+      "entity_id": "troubadour",
+      "context_id": "ctx:bc5f24633fe780ed481b2fd5",
+      "body": {
+        "target_id": "troubadour",
+        "condition_id": "condition:1d05f0afe0d8372300f4ef8e",
+        "activity_id": "activity:5046608134ce8224e3a014ef",
+        "outcome_kind": "class_unlock",
+        "label": "The White-Maned Demon's Request",
+        "quantity_json": {
+          "raw": null,
+          "state": "source_missing",
+          "number": null,
+          "lower": null,
+          "upper": null,
+          "unit": null,
+          "qualifier": "unknown"
+        }
+      }
+    },
+    {
+      "id": "activity_outcomes:8005aca1a053228fab1a2b64",
+      "record_kind": "activity_outcomes",
+      "entity_id": "troubadour",
+      "context_id": "ctx:1cb2c724fa14344a40aa54bd",
+      "body": {
+        "target_id": "troubadour",
+        "condition_id": "condition:bb82554f247eab8185090bdf",
+        "activity_id": "activity:40b77ab49b24a12a32998a81",
+        "outcome_kind": "class_unlock",
+        "label": "Elegant Drink Recipes",
+        "quantity_json": {
+          "raw": null,
+          "state": "source_missing",
+          "number": null,
+          "lower": null,
+          "upper": null,
+          "unit": null,
+          "qualifier": "unknown"
+        }
+      }
+    },
+    {
+      "id": "activities:25752ddaee3de910ff354050",
+      "record_kind": "activities",
+      "entity_id": "activity:180609254ad51df33658496b",
+      "context_id": null,
+      "body": {
+        "id": "activity:180609254ad51df33658496b",
+        "activity_kind": "class_access_assertion",
+        "profile_record_id": "annotations:393bd92ac64665f26d3a8965"
+      }
+    },
+    {
+      "id": "activity_outcomes:2c7b7138d094de3722006f1e",
+      "record_kind": "activity_outcomes",
+      "entity_id": "swordmaster",
+      "context_id": "ctx:011a3827c2ee223e3574cede",
+      "body": {
+        "target_id": "swordmaster",
+        "condition_id": "condition:2c7b7138d094de3722006f1e",
+        "activity_id": "activity:180609254ad51df33658496b",
+        "outcome_kind": "class_unlock",
+        "label": "Part 3 Unlock",
+        "quantity_json": {
+          "raw": null,
+          "state": "source_missing",
+          "number": null,
+          "lower": null,
+          "upper": null,
+          "unit": null,
+          "qualifier": "unknown"
+        }
+      }
+    },
+    {
+      "id": "activities:2aedf61949d999b1c9116082",
+      "record_kind": "activities",
+      "entity_id": "activity:f394610965e56017e4eeb59d",
+      "context_id": null,
+      "body": {
+        "id": "activity:f394610965e56017e4eeb59d",
+        "activity_kind": "class_access_assertion",
+        "profile_record_id": "annotations:8159377a0b5c6cc3b901a29e"
+      }
+    },
+    {
+      "id": "activity_outcomes:8c6c0eac7d002bee98bd0b50",
+      "record_kind": "activity_outcomes",
+      "entity_id": "high-savant",
+      "context_id": "ctx:3f9ae43c6d7db53219d0801c",
+      "body": {
+        "target_id": "high-savant",
+        "condition_id": "condition:8c6c0eac7d002bee98bd0b50",
+        "activity_id": "activity:f394610965e56017e4eeb59d",
+        "outcome_kind": "class_unlock",
+        "label": "Part 3 Unlock",
+        "quantity_json": {
+          "raw": null,
+          "state": "source_missing",
+          "number": null,
+          "lower": null,
+          "upper": null,
+          "unit": null,
+          "qualifier": "unknown"
+        }
+      }
+    },
+    {
+      "id": "activities:5bcd388c18a06decb28de306",
+      "record_kind": "activities",
+      "entity_id": "activity:c2ad27a24417ac207c23d9a8",
+      "context_id": null,
+      "body": {
+        "id": "activity:c2ad27a24417ac207c23d9a8",
+        "activity_kind": "class_access_assertion",
+        "profile_record_id": "annotations:d3e4b30a87aa8b1a5f144756"
+      }
+    },
+    {
+      "id": "activity_outcomes:2e8075ca3dfd3b1ccf575224",
+      "record_kind": "activity_outcomes",
+      "entity_id": "battlemaster",
+      "context_id": "ctx:fde3019454503b1425ec7214",
+      "body": {
+        "target_id": "battlemaster",
+        "condition_id": null,
+        "activity_id": "activity:c2ad27a24417ac207c23d9a8",
+        "outcome_kind": "class_unlock",
+        "label": "Part 3 Unlock",
+        "quantity_json": {
+          "raw": null,
+          "state": "source_missing",
+          "number": null,
+          "lower": null,
+          "upper": null,
+          "unit": null,
+          "qualifier": "unknown"
+        }
+      }
+    },
+    {
+      "id": "activities:29837667494290cab88f48a6",
+      "record_kind": "activities",
+      "entity_id": "activity:6f112f23e707edd43429917f",
+      "context_id": null,
+      "body": {
+        "id": "activity:6f112f23e707edd43429917f",
+        "activity_kind": "class_access_assertion",
+        "profile_record_id": "annotations:46683362336fcd541a825f8e"
+      }
+    },
+    {
+      "id": "activity_outcomes:f74acf63ebd465bd1527ba78",
+      "record_kind": "activity_outcomes",
+      "entity_id": "war-monk",
+      "context_id": "ctx:cce46c6c3fab2720c26f1333",
+      "body": {
+        "target_id": "war-monk",
+        "condition_id": "condition:f74acf63ebd465bd1527ba78",
+        "activity_id": "activity:6f112f23e707edd43429917f",
+        "outcome_kind": "class_unlock",
+        "label": "Part 3 Unlock",
+        "quantity_json": {
+          "raw": null,
+          "state": "source_missing",
+          "number": null,
+          "lower": null,
+          "upper": null,
+          "unit": null,
+          "qualifier": "unknown"
+        }
+      }
+    },
+    {
+      "id": "activities:43e6610d20623d5efdb8e83a",
+      "record_kind": "activities",
+      "entity_id": "activity:586711ed417dfc050e146453",
+      "context_id": null,
+      "body": {
+        "id": "activity:586711ed417dfc050e146453",
+        "activity_kind": "class_access_assertion",
+        "profile_record_id": "annotations:e16bebc8deba9de7a58f5035"
+      }
+    },
+    {
+      "id": "activity_outcomes:c5270e03d3b15d62a7481a76",
+      "record_kind": "activity_outcomes",
+      "entity_id": "bow-adept",
+      "context_id": "ctx:ed096cb64d896ff64b1d7aa0",
+      "body": {
+        "target_id": "bow-adept",
+        "condition_id": null,
+        "activity_id": "activity:586711ed417dfc050e146453",
+        "outcome_kind": "class_unlock",
+        "label": "Part 3 Unlock",
+        "quantity_json": {
+          "raw": null,
+          "state": "source_missing",
+          "number": null,
+          "lower": null,
+          "upper": null,
+          "unit": null,
+          "qualifier": "unknown"
+        }
+      }
+    },
+    {
+      "id": "activities:221aa4c232a451e32c61a04b",
+      "record_kind": "activities",
+      "entity_id": "activity:df8b80688fd12d469341b71a",
+      "context_id": null,
+      "body": {
+        "id": "activity:df8b80688fd12d469341b71a",
+        "activity_kind": "class_access_assertion",
+        "profile_record_id": "annotations:46f1cd2468a4702caf205cd9"
+      }
+    },
+    {
+      "id": "activity_outcomes:78b2a759248a52d5eb70a38c",
+      "record_kind": "activity_outcomes",
+      "entity_id": "bow-knight",
+      "context_id": "ctx:f1dd8f3dbd26760ede1e3f8f",
+      "body": {
+        "target_id": "bow-knight",
+        "condition_id": "condition:78b2a759248a52d5eb70a38c",
+        "activity_id": "activity:df8b80688fd12d469341b71a",
+        "outcome_kind": "class_unlock",
+        "label": "Part 3 Unlock",
+        "quantity_json": {
+          "raw": null,
+          "state": "source_missing",
+          "number": null,
+          "lower": null,
+          "upper": null,
+          "unit": null,
+          "qualifier": "unknown"
+        }
+      }
+    },
+    {
+      "id": "activities:7dc4ff9240ec0487c3b38a3e",
+      "record_kind": "activities",
+      "entity_id": "activity:f11d2d7ed83a66877a3f4177",
+      "context_id": null,
+      "body": {
+        "id": "activity:f11d2d7ed83a66877a3f4177",
+        "activity_kind": "class_access_assertion",
+        "profile_record_id": "annotations:ac66584fca5e117c9c7e6ba1"
+      }
+    },
+    {
+      "id": "activity_outcomes:4687baff5bce7cea42ee1448",
+      "record_kind": "activity_outcomes",
+      "entity_id": "shadow-seeker",
+      "context_id": "ctx:5ad3a7dbd07f01e2a0b18547",
+      "body": {
+        "target_id": "shadow-seeker",
+        "condition_id": null,
+        "activity_id": "activity:f11d2d7ed83a66877a3f4177",
+        "outcome_kind": "class_unlock",
+        "label": "Part 3 Unlock",
+        "quantity_json": {
+          "raw": null,
+          "state": "source_missing",
+          "number": null,
+          "lower": null,
+          "upper": null,
+          "unit": null,
+          "qualifier": "unknown"
+        }
+      }
+    },
+    {
+      "id": "activities:848d2bb5752d7783ea11d3c3",
+      "record_kind": "activities",
+      "entity_id": "activity:303d4c28cc8bd99d85e9dfb2",
+      "context_id": null,
+      "body": {
+        "id": "activity:303d4c28cc8bd99d85e9dfb2",
+        "activity_kind": "class_access_assertion",
+        "profile_record_id": "annotations:4681061990652db31a195643"
+      }
+    },
+    {
+      "id": "activity_outcomes:9f677ef1378e8350dfee7462",
+      "record_kind": "activity_outcomes",
+      "entity_id": "sentinel",
+      "context_id": "ctx:e294358851cc9d4a58815672",
+      "body": {
+        "target_id": "sentinel",
+        "condition_id": null,
+        "activity_id": "activity:303d4c28cc8bd99d85e9dfb2",
+        "outcome_kind": "class_unlock",
+        "label": "Part 3 Unlock",
+        "quantity_json": {
+          "raw": null,
+          "state": "source_missing",
+          "number": null,
+          "lower": null,
+          "upper": null,
+          "unit": null,
+          "qualifier": "unknown"
+        }
+      }
+    },
+    {
+      "id": "activities:d30c46f15db1851db45de26c",
+      "record_kind": "activities",
+      "entity_id": "activity:4e297971ff1931b812981363",
+      "context_id": null,
+      "body": {
+        "id": "activity:4e297971ff1931b812981363",
+        "activity_kind": "class_access_assertion",
+        "profile_record_id": "annotations:1b737c9be41823f7d4190c6f"
+      }
+    },
+    {
+      "id": "activity_outcomes:7c75f8bebd9a5f29b5fd2628",
+      "record_kind": "activity_outcomes",
+      "entity_id": "castle-knight",
+      "context_id": "ctx:a8ef59046d528941bbc7ebf8",
+      "body": {
+        "target_id": "castle-knight",
+        "condition_id": null,
+        "activity_id": "activity:4e297971ff1931b812981363",
+        "outcome_kind": "class_unlock",
+        "label": "Part 3 Unlock",
+        "quantity_json": {
+          "raw": null,
+          "state": "source_missing",
+          "number": null,
+          "lower": null,
+          "upper": null,
+          "unit": null,
+          "qualifier": "unknown"
+        }
+      }
+    },
+    {
+      "id": "activities:16ea741e7aa730b6ed675499",
+      "record_kind": "activities",
+      "entity_id": "activity:ab8d43988e408209f3610264",
+      "context_id": null,
+      "body": {
+        "id": "activity:ab8d43988e408209f3610264",
+        "activity_kind": "class_access_assertion",
+        "profile_record_id": "annotations:b93dadd3889939ba57f28239"
+      }
+    },
+    {
+      "id": "activity_outcomes:528b167384a1494651b3521c",
+      "record_kind": "activity_outcomes",
+      "entity_id": "orichaldia",
+      "context_id": "ctx:b681292504e4c73a7b0bfa1e",
+      "body": {
+        "target_id": "orichaldia",
+        "condition_id": null,
+        "activity_id": "activity:ab8d43988e408209f3610264",
+        "outcome_kind": "class_unlock",
+        "label": "Part 3 Unlock",
+        "quantity_json": {
+          "raw": null,
+          "state": "source_missing",
+          "number": null,
+          "lower": null,
+          "upper": null,
+          "unit": null,
+          "qualifier": "unknown"
+        }
+      }
+    },
+    {
+      "id": "activities:1f74a959efa74fd985c56918",
+      "record_kind": "activities",
+      "entity_id": "activity:8d7be62c655fb5f2a65ae5cf",
+      "context_id": null,
+      "body": {
+        "id": "activity:8d7be62c655fb5f2a65ae5cf",
+        "activity_kind": "class_access_assertion",
+        "profile_record_id": "annotations:cfa1056c4bedb1bf7f6bc977"
+      }
+    },
+    {
+      "id": "activity_outcomes:a8a8d6f34d331406c3e5cd9c",
+      "record_kind": "activity_outcomes",
+      "entity_id": "great-knight",
+      "context_id": "ctx:1d44c50e6a5b222aa05a98af",
+      "body": {
+        "target_id": "great-knight",
+        "condition_id": null,
+        "activity_id": "activity:8d7be62c655fb5f2a65ae5cf",
+        "outcome_kind": "class_unlock",
+        "label": "Part 3 Unlock",
+        "quantity_json": {
+          "raw": null,
+          "state": "source_missing",
+          "number": null,
+          "lower": null,
+          "upper": null,
+          "unit": null,
+          "qualifier": "unknown"
+        }
+      }
+    },
+    {
+      "id": "activities:72dd8cbb5743398e98ccea0a",
+      "record_kind": "activities",
+      "entity_id": "activity:9824be8a84799f23683b3f14",
+      "context_id": null,
+      "body": {
+        "id": "activity:9824be8a84799f23683b3f14",
+        "activity_kind": "class_access_assertion",
+        "profile_record_id": "annotations:b7975eca32d96dc06f6f3004"
+      }
+    },
+    {
+      "id": "activity_outcomes:37459f3c270ef4fd195553ee",
+      "record_kind": "activity_outcomes",
+      "entity_id": "celestial-trooper",
+      "context_id": "ctx:2c0544c65315bfb4d30269ee",
+      "body": {
+        "target_id": "celestial-trooper",
+        "condition_id": "condition:37459f3c270ef4fd195553ee",
+        "activity_id": "activity:9824be8a84799f23683b3f14",
+        "outcome_kind": "class_unlock",
+        "label": "Part 3 Unlock",
+        "quantity_json": {
+          "raw": null,
+          "state": "source_missing",
+          "number": null,
+          "lower": null,
+          "upper": null,
+          "unit": null,
+          "qualifier": "unknown"
+        }
+      }
+    },
+    {
+      "id": "activities:acb261d0c87b5b8676eabf73",
+      "record_kind": "activities",
+      "entity_id": "activity:a677dd57b54649a1d4fa35ac",
+      "context_id": null,
+      "body": {
+        "id": "activity:a677dd57b54649a1d4fa35ac",
+        "activity_kind": "class_access_assertion",
+        "profile_record_id": "annotations:8beedba9c12a4a316c7c0aac"
+      }
+    },
+    {
+      "id": "activity_outcomes:1747df01d9b6b3571b6204f3",
+      "record_kind": "activity_outcomes",
+      "entity_id": "bau-lord",
+      "context_id": "ctx:5356dc1a85d23b898745d8d0",
+      "body": {
+        "target_id": "bau-lord",
+        "condition_id": null,
+        "activity_id": "activity:a677dd57b54649a1d4fa35ac",
+        "outcome_kind": "class_unlock",
+        "label": "Part 3 Unlock",
+        "quantity_json": {
+          "raw": null,
+          "state": "source_missing",
+          "number": null,
+          "lower": null,
+          "upper": null,
+          "unit": null,
+          "qualifier": "unknown"
+        }
+      }
+    },
+    {
+      "id": "activities:d8191bccfee8e5828e1605eb",
+      "record_kind": "activities",
+      "entity_id": "activity:2dba8d9904c8179fc47e4e9e",
+      "context_id": null,
+      "body": {
+        "id": "activity:2dba8d9904c8179fc47e4e9e",
+        "activity_kind": "class_access_assertion",
+        "profile_record_id": "annotations:6a5ef6fb596a467d3c14dc9f"
+      }
+    },
+    {
+      "id": "activity_outcomes:fd756c7864ad84e240383dcb",
+      "record_kind": "activity_outcomes",
+      "entity_id": "druid",
+      "context_id": "ctx:ae5d326c6ed01821595cf262",
+      "body": {
+        "target_id": "druid",
+        "condition_id": null,
+        "activity_id": "activity:2dba8d9904c8179fc47e4e9e",
+        "outcome_kind": "class_unlock",
+        "label": "Part 3 Unlock",
+        "quantity_json": {
+          "raw": null,
+          "state": "source_missing",
+          "number": null,
+          "lower": null,
+          "upper": null,
+          "unit": null,
+          "qualifier": "unknown"
+        }
+      }
+    },
+    {
+      "id": "activities:2b99995e957e155b25c932ef",
+      "record_kind": "activities",
+      "entity_id": "activity:ac87a57e28e1891e7d6f82ef",
+      "context_id": null,
+      "body": {
+        "id": "activity:ac87a57e28e1891e7d6f82ef",
+        "activity_kind": "class_access_assertion",
+        "profile_record_id": "annotations:4ff26ecfc3abf02cfb8ec596"
+      }
+    },
+    {
+      "id": "activity_outcomes:ff734606def58d07dbba2654",
+      "record_kind": "activity_outcomes",
+      "entity_id": "wiseman",
+      "context_id": "ctx:7d7098441c7023b74b3de16d",
+      "body": {
+        "target_id": "wiseman",
+        "condition_id": null,
+        "activity_id": "activity:ac87a57e28e1891e7d6f82ef",
+        "outcome_kind": "class_unlock",
+        "label": "Part 3 Unlock",
+        "quantity_json": {
+          "raw": null,
+          "state": "source_missing",
+          "number": null,
+          "lower": null,
+          "upper": null,
+          "unit": null,
+          "qualifier": "unknown"
+        }
+      }
+    },
+    {
+      "id": "activities:cf38513dc29d1a5bccb0c660",
+      "record_kind": "activities",
+      "entity_id": "activity:2f8df8551a7a5658b0a4fade",
+      "context_id": null,
+      "body": {
+        "id": "activity:2f8df8551a7a5658b0a4fade",
+        "activity_kind": "class_access_assertion",
+        "profile_record_id": "annotations:52a5219fb16dc3432c3ae16b"
+      }
+    },
+    {
+      "id": "activity_outcomes:d489c7962d873b4b626ac0c0",
+      "record_kind": "activity_outcomes",
+      "entity_id": "valkyrium",
+      "context_id": "ctx:1d9634081ec061270acb20ae",
+      "body": {
+        "target_id": "valkyrium",
+        "condition_id": "condition:d489c7962d873b4b626ac0c0",
+        "activity_id": "activity:2f8df8551a7a5658b0a4fade",
+        "outcome_kind": "class_unlock",
+        "label": "Part 3 Unlock",
+        "quantity_json": {
+          "raw": null,
+          "state": "source_missing",
+          "number": null,
+          "lower": null,
+          "upper": null,
+          "unit": null,
+          "qualifier": "unknown"
+        }
+      }
+    },
+    {
+      "id": "activities:8278fabd713edfa2a78832f3",
+      "record_kind": "activities",
+      "entity_id": "activity:eafc90a7a02a08f724359227",
+      "context_id": null,
+      "body": {
+        "id": "activity:eafc90a7a02a08f724359227",
+        "activity_kind": "class_access_assertion",
+        "profile_record_id": "annotations:7fa91bad26957f3fdabc6c1b"
+      }
+    },
+    {
+      "id": "activity_outcomes:9642e76c06e4874863c53a33",
+      "record_kind": "activity_outcomes",
+      "entity_id": "the-blade",
+      "context_id": "ctx:cc6178de4294529c4a93b8b4",
+      "body": {
+        "target_id": "the-blade",
+        "condition_id": "condition:9642e76c06e4874863c53a33",
+        "activity_id": "activity:eafc90a7a02a08f724359227",
+        "outcome_kind": "class_unlock",
+        "label": "Part 3 Unlock",
+        "quantity_json": {
+          "raw": null,
+          "state": "source_missing",
+          "number": null,
+          "lower": null,
+          "upper": null,
+          "unit": null,
+          "qualifier": "unknown"
+        }
+      }
+    },
+    {
+      "id": "activities:2a8835eeb94bfa741d632f89",
+      "record_kind": "activities",
+      "entity_id": "activity:67525b170dfebe2271981509",
+      "context_id": null,
+      "body": {
+        "id": "activity:67525b170dfebe2271981509",
+        "activity_kind": "class_access_assertion",
+        "profile_record_id": "annotations:635afd598ef079561e26d8de"
+      }
+    },
+    {
+      "id": "activity_outcomes:f33dc96df72bf19d7db229dd",
+      "record_kind": "activity_outcomes",
+      "entity_id": "the-apsara",
+      "context_id": "ctx:c5fcb2040760d5c3962493b1",
+      "body": {
+        "target_id": "the-apsara",
+        "condition_id": "condition:f33dc96df72bf19d7db229dd",
+        "activity_id": "activity:67525b170dfebe2271981509",
+        "outcome_kind": "class_unlock",
+        "label": "Part 3 Unlock",
+        "quantity_json": {
+          "raw": null,
+          "state": "source_missing",
+          "number": null,
+          "lower": null,
+          "upper": null,
+          "unit": null,
+          "qualifier": "unknown"
+        }
+      }
+    },
+    {
+      "id": "activities:1fc33048c98423c2eb6cb627",
+      "record_kind": "activities",
+      "entity_id": "activity:18c66a40d4722c34a09f84e9",
+      "context_id": null,
+      "body": {
+        "id": "activity:18c66a40d4722c34a09f84e9",
+        "activity_kind": "class_access_assertion",
+        "profile_record_id": "annotations:5f8f575d0a8f7b0c02d58ed2"
+      }
+    },
+    {
+      "id": "activity_outcomes:99a51aaef4cd47c035cb3280",
+      "record_kind": "activity_outcomes",
+      "entity_id": "the-eternal",
+      "context_id": "ctx:f8a900d281e6c5dffb8653ac",
+      "body": {
+        "target_id": "the-eternal",
+        "condition_id": "condition:99a51aaef4cd47c035cb3280",
+        "activity_id": "activity:18c66a40d4722c34a09f84e9",
+        "outcome_kind": "class_unlock",
+        "label": "Part 3 Unlock",
+        "quantity_json": {
+          "raw": null,
+          "state": "source_missing",
+          "number": null,
+          "lower": null,
+          "upper": null,
+          "unit": null,
+          "qualifier": "unknown"
+        }
+      }
+    },
+    {
+      "id": "activities:5afaefef151a18d1d7c52971",
+      "record_kind": "activities",
+      "entity_id": "activity:e3b2b4ec04b8b73a3de850c9",
+      "context_id": null,
+      "body": {
+        "id": "activity:e3b2b4ec04b8b73a3de850c9",
+        "activity_kind": "class_access_assertion",
+        "profile_record_id": "annotations:688b5724f5786d0172159b8f"
+      }
+    },
+    {
+      "id": "activity_outcomes:970d46f6bc24b32a07ff6037",
+      "record_kind": "activity_outcomes",
+      "entity_id": "the-godhand",
+      "context_id": "ctx:b74bc303cc534b694422df8b",
+      "body": {
+        "target_id": "the-godhand",
+        "condition_id": "condition:970d46f6bc24b32a07ff6037",
+        "activity_id": "activity:e3b2b4ec04b8b73a3de850c9",
+        "outcome_kind": "class_unlock",
+        "label": "Part 3 Unlock",
+        "quantity_json": {
+          "raw": null,
+          "state": "source_missing",
+          "number": null,
+          "lower": null,
+          "upper": null,
+          "unit": null,
+          "qualifier": "unknown"
+        }
+      }
+    },
+    {
+      "id": "activities:cf9d382ba768156fa055805f",
+      "record_kind": "activities",
+      "entity_id": "activity:9cb839839e08bfd2f10e06c0",
+      "context_id": null,
+      "body": {
+        "id": "activity:9cb839839e08bfd2f10e06c0",
+        "activity_kind": "class_access_assertion",
+        "profile_record_id": "annotations:d2bb4ddd7b525cdc6a48141c"
+      }
+    },
+    {
+      "id": "activity_outcomes:f26b62c8ede31bba38aacbdd",
+      "record_kind": "activity_outcomes",
+      "entity_id": "the-calamity",
+      "context_id": "ctx:5aaa0235a8d3ca3c50c35bb3",
+      "body": {
+        "target_id": "the-calamity",
+        "condition_id": "condition:f26b62c8ede31bba38aacbdd",
+        "activity_id": "activity:9cb839839e08bfd2f10e06c0",
+        "outcome_kind": "class_unlock",
+        "label": "Part 3 Unlock",
+        "quantity_json": {
+          "raw": null,
+          "state": "source_missing",
+          "number": null,
+          "lower": null,
+          "upper": null,
+          "unit": null,
+          "qualifier": "unknown"
+        }
+      }
+    },
+    {
+      "id": "activities:312c4318e8629c9fd8fa5d35",
+      "record_kind": "activities",
+      "entity_id": "activity:7bd4706e06b59051c9fcc6d1",
+      "context_id": null,
+      "body": {
+        "id": "activity:7bd4706e06b59051c9fcc6d1",
+        "activity_kind": "class_access_assertion",
+        "profile_record_id": "annotations:67a032232b9adf608232cab0"
+      }
+    },
+    {
+      "id": "activity_outcomes:e008d2b4104ce307f6678828",
+      "record_kind": "activity_outcomes",
+      "entity_id": "the-trident",
+      "context_id": "ctx:3f3b14b4c660e3776def8535",
+      "body": {
+        "target_id": "the-trident",
+        "condition_id": "condition:e008d2b4104ce307f6678828",
+        "activity_id": "activity:7bd4706e06b59051c9fcc6d1",
+        "outcome_kind": "class_unlock",
+        "label": "Part 3 Unlock",
+        "quantity_json": {
+          "raw": null,
+          "state": "source_missing",
+          "number": null,
+          "lower": null,
+          "upper": null,
+          "unit": null,
+          "qualifier": "unknown"
+        }
+      }
+    },
+    {
+      "id": "activities:67b9235c9f6ea7eff1f695b8",
+      "record_kind": "activities",
+      "entity_id": "activity:cb34b65ecdd6b87c0a95f87b",
+      "context_id": null,
+      "body": {
+        "id": "activity:cb34b65ecdd6b87c0a95f87b",
+        "activity_kind": "class_access_assertion",
+        "profile_record_id": "annotations:7636d05f848809cdbcfcc369"
+      }
+    },
+    {
+      "id": "activity_outcomes:00ef20e83962c9abd6628e32",
+      "record_kind": "activity_outcomes",
+      "entity_id": "the-cavalier",
+      "context_id": "ctx:352ac0d3376e05f6a413edb3",
+      "body": {
+        "target_id": "the-cavalier",
+        "condition_id": "condition:00ef20e83962c9abd6628e32",
+        "activity_id": "activity:cb34b65ecdd6b87c0a95f87b",
+        "outcome_kind": "class_unlock",
+        "label": "Part 3 Unlock",
+        "quantity_json": {
+          "raw": null,
+          "state": "source_missing",
+          "number": null,
+          "lower": null,
+          "upper": null,
+          "unit": null,
+          "qualifier": "unknown"
+        }
+      }
+    },
+    {
+      "id": "activities:155f437a6d77ce4f4872cef1",
+      "record_kind": "activities",
+      "entity_id": "activity:ad8b68b1b4fd1cd84f15710f",
+      "context_id": null,
+      "body": {
+        "id": "activity:ad8b68b1b4fd1cd84f15710f",
+        "activity_kind": "class_access_assertion",
+        "profile_record_id": "annotations:1b90be9956656c4c4ada8965"
+      }
+    },
+    {
+      "id": "activity_outcomes:7afd4646f06cdbac87cbdc2c",
+      "record_kind": "activity_outcomes",
+      "entity_id": "the-avatar",
+      "context_id": "ctx:258da2d4d67da4c280310b1d",
+      "body": {
+        "target_id": "the-avatar",
+        "condition_id": "condition:7afd4646f06cdbac87cbdc2c",
+        "activity_id": "activity:ad8b68b1b4fd1cd84f15710f",
+        "outcome_kind": "class_unlock",
+        "label": "Part 3 Unlock",
+        "quantity_json": {
+          "raw": null,
+          "state": "source_missing",
+          "number": null,
+          "lower": null,
+          "upper": null,
+          "unit": null,
+          "qualifier": "unknown"
+        }
+      }
+    },
+    {
+      "id": "paralogues:d066358e29c3ae1b31ff26a7",
+      "record_kind": "paralogues",
+      "entity_id": "great-escape",
+      "context_id": null,
+      "body": {
+        "associated_person_id": "cai",
+        "source_title": null,
+        "id": "great-escape",
+        "source_label": "Cai",
+        "title_state": "source_missing"
+      }
+    },
+    {
+      "id": "activities:d066358e29c3ae1b31ff26a7",
+      "record_kind": "activities",
+      "entity_id": "great-escape",
+      "context_id": null,
+      "body": {
+        "id": "great-escape",
+        "activity_kind": "paralogue",
+        "profile_record_id": "paralogues:d066358e29c3ae1b31ff26a7"
+      }
+    },
+    {
+      "id": "activity_availability:8f38179438c719fe8de05134",
+      "record_kind": "activity_availability",
+      "entity_id": "great-escape",
+      "context_id": "ctx:66c3775d41247a2ec571e337",
+      "body": {
+        "availability_state": {
+          "state": "value",
+          "value": "available",
+          "claim_ids": [
+            "claim:91c3023420d8766c911fdbec"
+          ],
+          "selected_claim_id": "claim:91c3023420d8766c911fdbec",
+          "reason": null
+        },
+        "condition_id": null,
+        "activity_id": "great-escape"
+      }
+    },
+    {
+      "id": "activity_availability:c2f6c02461c227a83d1d11bf",
+      "record_kind": "activity_availability",
+      "entity_id": "great-escape",
+      "context_id": "ctx:4584a34e21267d1bcb0b345d",
+      "body": {
+        "availability_state": {
+          "state": "value",
+          "value": "available",
+          "claim_ids": [
+            "claim:eb9ab38555ed7a569db6e5d5"
+          ],
+          "selected_claim_id": "claim:eb9ab38555ed7a569db6e5d5",
+          "reason": null
+        },
+        "condition_id": null,
+        "activity_id": "great-escape"
+      }
+    },
+    {
+      "id": "activity_availability:7fc78a1d8b877f99abbbb812",
+      "record_kind": "activity_availability",
+      "entity_id": "great-escape",
+      "context_id": "ctx:7485a1824ccb7d89516256ae",
+      "body": {
+        "availability_state": {
+          "state": "value",
+          "value": "available",
+          "claim_ids": [
+            "claim:d2f588d551a075f5d253d582"
+          ],
+          "selected_claim_id": "claim:d2f588d551a075f5d253d582",
+          "reason": null
+        },
+        "condition_id": null,
+        "activity_id": "great-escape"
+      }
+    },
+    {
+      "id": "activity_outcomes:6a1331597ef256421edda5e3",
+      "record_kind": "activity_outcomes",
+      "entity_id": "great-escape",
+      "context_id": "ctx:1caad75b122853bff833b68f",
+      "body": {
+        "target_id": null,
+        "condition_id": null,
+        "activity_id": "great-escape",
+        "outcome_kind": "currency",
+        "label": "Gold",
+        "quantity_json": {
+          "raw": "Each paralogue rewards 20,000 gold",
+          "state": "value",
+          "number": 20000,
+          "lower": null,
+          "upper": null,
+          "unit": "gold",
+          "qualifier": "exact"
+        }
+      }
+    },
+    {
+      "id": "paralogues:112828ca09968ab424bb3936",
+      "record_kind": "paralogues",
+      "entity_id": "sealed-off-past",
+      "context_id": null,
+      "body": {
+        "associated_person_id": "dietrich",
+        "source_title": null,
+        "id": "sealed-off-past",
+        "source_label": "Dietrich",
+        "title_state": "source_missing"
+      }
+    },
+    {
+      "id": "activities:112828ca09968ab424bb3936",
+      "record_kind": "activities",
+      "entity_id": "sealed-off-past",
+      "context_id": null,
+      "body": {
+        "id": "sealed-off-past",
+        "activity_kind": "paralogue",
+        "profile_record_id": "paralogues:112828ca09968ab424bb3936"
+      }
+    },
+    {
+      "id": "activity_availability:dc19b620bc48e78ef4506cbd",
+      "record_kind": "activity_availability",
+      "entity_id": "sealed-off-past",
+      "context_id": "ctx:e293f180756b53fe28f7ead2",
+      "body": {
+        "availability_state": {
+          "state": "value",
+          "value": "available",
+          "claim_ids": [
+            "claim:a6e8ae0c898426a375c432c9"
+          ],
+          "selected_claim_id": "claim:a6e8ae0c898426a375c432c9",
+          "reason": null
+        },
+        "condition_id": null,
+        "activity_id": "sealed-off-past"
+      }
+    },
+    {
+      "id": "activity_availability:6f4ec364bb8dcd35f1456087",
+      "record_kind": "activity_availability",
+      "entity_id": "sealed-off-past",
+      "context_id": "ctx:14a0e8d8226073057429b067",
+      "body": {
+        "availability_state": {
+          "state": "value",
+          "value": "available",
+          "claim_ids": [
+            "claim:299fe336df0fd96c823c6779"
+          ],
+          "selected_claim_id": "claim:299fe336df0fd96c823c6779",
+          "reason": null
+        },
+        "condition_id": null,
+        "activity_id": "sealed-off-past"
+      }
+    },
+    {
+      "id": "activity_outcomes:520fbdd726187453c19d9622",
+      "record_kind": "activity_outcomes",
+      "entity_id": "sealed-off-past",
+      "context_id": "ctx:b0e5b33750790678c0f81a81",
+      "body": {
+        "target_id": null,
+        "condition_id": null,
+        "activity_id": "sealed-off-past",
+        "outcome_kind": "currency",
+        "label": "Gold",
+        "quantity_json": {
+          "raw": "Each paralogue rewards 20,000 gold",
+          "state": "value",
+          "number": 20000,
+          "lower": null,
+          "upper": null,
+          "unit": "gold",
+          "qualifier": "exact"
+        }
+      }
+    },
+    {
+      "id": "paralogues:acd7e6c3602918a1490040ab",
+      "record_kind": "paralogues",
+      "entity_id": "missing-brave-warrior-statue",
+      "context_id": null,
+      "body": {
+        "associated_person_id": "theodora",
+        "source_title": null,
+        "id": "missing-brave-warrior-statue",
+        "source_label": "Theodora",
+        "title_state": "source_missing"
+      }
+    },
+    {
+      "id": "activities:acd7e6c3602918a1490040ab",
+      "record_kind": "activities",
+      "entity_id": "missing-brave-warrior-statue",
+      "context_id": null,
+      "body": {
+        "id": "missing-brave-warrior-statue",
+        "activity_kind": "paralogue",
+        "profile_record_id": "paralogues:acd7e6c3602918a1490040ab"
+      }
+    },
+    {
+      "id": "activity_availability:fda91b1ee5dbab2303454fff",
+      "record_kind": "activity_availability",
+      "entity_id": "missing-brave-warrior-statue",
+      "context_id": "ctx:9dda7bf0ffa4e646043320ff",
+      "body": {
+        "availability_state": {
+          "state": "value",
+          "value": "available",
+          "claim_ids": [
+            "claim:3be17820dc50e45bef4bfce3"
+          ],
+          "selected_claim_id": "claim:3be17820dc50e45bef4bfce3",
+          "reason": null
+        },
+        "condition_id": null,
+        "activity_id": "missing-brave-warrior-statue"
+      }
+    },
+    {
+      "id": "activity_outcomes:e88d0f344de0746a855b3ded",
+      "record_kind": "activity_outcomes",
+      "entity_id": "missing-brave-warrior-statue",
+      "context_id": "ctx:6434c39fcab1588c295115d6",
+      "body": {
+        "target_id": null,
+        "condition_id": null,
+        "activity_id": "missing-brave-warrior-statue",
+        "outcome_kind": "currency",
+        "label": "Gold",
+        "quantity_json": {
+          "raw": "Each paralogue rewards 20,000 gold",
+          "state": "value",
+          "number": 20000,
+          "lower": null,
+          "upper": null,
+          "unit": "gold",
+          "qualifier": "exact"
+        }
+      }
+    },
+    {
+      "id": "paralogues:49873780c9e5a197acfc9989",
+      "record_kind": "paralogues",
+      "entity_id": "diversionary-tactics",
+      "context_id": null,
+      "body": {
+        "associated_person_id": "leda",
+        "source_title": null,
+        "id": "diversionary-tactics",
+        "source_label": "Leda",
+        "title_state": "source_missing"
+      }
+    },
+    {
+      "id": "activities:49873780c9e5a197acfc9989",
+      "record_kind": "activities",
+      "entity_id": "diversionary-tactics",
+      "context_id": null,
+      "body": {
+        "id": "diversionary-tactics",
+        "activity_kind": "paralogue",
+        "profile_record_id": "paralogues:49873780c9e5a197acfc9989"
+      }
+    },
+    {
+      "id": "activity_availability:0acb34dd555ea61df3c81f2e",
+      "record_kind": "activity_availability",
+      "entity_id": "diversionary-tactics",
+      "context_id": "ctx:ec921ee83cef74857ba8b7a6",
+      "body": {
+        "availability_state": {
+          "state": "value",
+          "value": "available",
+          "claim_ids": [
+            "claim:cbdbc9f5ad1d2f0a9a78888c"
+          ],
+          "selected_claim_id": "claim:cbdbc9f5ad1d2f0a9a78888c",
+          "reason": null
+        },
+        "condition_id": null,
+        "activity_id": "diversionary-tactics"
+      }
+    },
+    {
+      "id": "activity_availability:bd2b2ac971e7b24bba33b4b8",
+      "record_kind": "activity_availability",
+      "entity_id": "diversionary-tactics",
+      "context_id": "ctx:0261da8f1667a201f7d94291",
+      "body": {
+        "availability_state": {
+          "state": "value",
+          "value": "available",
+          "claim_ids": [
+            "claim:62ea37e8f1614cc73e98b06c"
+          ],
+          "selected_claim_id": "claim:62ea37e8f1614cc73e98b06c",
+          "reason": null
+        },
+        "condition_id": null,
+        "activity_id": "diversionary-tactics"
+      }
+    },
+    {
+      "id": "activity_outcomes:cd1f1ce88bf6355c7b800596",
+      "record_kind": "activity_outcomes",
+      "entity_id": "diversionary-tactics",
+      "context_id": "ctx:13fe6b552b0262d12cdfe5cb",
+      "body": {
+        "target_id": null,
+        "condition_id": null,
+        "activity_id": "diversionary-tactics",
+        "outcome_kind": "currency",
+        "label": "Gold",
+        "quantity_json": {
+          "raw": "Each paralogue rewards 20,000 gold",
+          "state": "value",
+          "number": 20000,
+          "lower": null,
+          "upper": null,
+          "unit": "gold",
+          "qualifier": "exact"
+        }
+      }
+    },
+    {
+      "id": "paralogues:158181386adce32740ffd2a7",
+      "record_kind": "paralogues",
+      "entity_id": "golden-secret",
+      "context_id": null,
+      "body": {
+        "associated_person_id": "person:bf4fccd616251b678c56b9cb",
+        "source_title": null,
+        "id": "golden-secret",
+        "source_label": "Anna",
+        "title_state": "source_missing"
+      }
+    },
+    {
+      "id": "activities:158181386adce32740ffd2a7",
+      "record_kind": "activities",
+      "entity_id": "golden-secret",
+      "context_id": null,
+      "body": {
+        "id": "golden-secret",
+        "activity_kind": "paralogue",
+        "profile_record_id": "paralogues:158181386adce32740ffd2a7"
+      }
+    },
+    {
+      "id": "activity_availability:a38e656c7242dd48aaf2a2aa",
+      "record_kind": "activity_availability",
+      "entity_id": "golden-secret",
+      "context_id": "ctx:0416bc6af639f05746696efc",
+      "body": {
+        "availability_state": {
+          "state": "value",
+          "value": "available",
+          "claim_ids": [
+            "claim:9b91841c5d4b70604af64c04"
+          ],
+          "selected_claim_id": "claim:9b91841c5d4b70604af64c04",
+          "reason": null
+        },
+        "condition_id": null,
+        "activity_id": "golden-secret"
+      }
+    },
+    {
+      "id": "activity_availability:4630624832553e86bd333a00",
+      "record_kind": "activity_availability",
+      "entity_id": "golden-secret",
+      "context_id": "ctx:4f6a3b5de0f3b816ddc1ab51",
+      "body": {
+        "availability_state": {
+          "state": "value",
+          "value": "available",
+          "claim_ids": [
+            "claim:5d6d564bb600dbf8bc0172dd"
+          ],
+          "selected_claim_id": "claim:5d6d564bb600dbf8bc0172dd",
+          "reason": null
+        },
+        "condition_id": null,
+        "activity_id": "golden-secret"
+      }
+    },
+    {
+      "id": "activity_availability:165f2b9089f6df76a2d83b9b",
+      "record_kind": "activity_availability",
+      "entity_id": "golden-secret",
+      "context_id": "ctx:612a836cba47af3ec096a378",
+      "body": {
+        "availability_state": {
+          "state": "value",
+          "value": "available",
+          "claim_ids": [
+            "claim:4bf778f7fab0a46d381be373"
+          ],
+          "selected_claim_id": "claim:4bf778f7fab0a46d381be373",
+          "reason": null
+        },
+        "condition_id": null,
+        "activity_id": "golden-secret"
+      }
+    },
+    {
+      "id": "activity_outcomes:3cf6dd6eade185aa92745e2f",
+      "record_kind": "activity_outcomes",
+      "entity_id": "golden-secret",
+      "context_id": "ctx:5995af63a5f8167c0213e744",
+      "body": {
+        "target_id": null,
+        "condition_id": null,
+        "activity_id": "golden-secret",
+        "outcome_kind": "currency",
+        "label": "Gold",
+        "quantity_json": {
+          "raw": "Each paralogue rewards 20,000 gold",
+          "state": "value",
+          "number": 20000,
+          "lower": null,
+          "upper": null,
+          "unit": "gold",
+          "qualifier": "exact"
+        }
+      }
+    },
+    {
+      "id": "paralogues:c78c9ff40d872df94002bfa6",
+      "record_kind": "paralogues",
+      "entity_id": "secret-of-the-vanished-carriage",
+      "context_id": null,
+      "body": {
+        "associated_person_id": "talimun",
+        "source_title": null,
+        "id": "secret-of-the-vanished-carriage",
+        "source_label": "Talimun",
+        "title_state": "source_missing"
+      }
+    },
+    {
+      "id": "activities:c78c9ff40d872df94002bfa6",
+      "record_kind": "activities",
+      "entity_id": "secret-of-the-vanished-carriage",
+      "context_id": null,
+      "body": {
+        "id": "secret-of-the-vanished-carriage",
+        "activity_kind": "paralogue",
+        "profile_record_id": "paralogues:c78c9ff40d872df94002bfa6"
+      }
+    },
+    {
+      "id": "activity_availability:ab36ac58f10db8ab35157c0e",
+      "record_kind": "activity_availability",
+      "entity_id": "secret-of-the-vanished-carriage",
+      "context_id": "ctx:a2c6916720af46f083625763",
+      "body": {
+        "availability_state": {
+          "state": "value",
+          "value": "available",
+          "claim_ids": [
+            "claim:50971ccbe168ba8d8e9f4ddc"
+          ],
+          "selected_claim_id": "claim:50971ccbe168ba8d8e9f4ddc",
+          "reason": null
+        },
+        "condition_id": null,
+        "activity_id": "secret-of-the-vanished-carriage"
+      }
+    },
+    {
+      "id": "activity_availability:9cce3f299c9cc4805f947aa0",
+      "record_kind": "activity_availability",
+      "entity_id": "secret-of-the-vanished-carriage",
+      "context_id": "ctx:3664e4c249f1314600d55cd4",
+      "body": {
+        "availability_state": {
+          "state": "value",
+          "value": "available",
+          "claim_ids": [
+            "claim:abf0fec60f5e51f3d011da87"
+          ],
+          "selected_claim_id": "claim:abf0fec60f5e51f3d011da87",
+          "reason": null
+        },
+        "condition_id": null,
+        "activity_id": "secret-of-the-vanished-carriage"
+      }
+    },
+    {
+      "id": "activity_availability:15ca9a9b3a692e806641ea67",
+      "record_kind": "activity_availability",
+      "entity_id": "secret-of-the-vanished-carriage",
+      "context_id": "ctx:02115b6172f2e8831babd24b",
+      "body": {
+        "availability_state": {
+          "state": "value",
+          "value": "available",
+          "claim_ids": [
+            "claim:8bbb2ea1d88a7719afa7cb7f"
+          ],
+          "selected_claim_id": "claim:8bbb2ea1d88a7719afa7cb7f",
+          "reason": null
+        },
+        "condition_id": null,
+        "activity_id": "secret-of-the-vanished-carriage"
+      }
+    },
+    {
+      "id": "activity_outcomes:43ace9a2616a691276e4493a",
+      "record_kind": "activity_outcomes",
+      "entity_id": "secret-of-the-vanished-carriage",
+      "context_id": "ctx:8d17b6a514ca62e303644a6f",
+      "body": {
+        "target_id": "ursula",
+        "condition_id": null,
+        "activity_id": "secret-of-the-vanished-carriage",
+        "outcome_kind": "recruitment_opportunity",
+        "label": "Ursula is recruitable after clearing it",
+        "quantity_json": {
+          "raw": null,
+          "state": "source_missing",
+          "number": null,
+          "lower": null,
+          "upper": null,
+          "unit": null,
+          "qualifier": "unknown"
+        }
+      }
+    },
+    {
+      "id": "activity_outcomes:8c5bf48a0049a2dedcda9a45",
+      "record_kind": "activity_outcomes",
+      "entity_id": "secret-of-the-vanished-carriage",
+      "context_id": "ctx:8d17b6a514ca62e303644a6f",
+      "body": {
+        "target_id": null,
+        "condition_id": null,
+        "activity_id": "secret-of-the-vanished-carriage",
+        "outcome_kind": "currency",
+        "label": "Gold",
+        "quantity_json": {
+          "raw": "Each paralogue rewards 20,000 gold",
+          "state": "value",
+          "number": 20000,
+          "lower": null,
+          "upper": null,
+          "unit": "gold",
+          "qualifier": "exact"
+        }
+      }
+    },
+    {
+      "id": "paralogues:8158a4a83d7218c7dc22904d",
+      "record_kind": "paralogues",
+      "entity_id": "orchels-regret",
+      "context_id": null,
+      "body": {
+        "associated_person_id": "orchel",
+        "source_title": null,
+        "id": "orchels-regret",
+        "source_label": "Orchel",
+        "title_state": "source_missing"
+      }
+    },
+    {
+      "id": "activities:8158a4a83d7218c7dc22904d",
+      "record_kind": "activities",
+      "entity_id": "orchels-regret",
+      "context_id": null,
+      "body": {
+        "id": "orchels-regret",
+        "activity_kind": "paralogue",
+        "profile_record_id": "paralogues:8158a4a83d7218c7dc22904d"
+      }
+    },
+    {
+      "id": "activity_availability:a59adc7f8d78b450153bb41d",
+      "record_kind": "activity_availability",
+      "entity_id": "orchels-regret",
+      "context_id": "ctx:063adf8dddeab15f0e1d8e27",
+      "body": {
+        "availability_state": {
+          "state": "value",
+          "value": "available",
+          "claim_ids": [
+            "claim:825b13af6d19ec57f56ab033"
+          ],
+          "selected_claim_id": "claim:825b13af6d19ec57f56ab033",
+          "reason": null
+        },
+        "condition_id": null,
+        "activity_id": "orchels-regret"
+      }
+    },
+    {
+      "id": "activity_availability:2c5ff68a96816234c015097d",
+      "record_kind": "activity_availability",
+      "entity_id": "orchels-regret",
+      "context_id": "ctx:314eb75405265f336b26b6ff",
+      "body": {
+        "availability_state": {
+          "state": "value",
+          "value": "available",
+          "claim_ids": [
+            "claim:4fc5f2a80207da3efe70d6d9"
+          ],
+          "selected_claim_id": "claim:4fc5f2a80207da3efe70d6d9",
+          "reason": null
+        },
+        "condition_id": null,
+        "activity_id": "orchels-regret"
+      }
+    },
+    {
+      "id": "activity_availability:5aed8b5fa8d4920dff0e3124",
+      "record_kind": "activity_availability",
+      "entity_id": "orchels-regret",
+      "context_id": "ctx:d79edee3fa123c78386a0886",
+      "body": {
+        "availability_state": {
+          "state": "value",
+          "value": "available",
+          "claim_ids": [
+            "claim:55e27456cd5829b8cbeb157b"
+          ],
+          "selected_claim_id": "claim:55e27456cd5829b8cbeb157b",
+          "reason": null
+        },
+        "condition_id": null,
+        "activity_id": "orchels-regret"
+      }
+    },
+    {
+      "id": "activity_availability:fc7d5441a1726125888fc40a",
+      "record_kind": "activity_availability",
+      "entity_id": "orchels-regret",
+      "context_id": "ctx:c118b349057b814d582f4e5f",
+      "body": {
+        "availability_state": {
+          "state": "value",
+          "value": "available",
+          "claim_ids": [
+            "claim:64bfc92add7c4ecb3be65bef"
+          ],
+          "selected_claim_id": "claim:64bfc92add7c4ecb3be65bef",
+          "reason": null
+        },
+        "condition_id": null,
+        "activity_id": "orchels-regret"
+      }
+    },
+    {
+      "id": "activity_outcomes:f32de2ec3af78f16f9856f3c",
+      "record_kind": "activity_outcomes",
+      "entity_id": "orchels-regret",
+      "context_id": "ctx:3fe10eafc2e7591908ffd66d",
+      "body": {
+        "target_id": null,
+        "condition_id": null,
+        "activity_id": "orchels-regret",
+        "outcome_kind": "currency",
+        "label": "Gold",
+        "quantity_json": {
+          "raw": "Each paralogue rewards 20,000 gold",
+          "state": "value",
+          "number": 20000,
+          "lower": null,
+          "upper": null,
+          "unit": "gold",
+          "qualifier": "exact"
+        }
+      }
+    },
+    {
+      "id": "paralogues:7ac4254fe9c0b8bf78aad441",
+      "record_kind": "paralogues",
+      "entity_id": "friendly-match-with-brigids-king",
+      "context_id": null,
+      "body": {
+        "associated_person_id": "bertrand",
+        "source_title": null,
+        "id": "friendly-match-with-brigids-king",
+        "source_label": "Bertrand",
+        "title_state": "source_missing"
+      }
+    },
+    {
+      "id": "activities:7ac4254fe9c0b8bf78aad441",
+      "record_kind": "activities",
+      "entity_id": "friendly-match-with-brigids-king",
+      "context_id": null,
+      "body": {
+        "id": "friendly-match-with-brigids-king",
+        "activity_kind": "paralogue",
+        "profile_record_id": "paralogues:7ac4254fe9c0b8bf78aad441"
+      }
+    },
+    {
+      "id": "activity_availability:49aafd8e02041544acfe8d34",
+      "record_kind": "activity_availability",
+      "entity_id": "friendly-match-with-brigids-king",
+      "context_id": "ctx:6ec682d44318f95a85c4cea3",
+      "body": {
+        "availability_state": {
+          "state": "value",
+          "value": "available",
+          "claim_ids": [
+            "claim:f46bc373ac6bb16f6d0e1a32"
+          ],
+          "selected_claim_id": "claim:f46bc373ac6bb16f6d0e1a32",
+          "reason": null
+        },
+        "condition_id": null,
+        "activity_id": "friendly-match-with-brigids-king"
+      }
+    },
+    {
+      "id": "activity_availability:8ea00521fa95e080651c229d",
+      "record_kind": "activity_availability",
+      "entity_id": "friendly-match-with-brigids-king",
+      "context_id": "ctx:6bddee472781463b50f6bd59",
+      "body": {
+        "availability_state": {
+          "state": "value",
+          "value": "available",
+          "claim_ids": [
+            "claim:99335373888ff7dabfd2509e"
+          ],
+          "selected_claim_id": "claim:99335373888ff7dabfd2509e",
+          "reason": null
+        },
+        "condition_id": null,
+        "activity_id": "friendly-match-with-brigids-king"
+      }
+    },
+    {
+      "id": "activity_availability:fcaaac11a6fa10870910247e",
+      "record_kind": "activity_availability",
+      "entity_id": "friendly-match-with-brigids-king",
+      "context_id": "ctx:9fac52178700ed9d757f3eba",
+      "body": {
+        "availability_state": {
+          "state": "value",
+          "value": "available",
+          "claim_ids": [
+            "claim:448397b1bac43065d209a618"
+          ],
+          "selected_claim_id": "claim:448397b1bac43065d209a618",
+          "reason": null
+        },
+        "condition_id": null,
+        "activity_id": "friendly-match-with-brigids-king"
+      }
+    },
+    {
+      "id": "activity_outcomes:e6dc02cdb2f04b4d17f32742",
+      "record_kind": "activity_outcomes",
+      "entity_id": "friendly-match-with-brigids-king",
+      "context_id": "ctx:94e64f52f6eb3c14299ee707",
+      "body": {
+        "target_id": null,
+        "condition_id": null,
+        "activity_id": "friendly-match-with-brigids-king",
+        "outcome_kind": "currency",
+        "label": "Gold",
+        "quantity_json": {
+          "raw": "Each paralogue rewards 20,000 gold",
+          "state": "value",
+          "number": 20000,
+          "lower": null,
+          "upper": null,
+          "unit": "gold",
+          "qualifier": "exact"
+        }
+      }
+    },
+    {
+      "id": "paralogues:c6a3d84bbe29ca1951f16d0d",
+      "record_kind": "paralogues",
+      "entity_id": "queen-of-the-erased",
+      "context_id": null,
+      "body": {
+        "associated_person_id": "anatolia",
+        "source_title": null,
+        "id": "queen-of-the-erased",
+        "source_label": "Anatolia",
+        "title_state": "source_missing"
+      }
+    },
+    {
+      "id": "activities:c6a3d84bbe29ca1951f16d0d",
+      "record_kind": "activities",
+      "entity_id": "queen-of-the-erased",
+      "context_id": null,
+      "body": {
+        "id": "queen-of-the-erased",
+        "activity_kind": "paralogue",
+        "profile_record_id": "paralogues:c6a3d84bbe29ca1951f16d0d"
+      }
+    },
+    {
+      "id": "activity_availability:a6a2a06ea8ed8874e1c007ea",
+      "record_kind": "activity_availability",
+      "entity_id": "queen-of-the-erased",
+      "context_id": "ctx:9aefeafc1f20ca8239157bf7",
+      "body": {
+        "availability_state": {
+          "state": "value",
+          "value": "available",
+          "claim_ids": [
+            "claim:ca563373102e956688ee5d8b"
+          ],
+          "selected_claim_id": "claim:ca563373102e956688ee5d8b",
+          "reason": null
+        },
+        "condition_id": null,
+        "activity_id": "queen-of-the-erased"
+      }
+    },
+    {
+      "id": "activity_availability:13bcdcd6242a557f57635581",
+      "record_kind": "activity_availability",
+      "entity_id": "queen-of-the-erased",
+      "context_id": "ctx:cbc17720e71e971c0cd8a873",
+      "body": {
+        "availability_state": {
+          "state": "value",
+          "value": "available",
+          "claim_ids": [
+            "claim:a235f312b207a1ccd8939b22"
+          ],
+          "selected_claim_id": "claim:a235f312b207a1ccd8939b22",
+          "reason": null
+        },
+        "condition_id": null,
+        "activity_id": "queen-of-the-erased"
+      }
+    },
+    {
+      "id": "activity_outcomes:44b4fb55b8781b474d57f28b",
+      "record_kind": "activity_outcomes",
+      "entity_id": "queen-of-the-erased",
+      "context_id": "ctx:8969e791196830942beee602",
+      "body": {
+        "target_id": "sha-lan",
+        "condition_id": null,
+        "activity_id": "queen-of-the-erased",
+        "outcome_kind": "recruitment_opportunity",
+        "label": "Sha Lan is recruitable after clearing it",
+        "quantity_json": {
+          "raw": null,
+          "state": "source_missing",
+          "number": null,
+          "lower": null,
+          "upper": null,
+          "unit": null,
+          "qualifier": "unknown"
+        }
+      }
+    },
+    {
+      "id": "activity_outcomes:38ef47fb19e73cd8b5c785e7",
+      "record_kind": "activity_outcomes",
+      "entity_id": "queen-of-the-erased",
+      "context_id": "ctx:8969e791196830942beee602",
+      "body": {
+        "target_id": null,
+        "condition_id": null,
+        "activity_id": "queen-of-the-erased",
+        "outcome_kind": "currency",
+        "label": "Gold",
+        "quantity_json": {
+          "raw": "Each paralogue rewards 20,000 gold",
+          "state": "value",
+          "number": 20000,
+          "lower": null,
+          "upper": null,
+          "unit": "gold",
+          "qualifier": "exact"
+        }
+      }
     }
   ]
 }

@@ -1,17 +1,94 @@
 {
   "coverage": "partial",
-  "note": "Reviewed against explicit wording in the supplied personal-ability effects. These associations are incomplete and do not establish weapon permissions or verify the original game claims.",
+  "note": "Reviewed against explicit wording in the preferred Yu Phas Temple personal-ability claims. These associations are incomplete and do not establish weapon permissions or independently verify game claims.",
   "entries": [
-    { "characterId": "aswan", "abilityName": "Princess of Arrows", "skill": "bows", "evidence": "Hit +20 while using bows." },
-    { "characterId": "esmeralda", "abilityName": "Throwing Arm", "skill": "spears", "evidence": "When throwing spears, Hit +10 and Attack +2." },
-    { "characterId": "esmeralda", "abilityName": "Throwing Arm+", "skill": "spears", "evidence": "When throwing spears, Hit +20 and Attack +4." },
-    { "characterId": "inyoni", "abilityName": "Heavy-Bow User", "skill": "bows", "evidence": "Strength +3 while holding a bow." },
-    { "characterId": "inyoni", "abilityName": "Pierce", "skill": "bows", "evidence": "Bow combat arts gain Attack +2 and Crit +5." },
-    { "characterId": "inyoni", "abilityName": "Pierce+", "skill": "bows", "evidence": "Bow combat arts gain Attack +4 and Crit +10." },
-    { "characterId": "majide", "abilityName": "Hellbent Axe", "skill": "axes", "evidence": "Strength +3 when using axes." },
-    { "characterId": "peter", "abilityName": "Steady Aim", "skill": "bows", "evidence": "Bow combat arts gain one tile of range." },
-    { "characterId": "tahonia", "abilityName": "Python Technique", "skill": "gauntlets", "evidence": "15% chance to follow up with gauntlet arts regardless of Attack Speed." },
-    { "characterId": "troy", "abilityName": "Yun Shou", "skill": "gauntlets", "evidence": "Hit +10 with gauntlets." },
-    { "characterId": "zarcone", "abilityName": "Hatchet Man", "skill": "axes", "evidence": "Hit +10 while wielding an axe." }
+    {
+      "characterId": "aswan",
+      "abilityName": "Princess of Arrows",
+      "skill": "bows",
+      "evidence": "When equipped with a bow, grants Hit+20.",
+      "document_id": "data",
+      "source_pointer": "/DATA/characters/2/abilities/personal/0/ef"
+    },
+    {
+      "characterId": "esmeralda",
+      "abilityName": "Throwing Arm",
+      "skill": "spears",
+      "evidence": "If throwing a spear, grants Hit+ 10, Atk+2 during combat.",
+      "document_id": "data",
+      "source_pointer": "/DATA/characters/16/abilities/equippable/0/ef"
+    },
+    {
+      "characterId": "esmeralda",
+      "abilityName": "Throwing Arm+",
+      "skill": "spears",
+      "evidence": "If throwing a spear, grants Hit+20, Atk+4 during combat.",
+      "document_id": "data",
+      "source_pointer": "/DATA/characters/16/abilities/equippable/1/ef"
+    },
+    {
+      "characterId": "inyoni",
+      "abilityName": "Heavy-Bow User",
+      "skill": "bows",
+      "evidence": "When equipped with a bow, grants Str+3.",
+      "document_id": "data",
+      "source_pointer": "/DATA/characters/24/abilities/personal/0/ef"
+    },
+    {
+      "characterId": "inyoni",
+      "abilityName": "Pierce",
+      "skill": "bows",
+      "evidence": "Grants Atk+2, Crit+5 when attacking with a bow combat art.",
+      "document_id": "data",
+      "source_pointer": "/DATA/characters/24/abilities/equippable/0/ef"
+    },
+    {
+      "characterId": "inyoni",
+      "abilityName": "Pierce+",
+      "skill": "bows",
+      "evidence": "Grants Atk+4, Crit+10 when attacking with a bow combat art.",
+      "document_id": "data",
+      "source_pointer": "/DATA/characters/24/abilities/equippable/1/ef"
+    },
+    {
+      "characterId": "majide",
+      "abilityName": "Hellbent Axe",
+      "skill": "axes",
+      "evidence": "When equipped with an axe, grants Str+3.",
+      "document_id": "data",
+      "source_pointer": "/DATA/characters/35/abilities/personal/0/ef"
+    },
+    {
+      "characterId": "peter",
+      "abilityName": "Steady Aim",
+      "skill": "bows",
+      "evidence": "Grants Rng +1 when attacking with a bow combat art.",
+      "document_id": "data",
+      "source_pointer": "/DATA/characters/47/abilities/personal/0/ef"
+    },
+    {
+      "characterId": "tahonia",
+      "abilityName": "Python Technique",
+      "skill": "gauntlets",
+      "evidence": "When using a gauntlet combat art, unit makes a follow-up regardless of AS during combat. Trigger % = 15.",
+      "document_id": "data",
+      "source_pointer": "/DATA/characters/53/abilities/personal/0/ef"
+    },
+    {
+      "characterId": "troy",
+      "abilityName": "Yun Shou",
+      "skill": "gauntlets",
+      "evidence": "When equipped with gauntlets, grants Hit+10.",
+      "document_id": "data",
+      "source_pointer": "/DATA/characters/58/abilities/personal/0/ef"
+    },
+    {
+      "characterId": "zarcone",
+      "abilityName": "Hatchet Man",
+      "skill": "axes",
+      "evidence": "When equipped with an axe, grants Hit+10.",
+      "document_id": "data",
+      "source_pointer": "/DATA/characters/62/abilities/personal/0/ef"
+    }
   ]
 }

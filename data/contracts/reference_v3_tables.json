@@ -1,0 +1,5337 @@
+{
+  "acquisition_overrides": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "source_key",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "target_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "location_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "context_label",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "label",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "suppression_state",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "location_id",
+        "table": "locations",
+        "target": "id"
+      },
+      {
+        "column": "target_id",
+        "table": "entities",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "acquisition_sources": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "target_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "label",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "acquisition_kind",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "location_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "activity_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "source_summary",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "source_detail",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "condition_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "probability_value",
+        "type": "REAL",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "probability_state",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "condition_id",
+        "table": "conditions",
+        "target": "id"
+      },
+      {
+        "column": "activity_id",
+        "table": "activities",
+        "target": "id"
+      },
+      {
+        "column": "location_id",
+        "table": "locations",
+        "target": "id"
+      },
+      {
+        "column": "target_id",
+        "table": "entities",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "action_parameters": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "action_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "parameter_key",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "quantity_json",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "numeric_value",
+        "type": "REAL",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "unit",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "variant_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "variant_id",
+        "table": "entities",
+        "target": "id"
+      },
+      {
+        "column": "action_id",
+        "table": "actions",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "action_profiles": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "action_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "effect_text",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "damage_type",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "equipment_restriction_text",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "upgrade_text",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "parameters_json",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "action_id",
+        "table": "actions",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "action_relations": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "from_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "to_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "relation",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "condition_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "condition_id",
+        "table": "conditions",
+        "target": "id"
+      },
+      {
+        "column": "to_id",
+        "table": "actions",
+        "target": "id"
+      },
+      {
+        "column": "from_id",
+        "table": "actions",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "actions": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "action_kind",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "skill_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "profile_record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "profile_record_id",
+        "table": "records",
+        "target": "id"
+      },
+      {
+        "column": "skill_id",
+        "table": "skills",
+        "target": "id"
+      },
+      {
+        "column": "id",
+        "table": "entities",
+        "target": "id"
+      }
+    ],
+    "extension": false
+  },
+  "activities": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "activity_kind",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "profile_record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "profile_record_id",
+        "table": "records",
+        "target": "id"
+      },
+      {
+        "column": "id",
+        "table": "entities",
+        "target": "id"
+      }
+    ],
+    "extension": false
+  },
+  "activity_availability": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "activity_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "availability_state",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "condition_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "condition_id",
+        "table": "conditions",
+        "target": "id"
+      },
+      {
+        "column": "activity_id",
+        "table": "activities",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "activity_outcomes": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "activity_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "target_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "outcome_kind",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "label",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "quantity_json",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "condition_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "condition_id",
+        "table": "conditions",
+        "target": "id"
+      },
+      {
+        "column": "target_id",
+        "table": "entities",
+        "target": "id"
+      },
+      {
+        "column": "activity_id",
+        "table": "activities",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "annotations": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "subject_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "role",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "text",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "source_order",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "subject_id",
+        "table": "entities",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "asset_bindings": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "resource_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "subject_entity_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "subject_record_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "role",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "variant_json",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "binding_kind",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "resolution",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "subject_record_id",
+        "table": "records",
+        "target": "id"
+      },
+      {
+        "column": "subject_entity_id",
+        "table": "entities",
+        "target": "id"
+      },
+      {
+        "column": "resource_id",
+        "table": "asset_resources",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "asset_resources": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "sha256",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "relative_path",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "format",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "width_px",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "height_px",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "byte_count",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "file_state",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "attribution",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "authentic_rip_state",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "derived_state",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [],
+    "extension": false
+  },
+  "asset_slices": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "resource_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "crop_x",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "crop_y",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "crop_width",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "crop_height",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "anchor_x",
+        "type": "REAL",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "anchor_y",
+        "type": "REAL",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "coordinates_state",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "resource_id",
+        "table": "asset_resources",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "asset_sources": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "resource_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "document_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "source_url",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "retrieved_at",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "http_status",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "acquisition_state",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "document_id",
+        "table": "source_documents",
+        "target": "id"
+      },
+      {
+        "column": "resource_id",
+        "table": "asset_resources",
+        "target": "id"
+      }
+    ],
+    "extension": false
+  },
+  "battalion_profiles": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "battalion_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "grade_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "category_text",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "limit_base",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "limit_upgraded",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "gambit_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "gambit_label",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "stat_profile_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "stat_profile_id",
+        "table": "stat_profiles",
+        "target": "record_id"
+      },
+      {
+        "column": "gambit_id",
+        "table": "actions",
+        "target": "id"
+      },
+      {
+        "column": "grade_id",
+        "table": "grades",
+        "target": "id"
+      },
+      {
+        "column": "battalion_id",
+        "table": "battalions",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "battalions": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "profile_record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "profile_record_id",
+        "table": "records",
+        "target": "id"
+      },
+      {
+        "column": "id",
+        "table": "entities",
+        "target": "id"
+      }
+    ],
+    "extension": false
+  },
+  "bird_answers": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "prompt_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "response_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "response_id",
+        "table": "bird_responses",
+        "target": "id"
+      },
+      {
+        "column": "prompt_id",
+        "table": "bird_prompts",
+        "target": "record_id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "bird_prompts": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "character_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "prompt_text",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "source_order",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "character_id",
+        "table": "characters",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "bird_responses": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "response_text",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "id",
+        "table": "entities",
+        "target": "id"
+      }
+    ],
+    "extension": false
+  },
+  "blaze_associations": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "character_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "person_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "action_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "blaze_type_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "acquisition_text",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "role",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "blaze_type_id",
+        "table": "blaze_types",
+        "target": "id"
+      },
+      {
+        "column": "action_id",
+        "table": "actions",
+        "target": "id"
+      },
+      {
+        "column": "person_id",
+        "table": "people",
+        "target": "id"
+      },
+      {
+        "column": "character_id",
+        "table": "characters",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "blaze_type_profiles": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "blaze_type_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "description_text",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "blaze_type_id",
+        "table": "blaze_types",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "blaze_types": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "profile_record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "profile_record_id",
+        "table": "records",
+        "target": "id"
+      },
+      {
+        "column": "id",
+        "table": "entities",
+        "target": "id"
+      }
+    ],
+    "extension": false
+  },
+  "blessings": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "deity_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "deity_label",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "crest_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "crest_label",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "stage",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "effect_text",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "day_text",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "cost_json",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "crest_id",
+        "table": "crests",
+        "target": "id"
+      },
+      {
+        "column": "deity_id",
+        "table": "people",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "captures": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "source_url",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "captured_at",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "manifest_sha256",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "source_role",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [],
+    "extension": false
+  },
+  "character_identity": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "character_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "faction_text",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "epithet_text",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "gender_text",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "unique_class_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "bloodmark_text",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "unique_class_id",
+        "table": "classes",
+        "target": "id"
+      },
+      {
+        "column": "character_id",
+        "table": "characters",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "characters": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "person_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "roster_membership_record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "roster_membership_record_id",
+        "table": "records",
+        "target": "id"
+      },
+      {
+        "column": "person_id",
+        "table": "people",
+        "target": "id"
+      },
+      {
+        "column": "id",
+        "table": "entities",
+        "target": "id"
+      }
+    ],
+    "extension": false
+  },
+  "claim_evidence": {
+    "columns": [
+      {
+        "name": "claim_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "evidence_document_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "pointer_or_span",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "role",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "evidence_document_id",
+        "table": "source_documents",
+        "target": "id"
+      },
+      {
+        "column": "claim_id",
+        "table": "source_claims",
+        "target": "id"
+      }
+    ],
+    "extension": false
+  },
+  "class_certifications": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "class_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "license_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "license_item_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "listed_level",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "listed_renown",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "grade_root_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "exclusivity_text",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "restriction_text",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "completeness",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "probability_formula_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "probability_formula_id",
+        "table": "records",
+        "target": "id"
+      },
+      {
+        "column": "grade_root_id",
+        "table": "conditions",
+        "target": "id"
+      },
+      {
+        "column": "license_item_id",
+        "table": "items",
+        "target": "id"
+      },
+      {
+        "column": "license_id",
+        "table": "entities",
+        "target": "id"
+      },
+      {
+        "column": "class_id",
+        "table": "classes",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "class_profiles": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "class_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "movement_value",
+        "type": "REAL",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "movement_types_json",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "mount_species_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "examples_text",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "mount_species_id",
+        "table": "entities",
+        "target": "id"
+      },
+      {
+        "column": "class_id",
+        "table": "classes",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "class_rewards": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "class_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "action_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "label",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "reward_kind",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "exp_required",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "retention_state",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "action_id",
+        "table": "actions",
+        "target": "id"
+      },
+      {
+        "column": "class_id",
+        "table": "classes",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "class_skills": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "class_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "skill_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "training_bonus",
+        "type": "REAL",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "listing_state",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "access_state",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "access_evidence",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "access_claim_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "access_claim_id",
+        "table": "source_claims",
+        "target": "id"
+      },
+      {
+        "column": "skill_id",
+        "table": "skills",
+        "target": "id"
+      },
+      {
+        "column": "class_id",
+        "table": "classes",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "class_tiers": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "label",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "display_order",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [],
+    "extension": false
+  },
+  "classes": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "tier_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "identity_record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "identity_record_id",
+        "table": "records",
+        "target": "id"
+      },
+      {
+        "column": "tier_id",
+        "table": "class_tiers",
+        "target": "id"
+      },
+      {
+        "column": "id",
+        "table": "entities",
+        "target": "id"
+      }
+    ],
+    "extension": false
+  },
+  "condition_children": {
+    "columns": [
+      {
+        "name": "parent_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "child_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "display_order",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "child_id",
+        "table": "conditions",
+        "target": "id"
+      },
+      {
+        "column": "parent_id",
+        "table": "conditions",
+        "target": "id"
+      }
+    ],
+    "extension": false
+  },
+  "conditions": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "node_kind",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "predicate",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "subject_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "object_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "value_json",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "claim_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "claim_id",
+        "table": "source_claims",
+        "target": "id"
+      },
+      {
+        "column": "object_id",
+        "table": "entities",
+        "target": "id"
+      },
+      {
+        "column": "subject_id",
+        "table": "entities",
+        "target": "id"
+      }
+    ],
+    "extension": false
+  },
+  "container_contents": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "container_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "target_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "label",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "quantity_json",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "probability_value",
+        "type": "REAL",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "probability_state",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "source_order",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "target_id",
+        "table": "entities",
+        "target": "id"
+      },
+      {
+        "column": "container_id",
+        "table": "containers",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "containers": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "container_kind",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "profile_record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "profile_record_id",
+        "table": "records",
+        "target": "id"
+      },
+      {
+        "column": "id",
+        "table": "entities",
+        "target": "id"
+      }
+    ],
+    "extension": false
+  },
+  "context_routes": {
+    "columns": [
+      {
+        "name": "context_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "route_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "route_id",
+        "table": "routes",
+        "target": "id"
+      },
+      {
+        "column": "context_id",
+        "table": "contexts",
+        "target": "id"
+      }
+    ],
+    "extension": false
+  },
+  "contexts": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "label",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "route_scope",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "part",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "part_state",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "chapter_low",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "chapter_high",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "section_text",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "difficulty_text",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "condition_root_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "condition_root_id",
+        "table": "conditions",
+        "target": "id"
+      }
+    ],
+    "extension": false
+  },
+  "coverage": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "field_path",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "capture_state",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "semantic_state",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "canonical_state",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "import_state",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "reason",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": false
+  },
+  "crest_associations": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "person_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "crest_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "crest_label",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "dragon_label",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "effect_text",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "crest_id",
+        "table": "crests",
+        "target": "id"
+      },
+      {
+        "column": "person_id",
+        "table": "people",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "crest_profiles": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "crest_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "effect_text",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "trigger_json",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "crest_id",
+        "table": "crests",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "crests": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "profile_record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "profile_record_id",
+        "table": "records",
+        "target": "id"
+      },
+      {
+        "column": "id",
+        "table": "entities",
+        "target": "id"
+      }
+    ],
+    "extension": false
+  },
+  "entities": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "kind",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "display_name",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "identity_state",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "namespace",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "retired",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [],
+    "extension": false
+  },
+  "entity_aliases": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "entity_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "alias",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "alias_kind",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "origin",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "document_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "source_pointer",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "document_id",
+        "table": "source_documents",
+        "target": "id"
+      },
+      {
+        "column": "entity_id",
+        "table": "entities",
+        "target": "id"
+      }
+    ],
+    "extension": false
+  },
+  "formulae": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "name",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "expression_text",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "expression_language",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "executable",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "grades": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "label",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "ordering",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "meaning_state",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [],
+    "extension": false
+  },
+  "initial_skills": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "character_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "skill_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "grade_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "grade_state",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "affinity",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "affinity_state",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "grade_id",
+        "table": "grades",
+        "target": "id"
+      },
+      {
+        "column": "skill_id",
+        "table": "skills",
+        "target": "id"
+      },
+      {
+        "column": "character_id",
+        "table": "characters",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "inventory_layers": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "shop_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "parent_layer_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "collection_state",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "inheritance_mode",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "note_text",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "parent_layer_id",
+        "table": "inventory_layers",
+        "target": "record_id"
+      },
+      {
+        "column": "shop_id",
+        "table": "shops",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "item_action_links": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "item_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "action_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "action_label",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "link_kind",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "resolution",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "action_id",
+        "table": "actions",
+        "target": "id"
+      },
+      {
+        "column": "item_id",
+        "table": "items",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "item_profiles": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "item_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "category_text",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "rarity_text",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "flavor_text",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "description_text",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "effect_text",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "use_text",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "rank_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "usage_scope",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "parameters_json",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "rank_id",
+        "table": "grades",
+        "target": "id"
+      },
+      {
+        "column": "item_id",
+        "table": "items",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "item_requirements": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "item_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "skill_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "grade_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "condition_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "semantics_state",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "condition_id",
+        "table": "conditions",
+        "target": "id"
+      },
+      {
+        "column": "grade_id",
+        "table": "grades",
+        "target": "id"
+      },
+      {
+        "column": "skill_id",
+        "table": "skills",
+        "target": "id"
+      },
+      {
+        "column": "item_id",
+        "table": "items",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "item_variants": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "item_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "base_item_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "refinement_level",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "changes_json",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "base_item_id",
+        "table": "items",
+        "target": "id"
+      },
+      {
+        "column": "item_id",
+        "table": "items",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "items": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "item_kind",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "profile_record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "profile_record_id",
+        "table": "records",
+        "target": "id"
+      },
+      {
+        "column": "id",
+        "table": "entities",
+        "target": "id"
+      }
+    ],
+    "extension": false
+  },
+  "learning_awards": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "rule_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "character_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "acquired_entity_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "acquired_label",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "skill_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "grade_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "acquisition_kind",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "level_value",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "active_at_start",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "condition_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "applicability",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "condition_id",
+        "table": "conditions",
+        "target": "id"
+      },
+      {
+        "column": "grade_id",
+        "table": "grades",
+        "target": "id"
+      },
+      {
+        "column": "skill_id",
+        "table": "skills",
+        "target": "id"
+      },
+      {
+        "column": "acquired_entity_id",
+        "table": "entities",
+        "target": "id"
+      },
+      {
+        "column": "character_id",
+        "table": "characters",
+        "target": "id"
+      },
+      {
+        "column": "rule_id",
+        "table": "learning_rules",
+        "target": "record_id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "learning_rules": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "scope",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "source_roster_capture_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "skill_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "rule_completeness",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "skill_id",
+        "table": "skills",
+        "target": "id"
+      },
+      {
+        "column": "source_roster_capture_id",
+        "table": "captures",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "loadout_entries": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "starting_state_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "target_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "label",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "role",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "quantity_value",
+        "type": "REAL",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "quantity_json",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "resolution",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "source_order",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "target_id",
+        "table": "entities",
+        "target": "id"
+      },
+      {
+        "column": "starting_state_id",
+        "table": "starting_states",
+        "target": "record_id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "location_contents": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "location_context_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "location_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "target_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "label",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "content_role",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "quantity_json",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "condition_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "source_order",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "condition_id",
+        "table": "conditions",
+        "target": "id"
+      },
+      {
+        "column": "target_id",
+        "table": "entities",
+        "target": "id"
+      },
+      {
+        "column": "location_id",
+        "table": "locations",
+        "target": "id"
+      },
+      {
+        "column": "location_context_id",
+        "table": "location_contexts",
+        "target": "record_id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "location_contexts": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "location_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "listed_state",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "display_name",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "description_text",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "recommended_level_text",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "location_id",
+        "table": "locations",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "location_profiles": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "location_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "description_text",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "discovery_text",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "location_id",
+        "table": "locations",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "locations": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "region_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "profile_record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "profile_record_id",
+        "table": "records",
+        "target": "id"
+      },
+      {
+        "column": "region_id",
+        "table": "regions",
+        "target": "id"
+      },
+      {
+        "column": "id",
+        "table": "entities",
+        "target": "id"
+      }
+    ],
+    "extension": false
+  },
+  "map_categories": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "group_label",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "category_label",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "group_order",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "category_order",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "id",
+        "table": "entities",
+        "target": "id"
+      }
+    ],
+    "extension": false
+  },
+  "map_geometries": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "surface_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "region_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "geometry_kind",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "geometry_state",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "geometry_json",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "region_id",
+        "table": "regions",
+        "target": "id"
+      },
+      {
+        "column": "surface_id",
+        "table": "map_surfaces",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "map_markers": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "surface_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "location_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "source_y",
+        "type": "REAL",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "source_x",
+        "type": "REAL",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "position_state",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "location_id",
+        "table": "locations",
+        "target": "id"
+      },
+      {
+        "column": "surface_id",
+        "table": "map_surfaces",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "map_surfaces": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "spatial_reference_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "background_asset_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "tile_size",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "tile_version",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "background_asset_id",
+        "table": "asset_resources",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      },
+      {
+        "column": "spatial_reference_id",
+        "table": "spatial_references",
+        "target": "id"
+      },
+      {
+        "column": "id",
+        "table": "entities",
+        "target": "id"
+      }
+    ],
+    "extension": false
+  },
+  "map_tiles": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "surface_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "level",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "tile_x",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "tile_y",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "asset_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "asset_id",
+        "table": "asset_resources",
+        "target": "id"
+      },
+      {
+        "column": "surface_id",
+        "table": "map_surfaces",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "marker_categories": {
+    "columns": [
+      {
+        "name": "marker_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "context_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "category_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "source_order",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "category_id",
+        "table": "map_categories",
+        "target": "id"
+      },
+      {
+        "column": "context_id",
+        "table": "contexts",
+        "target": "id"
+      },
+      {
+        "column": "marker_id",
+        "table": "map_markers",
+        "target": "record_id"
+      }
+    ],
+    "extension": false
+  },
+  "marker_contexts": {
+    "columns": [
+      {
+        "name": "marker_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "context_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "listed_state",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "context_id",
+        "table": "contexts",
+        "target": "id"
+      },
+      {
+        "column": "marker_id",
+        "table": "map_markers",
+        "target": "record_id"
+      }
+    ],
+    "extension": false
+  },
+  "mount_profiles": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "mount_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "food_category",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "taste_text",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "acquisition_text",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "mount_id",
+        "table": "mounts",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "mounts": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "species_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "profile_record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "profile_record_id",
+        "table": "records",
+        "target": "id"
+      },
+      {
+        "column": "species_id",
+        "table": "entities",
+        "target": "id"
+      },
+      {
+        "column": "id",
+        "table": "entities",
+        "target": "id"
+      }
+    ],
+    "extension": false
+  },
+  "paralogues": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "associated_person_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "source_label",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "source_title",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "title_state",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "associated_person_id",
+        "table": "people",
+        "target": "id"
+      },
+      {
+        "column": "id",
+        "table": "activities",
+        "target": "id"
+      }
+    ],
+    "extension": false
+  },
+  "people": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "subject_context",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "id",
+        "table": "entities",
+        "target": "id"
+      }
+    ],
+    "extension": false
+  },
+  "preferences": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "character_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "subject_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "subject_label",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "subject_kind",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "tier",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "resolution",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "source_order",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "subject_id",
+        "table": "entities",
+        "target": "id"
+      },
+      {
+        "column": "character_id",
+        "table": "characters",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "progression_steps": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "owner_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "level_low",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "level_high",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "level_text",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "action_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "stat_profile_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "reward_text",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "stat_profile_id",
+        "table": "stat_profiles",
+        "target": "record_id"
+      },
+      {
+        "column": "action_id",
+        "table": "actions",
+        "target": "id"
+      },
+      {
+        "column": "owner_id",
+        "table": "entities",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "recipe_inputs": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "recipe_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "target_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "label",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "quantity_json",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "condition_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "source_order",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "condition_id",
+        "table": "conditions",
+        "target": "id"
+      },
+      {
+        "column": "target_id",
+        "table": "entities",
+        "target": "id"
+      },
+      {
+        "column": "recipe_id",
+        "table": "recipes",
+        "target": "record_id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "recipes": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "output_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "recipe_kind",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "output_label",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "output_quantity_json",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "cost_text",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "condition_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "condition_id",
+        "table": "conditions",
+        "target": "id"
+      },
+      {
+        "column": "output_id",
+        "table": "entities",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "record_conditions": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "condition_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "role",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "condition_id",
+        "table": "conditions",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": false
+  },
+  "recruitment_events": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "character_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "join_kind",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "chapter_value",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "renown_value",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "support_value",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "when_text",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "condition_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "event_scope_state",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "condition_id",
+        "table": "conditions",
+        "target": "id"
+      },
+      {
+        "column": "character_id",
+        "table": "characters",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "regions": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "profile_record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "profile_record_id",
+        "table": "records",
+        "target": "id"
+      },
+      {
+        "column": "id",
+        "table": "entities",
+        "target": "id"
+      }
+    ],
+    "extension": false
+  },
+  "routes": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "display_name",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [],
+    "extension": false
+  },
+  "shop_offers": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "layer_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "target_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "label",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "stock_json",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "price_json",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "condition_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "source_order",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "condition_id",
+        "table": "conditions",
+        "target": "id"
+      },
+      {
+        "column": "target_id",
+        "table": "entities",
+        "target": "id"
+      },
+      {
+        "column": "layer_id",
+        "table": "inventory_layers",
+        "target": "record_id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "shops": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "location_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "profile_record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "profile_record_id",
+        "table": "records",
+        "target": "id"
+      },
+      {
+        "column": "location_id",
+        "table": "locations",
+        "target": "id"
+      },
+      {
+        "column": "id",
+        "table": "entities",
+        "target": "id"
+      }
+    ],
+    "extension": false
+  },
+  "skills": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "label",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "display_order",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [],
+    "extension": false
+  },
+  "social_subjects": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "subject_kind",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "id",
+        "table": "entities",
+        "target": "id"
+      }
+    ],
+    "extension": false
+  },
+  "source_bindings": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "document_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "pointer",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "entity_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "resolution",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "external_key",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "rationale",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "entity_id",
+        "table": "entities",
+        "target": "id"
+      },
+      {
+        "column": "document_id",
+        "table": "source_documents",
+        "target": "id"
+      }
+    ],
+    "extension": false
+  },
+  "source_claims": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "field_path",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "document_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "source_pointer",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "origin",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "evidence_state",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "value_state",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "value_json",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "semantic_role",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "context_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "context_id",
+        "table": "contexts",
+        "target": "id"
+      },
+      {
+        "column": "document_id",
+        "table": "source_documents",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": false
+  },
+  "source_documents": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "capture_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "source_url",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "sha256",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "media_type",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "body",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "relative_path",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "capture_id",
+        "table": "captures",
+        "target": "id"
+      }
+    ],
+    "extension": false
+  },
+  "source_mentions": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "field_path",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "source_label",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "target_entity_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "target_kind",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "resolution",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "context_json",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "target_entity_id",
+        "table": "entities",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": false
+  },
+  "spatial_references": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "coordinate_kind",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "axis_order",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "units_x",
+        "type": "REAL",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "units_y",
+        "type": "REAL",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "flip_y",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "width_px",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "height_px",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "transform_json",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [],
+    "extension": false
+  },
+  "starting_states": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "character_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "level_value",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "class_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "class_state",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "observation_profile_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "source_context_json",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "observation_profile_id",
+        "table": "stat_profiles",
+        "target": "record_id"
+      },
+      {
+        "column": "class_id",
+        "table": "classes",
+        "target": "id"
+      },
+      {
+        "column": "character_id",
+        "table": "characters",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "stat_profiles": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "owner_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "role",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "level_low",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "level_high",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "level_text",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "class_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "modifier_source_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "interpretation_state",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "modifier_source_id",
+        "table": "entities",
+        "target": "id"
+      },
+      {
+        "column": "class_id",
+        "table": "classes",
+        "target": "id"
+      },
+      {
+        "column": "owner_id",
+        "table": "entities",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "stat_values": {
+    "columns": [
+      {
+        "name": "profile_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "stat_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "number_value",
+        "type": "REAL",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "unit",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "expression_text",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "value_state",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "stat_id",
+        "table": "stats",
+        "target": "id"
+      },
+      {
+        "column": "profile_id",
+        "table": "stat_profiles",
+        "target": "record_id"
+      }
+    ],
+    "extension": false
+  },
+  "stats": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "label",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "display_order",
+        "type": "INTEGER",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [],
+    "extension": false
+  },
+  "support_directional_claims": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "pair_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "from_person_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "to_person_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "conversation_rank",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "text",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "variant_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "reconciliation_state",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "variant_id",
+        "table": "support_variants",
+        "target": "record_id"
+      },
+      {
+        "column": "to_person_id",
+        "table": "people",
+        "target": "id"
+      },
+      {
+        "column": "from_person_id",
+        "table": "people",
+        "target": "id"
+      },
+      {
+        "column": "pair_id",
+        "table": "support_pairs",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "support_pairs": {
+    "columns": [
+      {
+        "name": "id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "person_low_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "person_high_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "person_high_id",
+        "table": "people",
+        "target": "id"
+      },
+      {
+        "column": "person_low_id",
+        "table": "people",
+        "target": "id"
+      }
+    ],
+    "extension": false
+  },
+  "support_variants": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "pair_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "conversation_rank",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "variant_label",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "condition_id",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "condition_text",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "numeric_support_threshold",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "condition_id",
+        "table": "conditions",
+        "target": "id"
+      },
+      {
+        "column": "pair_id",
+        "table": "support_pairs",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  },
+  "time_assertions": {
+    "columns": [
+      {
+        "name": "record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": true
+      },
+      {
+        "name": "owner_record_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "timing_role",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "calendar_id",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "start_month",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "start_day",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "end_month",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "end_day",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "time_text",
+        "type": "TEXT",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "deadline_turns",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      },
+      {
+        "name": "timing_text",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "semantics_state",
+        "type": "TEXT",
+        "nullable": false,
+        "primary": false
+      },
+      {
+        "name": "source_order",
+        "type": "INTEGER",
+        "nullable": true,
+        "primary": false
+      }
+    ],
+    "foreign_keys": [
+      {
+        "column": "owner_record_id",
+        "table": "records",
+        "target": "id"
+      },
+      {
+        "column": "record_id",
+        "table": "records",
+        "target": "id"
+      }
+    ],
+    "extension": true
+  }
+}

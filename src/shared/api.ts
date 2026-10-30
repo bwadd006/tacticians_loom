@@ -5,6 +5,7 @@ import type { LibrarySetup, SavedSetup } from './library_setup';
 import type { ClassLibrarySetup, SavedClassSetup } from './class_library_setup';
 import type { CharacterPlanning } from './character_planning';
 import type { ParalogueLibrarySetup, SavedParalogueSetup } from './paralogue_library_setup';
+import type { CatalogRequest,ReferencePage,EntitySummary,CharacterLearning,ClassRewards,ActionReference,CharacterSocial,ItemReference,LocationRequest,LocationReference,MapSurfaceReference,MarkerListRequest,MarkerSummary,MarkerRequest,MarkerReference,ClaimEvidence } from './reference_details';
 
 export interface ReferenceConflict extends Record<string, unknown> { character_id: string | null; field: string; status: string }
 
@@ -30,6 +31,17 @@ export interface ParalogueLibraryData {
   conflicts: { paralogueId: string; routeId: Route | null; field: string; status: string; details: string }[];
 }
 export interface ReferenceApi {
+  referenceCatalog(request:CatalogRequest):Promise<ReferencePage<EntitySummary>>;
+  characterLearning(id:string):Promise<CharacterLearning|null>;
+  classRewards(id:string):Promise<ClassRewards|null>;
+  actionReference(id:string):Promise<ActionReference|null>;
+  characterSocial(id:string):Promise<CharacterSocial|null>;
+  itemReference(id:string):Promise<ItemReference|null>;
+  locationReference(request:LocationRequest):Promise<LocationReference|null>;
+  mapSurfaceReference(id:string):Promise<MapSurfaceReference|null>;
+  mapMarkers(request:MarkerListRequest):Promise<ReferencePage<MarkerSummary>>;
+  mapMarkerReference(request:MarkerRequest):Promise<MarkerReference|null>;
+  referenceEvidence(claimIds:string[]):Promise<ClaimEvidence[]>;
   overview(): Promise<ReferenceOverview>;
   characters(route: RouteContext): Promise<Character[]>;
   character(id: string): Promise<Character | null>;
@@ -49,6 +61,9 @@ export interface ReferenceApi {
   clearCharacterNote(characterId: string): Promise<CharacterPlanning | null>;
 }
 export const CHANNELS = {
+  referenceCatalog:'reference:catalog',characterLearning:'reference:character_learning',classRewards:'reference:class_rewards',
+  actionReference:'reference:action_detail',characterSocial:'reference:character_social',itemReference:'reference:item_detail',
+  locationReference:'reference:location_detail',mapSurfaceReference:'reference:map_surface',mapMarkers:'reference:map_markers',mapMarkerReference:'reference:map_marker',referenceEvidence:'reference:evidence',
   overview: 'reference:overview', characters: 'reference:characters',
   character: 'reference:character', characterClass: 'reference:class',
   classLibrary: 'reference:class_library',

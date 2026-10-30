@@ -100,3 +100,5 @@ dialog p { margin: 16px 0 22px; }
   .chapter_marker { padding: 8px 0; }
   footer { margin-top: 14px; }
 }
+
+.action_icon { width: 26px; height: 26px; object-fit: contain; vertical-align: middle; margin-right: .4rem; }

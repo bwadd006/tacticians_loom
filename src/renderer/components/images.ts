@@ -1,31 +1,13 @@
-import manifest from '../../../resources/asset_manifest.json';
+import rawManifest from '../../../resources/asset_manifest.json';
+import { selectedAssetUrl, type AssetManifest } from '../../shared/asset_catalog';
 
-interface WebpackContext { keys(): string[]; (id: string): string }
-// Webpack require.context bundles every image in a resources directory as an
-// asset module, so the packaged app displays them offline without hotlinking.
-// Webpack only recognizes direct require.context calls with literal arguments;
-// after ts-loader strips the casts, these are exactly that.
-interface RequireWithContext { context(dir: string, sub: boolean, pattern: RegExp): WebpackContext }
-function toMap(context: WebpackContext): Map<string, string> {
-  return new Map(context.keys().map(key => [key.replace(/^\.\//, '').replace(/\.(webp|png)$/, ''), context(key)]));
+// Only opaque resource IDs cross to the main-process artwork protocol. Source
+// URLs and filesystem paths in the attribution manifest are never image URLs.
+const manifest=rawManifest as unknown as AssetManifest;
+export function portraitUrl(characterId:string,variant:'table'|'details'='details'):string|null {
+ return selectedAssetUrl(manifest,characterId,variant==='table'?'thumbnail':'portrait');
 }
-const portraits = toMap((require as unknown as RequireWithContext).context('../../../resources/portraits', false, /\.(webp|png)$/));
-const classIcons = toMap((require as unknown as RequireWithContext).context('../../../resources/class_icons', false, /\.(webp|png)$/));
-const skillIcons = toMap((require as unknown as RequireWithContext).context('../../../resources/skill_icons', false, /\.(webp|png)$/));
-const characterArt = manifest.characters as Record<string, { portrait?: string; source?: string }>;
-const classArt = manifest.classes as Record<string, { icon?: string; source?: string }>;
-const skillArt = manifest.skills as Record<string, { neutral?: string; boon?: string; bane?: string; source?: string }>;
-
-export function portraitUrl(characterId: string): string | null {
-  const key = characterArt[characterId]?.portrait;
-  return key ? portraits.get(key) ?? null : null;
-}
-export function classIconUrl(classId: string): string | null {
-  const key = classArt[classId]?.icon;
-  return key ? classIcons.get(key) ?? null : null;
-}
-export type AffinityVariant = 'boon' | 'bane' | 'neutral';
-export function skillIconUrl(skillId: string, variant: AffinityVariant): string | null {
-  const key = skillArt[skillId]?.[variant];
-  return key ? skillIcons.get(key) ?? null : null;
-}
+export function classIconUrl(classId:string):string|null {return selectedAssetUrl(manifest,classId,'class_icon');}
+export type AffinityVariant='boon'|'bane'|'neutral';
+export function skillIconUrl(skillId:string,variant:AffinityVariant):string|null {return selectedAssetUrl(manifest,skillId,'skill_icon',variant);}
+export function actionIconUrl(actionId:string):string|null {return selectedAssetUrl(manifest,actionId,'icon');}

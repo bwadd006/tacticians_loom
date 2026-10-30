@@ -1,0 +1,22 @@
+export const referenceReleaseSmoke=`(async()=>{
+ const check=(test,message)=>{if(!test)throw Error(message);};
+ const catalog=await window.loom.referenceCatalog({kind:'character',limit:7});check(catalog.total===63&&catalog.rows.length===7&&catalog.nextOffset===7,'Bounded catalog IPC failed');
+ const learning=await window.loom.characterLearning('fabio'),spell=learning.actions.find(a=>a.name==='Dark Spikes T'&&a.actionKind==='spell');check(spell,'Learned spell missing');
+ const action=await window.loom.actionReference(spell.id),archive=action.items.find(i=>i.name==='Archive T'),item=await window.loom.itemReference(archive.id);check(item.acquisition.length===5,'Spell-to-acquisition IPC failed');
+ const rewards=await window.loom.classRewards('bishop'),mastery=rewards.rewards.find(r=>r.body.reward_kind==='mastery'&&r.body.label==='Barrier');check(rewards.actions.find(a=>a.id===mastery.body.action_id)?.actionKind==='ability','Mastery/spell identity collision');
+ const link=rewards.profileLinks.find(l=>l.ownerRecordId===mastery.id),profile=rewards.profiles.find(p=>p.id===link.profileRecordId);check(profile.body.effect_text.value==='Grants Res+3 to adjacent allies.','Owner effect lost');
+ const social=await window.loom.characterSocial('cai'),gift=social.preferences.find(p=>p.body.subject_label==='Sharp Fishhook');check(social.itemIds.includes(gift.body.subject_id),'Preference-to-item IPC failed');
+ check(social.supports.some(p=>p.variants.some(v=>social.contexts.some(c=>c.id===v.context_id&&c.part===3))),'Support story context lost');
+ const missing=await window.loom.characterSocial('klapka');check(missing.birdTime.length===0&&missing.coverage.some(c=>c.field==='/bird_time'&&c.semanticState==='unknown'),'Missing social source became known absence');
+ const locations=await window.loom.referenceCatalog({kind:'location',search:'Kassite'}),locationId=locations.rows.find(l=>l.name==='Kassite').id,location=await window.loom.locationReference({locationId}),part3=location.contexts.find(c=>c.part===3&&location.locationContexts.some(l=>l.context_id===c.id));
+ const scoped=await window.loom.locationReference({locationId,contextId:part3.id}),armory=scoped.shops.find(s=>s.entity.name==='Kassite / Armory');check(part3.route_scope==='unknown'&&armory.offers.length===1&&armory.offers[0].body.label==='Short Spear+2'&&armory.offers[0].body.stock_json.state==='source_null','Map replacement/context/stock semantics lost');
+ const surfaces=await window.loom.referenceCatalog({kind:'map_surface'}),surface=await window.loom.mapSurfaceReference(surfaces.rows[0].id);check(surface.tiles.length===139&&surface.spatial.axisOrder==='yx'&&surface.spatial.flipY===true,'Map metadata IPC failed');
+ const page=await window.loom.mapMarkers({surfaceId:surface.surface.id,limit:7});check(page.total===309&&page.rows.length===7,'Marker pagination failed');
+ const marker=await window.loom.mapMarkerReference({markerId:scoped.markers[0].id,contextId:part3.id});check(marker.location.location.id===locationId&&marker.location.locationContexts.every(c=>c.context_id===part3.id),'Context-specific marker join failed');
+ const evidence=await window.loom.referenceEvidence(profile.body.effect_text.claim_ids.slice(0,100));check(evidence.some(c=>c.origin==='preferred_source'&&c.source.pointer&&c.source.sha256.length===64),'Evidence IPC failed');
+ const setup=await window.loom.loadSetup('cai');check(setup.savedAt==='2026-10-26T12:34:56.000Z'&&setup.datasetVersion==='2026.10.25.2'&&setup.setup.sorts[0].field==='recruitment:cai:earliest_chapter'&&setup.setup.sorts.some(s=>s.field==='future_sort'),'Existing saved rules changed');
+ check((await window.loom.loadClassSetup()).datasetVersion==='2026.10.25.2'&&(await window.loom.loadParalogueSetup()).datasetVersion==='2026.10.25.2','Existing library saves changed');
+ const saved=await window.loom.listCharacterPlanning();check(saved.some(p=>p.characterId==='eshmel'&&p.shortlisted&&p.note==='Retained before upgrade — out-of-scope character')&&saved.some(p=>p.characterId==='unresolved_saved_character'&&p.note==='Preserve this unresolved stable ID'),'Existing saved IDs/notes lost');
+ const literal=await window.loom.referenceCatalog({kind:'item',search:"%' OR 1=1 --"});check(literal.total===0,'Search escaped SQL parameters');
+ return {expandedOperations:11,relationshipWitnesses:5,existingSaveRead:true,unknownSourcePreserved:true};
+})()`;

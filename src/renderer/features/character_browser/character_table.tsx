@@ -17,6 +17,7 @@ function simpleValue(value: unknown): string {
 }
 
 function requirementLabel(requirement: Requirement): string {
+  if(requirement.type==='source_condition') return String(requirement.text??'Requirement details unknown');
   if (requirement.type === 'item') return `${simpleValue(requirement.quantity)} × ${simpleValue(requirement.name)}`;
   if (requirement.type === 'gold') return `${simpleValue(requirement.amount)} G`;
   if (requirement.type === 'request') return `Request: ${simpleValue(requirement.detail)}`;

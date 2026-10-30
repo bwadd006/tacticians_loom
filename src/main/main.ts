@@ -2,17 +2,25 @@ import path from 'node:path';
 import fs from 'node:fs';
 import os from 'node:os';
 import { spawn } from 'node:child_process';
-import { app, BrowserWindow, dialog, ipcMain } from 'electron';
+import { app, BrowserWindow, dialog, ipcMain, protocol, net, session } from 'electron';
+import { pathToFileURL } from 'node:url';
+import { loadAssetFiles, resolveAssetRequest } from './asset_files';
+import { assetUrl } from '../shared/asset_catalog';
 import type Database from 'better-sqlite3';
 import { CHANNELS } from '../shared/api';
 import { ROUTES, type RouteContext } from '../shared/catalog';
-import { getCharacter, getClass, getClassLibrary, getOverview, getParalogueLibrary, listCharacters, openReference } from './database/reference_queries';
+import { getCharacter, getClass, getClassLibrary, getOverview, getParalogueLibrary, getConflicts, listCharacters, openReference } from './database/reference_queries';
 import { clearCharacterNote, listCharacterPlanning, loadClassSetup, loadParalogueSetup, loadSetup, openUserDatabase, saveClassSetup, saveParalogueSetup, saveSetup, setCharacterNote, setCharacterShortlisted } from './database/user_database';
 import { z } from 'zod';
 import { routeContextSchema, setupSchema } from '../shared/library_setup';
 import { classSetupSchema } from '../shared/class_library_setup';
 import { paralogueSetupSchema } from '../shared/paralogue_library_setup';
 import { setCharacterNoteRequestSchema, setShortlistedRequestSchema } from '../shared/character_planning';
+import { referenceV3Smoke } from './reference_v3_smoke';
+import { referenceBaselineSmoke } from './reference_baseline_smoke';
+import * as referenceDetails from './database/reference_details';
+import { referenceReleaseSmoke } from './reference_release_smoke';
+import { seedExistingSmokeSave } from './smoke_player_data';
 
 declare const MAIN_WINDOW_WEBPACK_ENTRY: string;
 declare const MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY: string;
@@ -50,6 +58,7 @@ function getUserDatabase() {
   return userDatabase ??= openUserDatabase(path.join(app.getPath('userData'), 'user_data.sqlite'));
 }
 app.setName("Tactician's Loom");
+protocol.registerSchemesAsPrivileged([{scheme:'loom-art',privileges:{standard:true,secure:true}}]);
 
 function createWindow() {
   const window = new BrowserWindow({
@@ -60,7 +69,7 @@ function createWindow() {
   window.removeMenu();
   window.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
   window.webContents.on('will-navigate', event => event.preventDefault());
-  window.once('ready-to-show', () => window.show());
+  window.once('ready-to-show', () => { if (!smokeTest) window.show(); });
   void window.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
   return window;
 }
@@ -71,9 +80,27 @@ function validateId(value: unknown): string {
 }
 
 app.whenReady().then(async () => {
-  reference = openReference(app.isPackaged
-    ? path.join(process.resourcesPath, 'reference.sqlite')
-    : path.join(app.getAppPath(), 'database/generated/reference.sqlite'));
+  let outboundRequests=0;
+  if(smokeTest&&app.isPackaged)session.defaultSession.webRequest.onBeforeRequest({urls:['http://*/*','https://*/*']},(_request,callback)=>{outboundRequests++;callback({cancel:true});});
+  const smokeReferenceIndex=smokeTest ? process.argv.indexOf('--smoke-reference') : -1;
+  const smokeReference=smokeReferenceIndex>=0 ? process.argv[smokeReferenceIndex+1] : undefined;
+  if(smokeReferenceIndex>=0 && (!smokeReference || smokeReference.startsWith('--'))) throw new Error('--smoke-reference requires a fixture database filename');
+  const referenceFile=smokeReference ? path.resolve(smokeReference) : app.isPackaged
+    ? path.join(process.resourcesPath,'reference.sqlite')
+    : path.join(app.getAppPath(),'database/generated/reference.sqlite');
+  if(!fs.existsSync(referenceFile)) {
+    if(smokeReference)throw new Error(`Smoke-test reference database is missing at ${referenceFile}.`);
+    if(app.isPackaged)throw new Error("The bundled reference database is missing. Reinstall Tactician's Loom from a complete application package.");
+    throw new Error(`Reference database is missing at ${referenceFile}. Run npm run data:build from the tacticians_loom app directory, then run npm start.`);
+  }
+  const assetRoot=app.isPackaged?process.resourcesPath:path.join(app.getAppPath(),'resources');
+  const art=loadAssetFiles(assetRoot);
+  protocol.handle('loom-art',request=>{
+    const file=resolveAssetRequest(art.files,request.url,request.method);
+    return file?net.fetch(pathToFileURL(file).toString()):new Response('Artwork unavailable',{status:404});
+  });
+  reference = openReference(referenceFile,{allowCandidate:smokeTest});
+  if(smokeTest&&!smokeReference&&reference.pragma('user_version',{simple:true})===3)seedExistingSmokeSave(getUserDatabase());
   // Only the main frame displaying our entry page may use the purpose-specific API.
   function handle(channel: string, fn: (value: unknown) => unknown) {
     ipcMain.handle(channel, (event, value: unknown) => {
@@ -85,6 +112,17 @@ app.whenReady().then(async () => {
       return fn(value);
     });
   }
+  handle(CHANNELS.referenceCatalog,value=>referenceDetails.referenceCatalog(reference!,value));
+  handle(CHANNELS.characterLearning,value=>referenceDetails.characterLearning(reference!,value));
+  handle(CHANNELS.classRewards,value=>referenceDetails.classRewards(reference!,value));
+  handle(CHANNELS.actionReference,value=>referenceDetails.actionReference(reference!,value));
+  handle(CHANNELS.characterSocial,value=>referenceDetails.characterSocial(reference!,value));
+  handle(CHANNELS.itemReference,value=>referenceDetails.itemReference(reference!,value));
+  handle(CHANNELS.locationReference,value=>referenceDetails.locationReference(reference!,value));
+  handle(CHANNELS.mapSurfaceReference,value=>referenceDetails.mapSurfaceReference(reference!,value));
+  handle(CHANNELS.mapMarkers,value=>referenceDetails.mapMarkers(reference!,value));
+  handle(CHANNELS.mapMarkerReference,value=>referenceDetails.mapMarkerReference(reference!,value));
+  handle(CHANNELS.referenceEvidence,value=>referenceDetails.referenceEvidence(reference!,value));
   handle(CHANNELS.overview, () => getOverview(reference!));
   handle(CHANNELS.characters, value => {
     if (value !== 'all' && !(ROUTES as readonly unknown[]).includes(value)) throw new Error('Unknown route context');
@@ -94,7 +132,7 @@ app.whenReady().then(async () => {
   handle(CHANNELS.characterClass, value => getClass(reference!, validateId(value)));
   handle(CHANNELS.classLibrary, () => getClassLibrary(reference!));
   handle(CHANNELS.paralogueLibrary, () => getParalogueLibrary(reference!));
-  handle(CHANNELS.conflicts, () => (reference!.prepare("SELECT raw_json FROM data_conflicts WHERE document_kind = 'characters'").all() as { raw_json: string }[]).map(r => JSON.parse(r.raw_json)));
+  handle(CHANNELS.conflicts, () => getConflicts(reference!));
   handle(CHANNELS.saveSetup, value => {
     const request = z.object({ route: routeContextSchema, setup: setupSchema }).strict().parse(value);
     return saveSetup(getUserDatabase(), request.route, request.setup, getOverview(reference!).datasetVersion);
@@ -115,183 +153,20 @@ app.whenReady().then(async () => {
     const timeout = setTimeout(() => { console.error('SMOKE_FAILED: renderer timed out'); app.exit(1); }, 20000);
     window.webContents.once('did-finish-load', async () => {
       try {
-        const result = await window.webContents.executeJavaScript(`(async () => {
-          const overview = await window.loom.overview();
-          const roster = await window.loom.characters('all');
-          const cai = await window.loom.characters('cai');
-          const character = await window.loom.character(roster[0].id);
-          const characterClass = await window.loom.characterClass('commoner');
-          const classLibrary = await window.loom.classLibrary();
-          const paralogueLibrary = await window.loom.paralogueLibrary();
-          if (!roster.length || !cai.length || character.id !== roster[0].id || !characterClass || classLibrary.classes.length !== overview.classCount || classLibrary.unlocks.length !== 19 || paralogueLibrary.paralogues.length !== overview.paralogueCount || overview.paralogueCount !== 9) throw new Error('Reference query failed');
-          if (typeof window.require !== 'undefined') throw new Error('Node leaked into renderer');
-          for (let attempt = 0; attempt < 40 && !document.querySelector('#result_count strong'); attempt++) await new Promise(resolve => setTimeout(resolve, 50));
-          if (document.querySelector('#result_count strong')?.textContent !== String(overview.actOneCount)) throw new Error('Character Library did not render the Act 1 roster');
-          const routeHeaders = [...document.querySelectorAll('.route_column_heading > button')].map(header => header.textContent?.trim() ?? '');
-          if (routeHeaders.join('|') !== ['Cai', 'Dietrich', 'Theodora', 'Leda'].join('|')) throw new Error('Recruitment columns are missing or out of order: ' + routeHeaders.join(', '));
-          if (document.querySelectorAll('.route_sort_shortcuts button').length !== 12) throw new Error('Recruitment header sort shortcuts are incomplete');
-          const alexandraRoutes = [...document.querySelectorAll('[data-character-id="alexandra"] .route_summary_cell')];
-          const alexandraCai = alexandraRoutes[0]?.textContent ?? '';
-          if (alexandraRoutes.length !== 4 || !alexandraCai.includes('Renown: 7') || !alexandraCai.includes('Chapter: 7') || !alexandraCai.includes('Support: 2') || !(alexandraCai.indexOf('Chapter:') < alexandraCai.indexOf('Renown:') && alexandraCai.indexOf('Renown:') < alexandraCai.indexOf('Support:'))) throw new Error('Recruitable route summary is incomplete or out of order');
-          const dadaoRoutes = [...document.querySelectorAll('[data-character-id="dadao"] .route_summary_cell')];
-          if (!dadaoRoutes[0]?.textContent?.includes('2 × Kothar Gar')) throw new Error('Additional recruitment requirements are missing from the route column');
-          const caiAutomatic = document.querySelector('[data-character-id="cai"] .route_summary_cell')?.textContent ?? '';
-          if (!caiAutomatic.includes('Automatic join') || !caiAutomatic.includes('Chapter: 1') || caiAutomatic.includes('Renown:') || caiAutomatic.includes('Support:')) throw new Error('Automatic join route summary is not limited to its chapter');
-          const portraits = [...document.querySelectorAll('.character_table img.portrait_table')];
-          for (let attempt = 0; attempt < 40 && !portraits.some(i => i.complete && i.naturalWidth > 0); attempt++) await new Promise(resolve => setTimeout(resolve, 50));
-          if (!portraits.length || !portraits.some(i => i.complete && i.naturalWidth > 0)) throw new Error('Bundled portrait images did not load');
-          const affinityIcons = [...document.querySelectorAll('.character_table img.skill_icon')];
-          if (!affinityIcons.length || !affinityIcons.some(i => i.complete && i.naturalWidth > 0)) throw new Error('Skill affinity icons did not load');
-          const firstCharacter = document.querySelector('.character_name');
-          if (!(firstCharacter instanceof HTMLButtonElement)) throw new Error('Character row control missing');
-          firstCharacter.click();
-          for (let attempt = 0; attempt < 40 && !document.querySelector('#character_details'); attempt++) await new Promise(resolve => setTimeout(resolve, 50));
-          if (!document.querySelector('#character_details') || document.activeElement?.id !== 'detail_name') throw new Error('Character details did not open with heading focus');
-          const detailHeadings = [...document.querySelectorAll('#character_details section > h3')].map(heading => heading.textContent ?? '');
-          if (detailHeadings.indexOf('Recruitment by route') < 0 || detailHeadings.indexOf('Recruitment by route') > detailHeadings.indexOf('Personal abilities')) throw new Error('Recruitment details are not presented before personal abilities');
-          if (detailHeadings.includes('Starting information') || detailHeadings.includes('Source conflicts & notes')) throw new Error('Removed dossier sections are still displayed');
-          const visibleText = document.body.innerText;
-          if (visibleText.includes('Copy source URL') || visibleText.includes('No additional conditions listed; this does not establish unrestricted recruitment.') || visibleText.includes('source conflict')) throw new Error('Source or removed recruitment copy remains visible');
-          const firstRecruitmentFacts = document.querySelector('.recruitment_facts');
-          const factText = firstRecruitmentFacts?.textContent ?? '';
-          const factLabels = ['Chapter:', 'Renown:', 'Support:', 'Missable:'];
-          if (!firstRecruitmentFacts || firstRecruitmentFacts.querySelectorAll('strong').length !== 4 || factLabels.some((label, index) => factText.indexOf(label) < 0 || (index > 0 && factText.indexOf(label) < factText.indexOf(factLabels[index - 1])))) throw new Error('Compact recruitment facts are missing or out of order');
-          const resetButtons = [...document.querySelectorAll('main > section:not([hidden]) .result_bar button')].filter(button => button.textContent?.trim() === 'Reset Sorting');
-          if (resetButtons.length !== 1 || [...document.querySelectorAll('main > section:not([hidden]) .customize button')].some(button => button.textContent?.trim() === 'Reset Sorting')) throw new Error('Reset Sorting is not uniquely exposed beside Reset Filters');
-          const strengthSort = document.querySelector('[aria-label="Sort by Strength"]');
-          if (!(strengthSort instanceof HTMLButtonElement)) throw new Error('Strength sort control missing');
-          strengthSort.click();
-          for (let attempt = 0; attempt < 40 && !document.querySelector('.sort_summary')?.textContent?.includes('Strength'); attempt++) await new Promise(resolve => setTimeout(resolve, 50));
-          if (!document.querySelector('.sort_summary')?.textContent?.includes('Strength')) throw new Error('Column sorting did not update');
-          if (!(resetButtons[0] instanceof HTMLButtonElement)) throw new Error('Reset Sorting control missing');
-          resetButtons[0].click();
-          for (let attempt = 0; attempt < 40 && document.querySelector('.sort_summary')?.textContent?.trim() !== 'Sort: 1. Name ↑'; attempt++) await new Promise(resolve => setTimeout(resolve, 50));
-          if (document.querySelector('.sort_summary')?.textContent?.trim() !== 'Sort: 1. Name ↑') throw new Error('Reset Sorting did not restore name order');
-          const theodoraChapter = document.querySelector('[aria-label="Sort by Theodora Chapter"]');
-          if (!(theodoraChapter instanceof HTMLButtonElement)) throw new Error('Recruitment Chapter header sort shortcut is missing');
-          theodoraChapter.click();
-          for (let attempt = 0; attempt < 40 && !document.querySelector('.sort_summary')?.textContent?.includes('1. Theodora — Chapter ↑'); attempt++) await new Promise(resolve => setTimeout(resolve, 50));
-          const theodoraRenown = document.querySelector('[aria-label="Sort by Theodora Renown"]');
-          if (!(theodoraRenown instanceof HTMLButtonElement)) throw new Error('Recruitment Renown header sort shortcut is missing');
-          theodoraRenown.click();
-          for (let attempt = 0; attempt < 40 && !document.querySelector('.sort_summary')?.textContent?.includes('2. Theodora — Renown ↑'); attempt++) await new Promise(resolve => setTimeout(resolve, 50));
-          const recruitmentSortSummary = document.querySelector('.sort_summary')?.textContent ?? '';
-          if (!recruitmentSortSummary.includes('1. Theodora — Chapter ↑') || !recruitmentSortSummary.includes('2. Theodora — Renown ↑') || !recruitmentSortSummary.includes('3. Name ↑')) throw new Error('Recruitment header shortcuts did not create the expected priority order: ' + recruitmentSortSummary);
-          resetButtons[0].click();
-          const fabio = document.querySelector('[data-character-id="fabio"] .character_name');
-          if (!(fabio instanceof HTMLButtonElement)) throw new Error('Fabio row control missing');
-          fabio.click();
-          for (let attempt = 0; attempt < 40 && document.querySelector('#detail_name')?.textContent !== 'Fabio'; attempt++) await new Promise(resolve => setTimeout(resolve, 50));
-          const fabioRoutes = [...document.querySelectorAll('#character_details .route_heading h4')].map(heading => heading.textContent?.trim());
-          if (fabioRoutes.join('|') !== 'Dietrich|Leda') throw new Error('Dossier includes routes where Fabio is not available: ' + fabioRoutes.join(', '));
-          const rootStyle = getComputedStyle(document.documentElement);
-          if (rootStyle.getPropertyValue('--details-panel-width').trim() !== '400px') throw new Error('Compact density did not activate at the default window size');
-          const affinityCell = document.querySelector('.affinities');
-          if (!(affinityCell instanceof HTMLTableCellElement) || parseFloat(getComputedStyle(affinityCell).maxWidth) > 180) throw new Error('Affinity column remained too wide in compact density');
-          const tablePortrait = document.querySelector('.portrait_table');
-          const skillIcon = document.querySelector('.skill_icon');
-          if (rootStyle.fontSize !== '16px' || !(tablePortrait instanceof HTMLImageElement) || parseFloat(getComputedStyle(tablePortrait).width) < 29 || !(skillIcon instanceof HTMLImageElement) || parseFloat(getComputedStyle(skillIcon).width) < 23) throw new Error('Readable text and artwork sizing did not apply');
-          const search = document.querySelector('input[aria-label="Search characters"]');
-          if (!(search instanceof HTMLInputElement)) throw new Error('Character search missing');
-          const valueSetter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')?.set;
-          valueSetter?.call(search, '__no_character_matches_this__');
-          search.dispatchEvent(new Event('input', { bubbles: true }));
-          for (let attempt = 0; attempt < 40 && document.querySelector('#character_details'); attempt++) await new Promise(resolve => setTimeout(resolve, 50));
-          if (document.querySelector('#character_details') || !document.activeElement?.classList.contains('table_scroll')) throw new Error('Filtered character details did not close and restore result focus');
-          const setup = { version: 1, search: '', mode: 'all', filters: [], sorts: [{ field: 'name', direction: 'asc' }] };
-          const saved = await window.loom.saveSetup('cai', setup);
-          const loaded = await window.loom.loadSetup('cai');
-          if (saved.datasetVersion !== overview.datasetVersion || !loaded || loaded.datasetVersion !== overview.datasetVersion || loaded.setup.sorts[0]?.field !== 'name') throw new Error('Setup save/load round trip failed');
-          if (await window.loom.loadSetup('leda') !== null) throw new Error('Unexpected saved setup for Leda');
-          const classNavigation = [...document.querySelectorAll('.app_navigation button')].find(button => button.textContent?.trim() === 'Class Library');
-          if (!(classNavigation instanceof HTMLButtonElement)) throw new Error('Class Library navigation missing');
-          classNavigation.click();
-          for (let attempt = 0; attempt < 40 && !document.querySelector('#class_result_count strong'); attempt++) await new Promise(resolve => setTimeout(resolve, 50));
-          if (document.querySelector('#class_result_count strong')?.textContent !== String(overview.classCount)) throw new Error('Class Library did not render all classes');
-          const classTables = [...document.querySelectorAll('.class_table')];
-          const classScrollRegions = [...document.querySelectorAll('.class_table_scroll')];
-          const tierTitleRows = [...document.querySelectorAll('.tier_title_row')];
-          if (classTables.length !== 1 || classScrollRegions.length !== 1) throw new Error('Class Library does not use one table and one scroll region');
-          if (tierTitleRows.length !== 6 || tierTitleRows.some(row => row.querySelector('.tier_heading')?.getAttribute('aria-expanded') !== 'true')) throw new Error('Class tier title rows are missing or not expanded');
-          const firstClassHeaders = classTables[0]?.querySelectorAll('thead th') ?? [];
-          const classHeaderText = [...firstClassHeaders].map(header => header.textContent?.trim() ?? '');
-          if (!classHeaderText.includes('Training') || !classHeaderText.includes('HP') || !classHeaderText.includes('Cha') || !classHeaderText.includes('Recommended grades') || !classHeaderText.includes('Mastery') || !classHeaderText.includes('Known unlock')) throw new Error('Hybrid Class Library columns are incomplete');
-          const classIcons = [...document.querySelectorAll('.class_table img.class_icon_table')];
-          for (let attempt = 0; attempt < 40 && !classIcons.some(icon => icon.complete && icon.naturalWidth > 0); attempt++) await new Promise(resolve => setTimeout(resolve, 50));
-          if (!classIcons.some(icon => icon.complete && icon.naturalWidth > 0)) throw new Error('Bundled class icons did not load');
-          const dancerGrowths = [...document.querySelectorAll('[data-class-id="dancer"] .class_growth')].map(cell => cell.textContent?.trim());
-          if (dancerGrowths.length !== 9 || dancerGrowths.some(value => value !== '—')) throw new Error('Unknown class growths were not preserved');
-          const rangerUnlock = document.querySelector('[data-class-id="ranger"] .unlock_cell')?.textContent ?? '';
-          if (!rangerUnlock.includes('Dread Warrior Challenge') || !rangerUnlock.includes('+1 more method')) throw new Error('Multiple class unlock methods are not summarized');
-          const ranger = document.querySelector('[data-class-id="ranger"] .class_name');
-          if (!(ranger instanceof HTMLButtonElement)) throw new Error('Class row control missing');
-          ranger.click();
-          for (let attempt = 0; attempt < 40 && !document.querySelector('#class_details'); attempt++) await new Promise(resolve => setTimeout(resolve, 50));
-          if (document.activeElement?.id !== 'class_detail_name') throw new Error('Class details did not open with heading focus');
-          const classDetailHeadings = [...document.querySelectorAll('#class_details section > h3')].map(heading => heading.textContent ?? '');
-          if (!classDetailHeadings.includes('Class growth modifiers') || !classDetailHeadings.includes('Certification') || !classDetailHeadings.includes('Active class abilities') || !classDetailHeadings.includes('Mastery reward') || !classDetailHeadings.includes('Known unlock methods')) throw new Error('Class dossier sections are incomplete');
-          if (document.querySelectorAll('#class_details .unlock_details').length !== 2 || document.body.innerText.includes('source_url')) throw new Error('Class dossier unlock evidence is incomplete or exposes raw provenance');
-          const classSetup = { version: 1, search: '', tiers: ['unique','beginner','specialty','advanced','master','divine'], mode: 'all', filters: [], sorts: [{ field: 'name', direction: 'asc' }] };
-          const savedClassSetup = await window.loom.saveClassSetup(classSetup);
-          const loadedClassSetup = await window.loom.loadClassSetup();
-          if (savedClassSetup.datasetVersion !== overview.datasetVersion || !loadedClassSetup || loadedClassSetup.setup.tiers.length !== 6) throw new Error('Class Library setup save/load round trip failed');
-          const paralogueNavigation = [...document.querySelectorAll('.app_navigation button')].find(button => button.textContent?.trim() === 'Paralogue Library');
-          if (!(paralogueNavigation instanceof HTMLButtonElement)) throw new Error('Paralogue Library navigation missing');
-          paralogueNavigation.click();
-          for (let attempt = 0; attempt < 40 && !document.querySelector('#paralogue_result_count strong'); attempt++) await new Promise(resolve => setTimeout(resolve, 50));
-          if (document.querySelector('#paralogue_result_count strong')?.textContent !== String(overview.paralogueCount)) throw new Error('Paralogue Library did not render all nine paralogues');
-          const paralogueRouteHeaders = [...document.querySelectorAll('.paralogue_route_heading .route_title')].map(header => header.textContent?.trim() ?? '');
-          if (paralogueRouteHeaders.join('|') !== ['Cai', 'Dietrich', 'Theodora', 'Leda'].join('|')) throw new Error('Paralogue route columns are missing or out of order');
-          if (document.querySelectorAll('.paralogue_route_heading .paralogue_sort_shortcuts button').length !== 12) throw new Error('Paralogue timing sort shortcuts are incomplete');
-          const carriage = document.querySelector('[data-paralogue-id="secret-of-the-vanished-carriage"] .paralogue_name');
-          if (!(carriage instanceof HTMLButtonElement)) throw new Error('Paralogue row control missing');
-          carriage.click();
-          for (let attempt = 0; attempt < 40 && !document.querySelector('#paralogue_details'); attempt++) await new Promise(resolve => setTimeout(resolve, 50));
-          if (document.activeElement?.id !== 'paralogue_detail_name' || document.querySelectorAll('#paralogue_details .paralogue_route_card').length !== 4) throw new Error('Paralogue details did not open with four routes and heading focus');
-          if (!document.querySelector('#paralogue_details')?.textContent?.includes('Notable outcomes') || !document.querySelector('#paralogue_details')?.textContent?.includes('10/1–10/10') || document.querySelector('.paralogue_table')?.textContent?.includes('Renown')) throw new Error('Paralogue timing/outcome placement is incomplete');
-          const paralogueSetup = { version: 1, search: '', route: 'all', mode: 'all', filters: [], sorts: [{ field: 'name', direction: 'asc' }] };
-          const savedParalogueSetup = await window.loom.saveParalogueSetup(paralogueSetup);
-          const loadedParalogueSetup = await window.loom.loadParalogueSetup();
-          if (savedParalogueSetup.datasetVersion !== overview.datasetVersion || !loadedParalogueSetup || loadedParalogueSetup.setup.sorts[0]?.field !== 'name') throw new Error('Paralogue Library setup save/load round trip failed');
-          const characterNavigation = [...document.querySelectorAll('.app_navigation button')].find(button => button.textContent?.trim() === 'Character Library');
-          if (!(characterNavigation instanceof HTMLButtonElement)) throw new Error('Character Library navigation missing');
-          characterNavigation.click();
-          const retainedSearch = document.querySelector('input[aria-label="Search characters"]');
-          if (!(retainedSearch instanceof HTMLInputElement) || retainedSearch.value !== '__no_character_matches_this__') throw new Error('Library navigation discarded the unsaved Character Library draft');
-          valueSetter?.call(retainedSearch, 'Alexandra');
-          retainedSearch.dispatchEvent(new Event('input', { bubbles: true }));
-          for (let attempt = 0; attempt < 40 && !document.querySelector('[data-character-id="alexandra"] .shortlist_toggle'); attempt++) await new Promise(resolve => setTimeout(resolve, 50));
-          const shortlistToggle = document.querySelector('[data-character-id="alexandra"] .shortlist_toggle');
-          if (!(shortlistToggle instanceof HTMLButtonElement)) throw new Error('Character shortlist control missing');
-          if (shortlistToggle.getAttribute('aria-pressed') !== 'true') shortlistToggle.click();
-          for (let attempt = 0; attempt < 40 && shortlistToggle.getAttribute('aria-pressed') !== 'true'; attempt++) await new Promise(resolve => setTimeout(resolve, 50));
-          if (shortlistToggle.getAttribute('aria-pressed') !== 'true') throw new Error('Character shortlist state did not update');
-          const shortlistNavigation = [...document.querySelectorAll('.app_navigation button')].find(button => button.textContent?.startsWith('Shortlist & Compare'));
-          if (!(shortlistNavigation instanceof HTMLButtonElement)) throw new Error('Shortlist navigation missing');
-          shortlistNavigation.click();
-          for (let attempt = 0; attempt < 40 && !document.querySelector('[data-shortlist-id="alexandra"]'); attempt++) await new Promise(resolve => setTimeout(resolve, 50));
-          const shortlistRow = document.querySelector('[data-shortlist-id="alexandra"]');
-          if (!shortlistRow) throw new Error('Shortlisted character did not render');
-          const note = shortlistRow.querySelector('textarea');
-          if (!(note instanceof HTMLTextAreaElement)) throw new Error('Character note editor missing');
-          const noteSetter = Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, 'value')?.set;
-          noteSetter?.call(note, 'Smoke comparison note');
-          note.dispatchEvent(new Event('input', { bubbles: true }));
-          note.dispatchEvent(new FocusEvent('blur', { bubbles: true }));
-          for (let attempt = 0; attempt < 40 && !(await window.loom.listCharacterPlanning()).some(record => record.characterId === 'alexandra' && record.note === 'Smoke comparison note'); attempt++) await new Promise(resolve => setTimeout(resolve, 50));
-          const compareChoice = shortlistRow.querySelector('input[type="checkbox"]');
-          if (!(compareChoice instanceof HTMLInputElement)) throw new Error('Comparison selection control missing');
-          compareChoice.click();
-          for (let attempt = 0; attempt < 40 && !document.querySelector('.comparison_table'); attempt++) await new Promise(resolve => setTimeout(resolve, 50));
-          const comparison = document.querySelector('.comparison_table');
-          if (!comparison || !comparison.textContent?.includes('Alexandra') || !comparison.textContent?.includes('Personal growths') || !comparison.textContent?.includes('Skill affinities') || !comparison.textContent?.includes('Recruitment by route')) throw new Error('Comparison matrix is incomplete');
-          if (comparison.textContent?.includes('Class growth')) throw new Error('Deferred class planning leaked into character comparison');
-          await window.loom.setCharacterShortlisted('alexandra', false);
-          const retainedPlanning = (await window.loom.listCharacterPlanning()).find(record => record.characterId === 'alexandra');
-          if (retainedPlanning?.shortlisted !== false || retainedPlanning.note !== 'Smoke comparison note') throw new Error('Unshortlisting did not retain the character note');
-          return { overview, rosterCount: roster.length, classCount: classLibrary.classes.length, title: document.title };
-        })()`);
-        console.log('SMOKE_PASSED', JSON.stringify(result));
+        let decodedAssets=0;
+        const expanded=reference!.pragma('user_version',{simple:true})===3&&!smokeReference?await window.webContents.executeJavaScript(referenceReleaseSmoke):{};
+        if(!smokeReference){
+          const images=Object.values(art.manifest.resources).filter(r=>r.file_state==='captured').map(r=>[assetUrl(r.id),r.width,r.height]);
+          decodedAssets=await window.webContents.executeJavaScript(`(async()=>{const rows=${JSON.stringify(images)};for(let n=0;n<rows.length;n+=32)await Promise.all(rows.slice(n,n+32).map(([url,width,height])=>new Promise((resolve,reject)=>{const image=new Image();image.onload=()=>image.naturalWidth===width&&image.naturalHeight===height?resolve(true):reject(Error('Artwork dimensions differ: '+url));image.onerror=()=>reject(Error('Offline artwork failed: '+url));image.src=url;})));return rows.length;})()`);
+        }
+        if(app.isPackaged&&reference!.pragma('user_version',{simple:true})===3&&!smokeReference) {
+          const mapRoot=path.join(process.resourcesPath,'maps');const manifest=JSON.parse(fs.readFileSync(path.join(mapRoot,'map_manifest.json'),'utf8'));
+          for(const asset of manifest.assets) {const file=path.join(mapRoot,path.basename(asset.path));if(!fs.existsSync(file))throw new Error('Packaged map resource missing');}
+          if(manifest.assets.filter((a:{tile:unknown})=>a.tile!==null).length!==139)throw new Error('Packaged tile pyramid incomplete');
+        }
+        const result = await window.webContents.executeJavaScript(smokeReference?referenceV3Smoke:referenceBaselineSmoke);
+        if(outboundRequests!==0)throw new Error('Offline smoke attempted an HTTP(S) request');
+        console.log('SMOKE_PASSED', JSON.stringify({...result,...expanded,decodedAssets,outboundRequests,httpBlocked:app.isPackaged}));
         clearTimeout(timeout);
         window.destroy();
         closeDatabases();

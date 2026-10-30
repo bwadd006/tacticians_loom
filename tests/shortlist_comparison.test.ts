@@ -10,7 +10,8 @@ import { clearCharacterNote, listCharacterPlanning, loadClassSetup, loadSetup, o
 import { loadSqlite } from '../src/main/database/sqlite';
 import { defaultSetup } from '../src/shared/library_setup';
 
-const document = charactersDocumentSchema.parse(JSON.parse(fs.readFileSync(path.join(process.cwd(), 'data/source/fire_emblem_fortunes_weave_characters.json'), 'utf8')));
+import { characters } from './library_fixture';
+const document={characters};
 const alexandra = document.characters.find(character => character.id === 'alexandra')!;
 const cai = document.characters.find(character => character.id === 'cai')!;
 let temporary: string;

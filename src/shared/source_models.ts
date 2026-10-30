@@ -27,34 +27,41 @@ export const characterSchema = z.object({
   effective_growth_rates_note: z.string().nullable(),
   starting_level: threshold, starting_class: z.string().nullable(),
   base_stats: stats.nullable(), base_stats_note: z.string(),
-  skill_proficiencies: z.object({ boons: skillList, banes: skillList, verified: z.boolean(), source: z.string().nullable() }).passthrough(),
+  skill_proficiencies: z.object({ boons: skillList, banes: skillList, verified: z.boolean(), source: z.string().nullable(),
+    affinities: z.partialRecord(skill, z.enum(['boon','bane','neutral','unknown'])).optional(),
+  }).passthrough(),
   personal_abilities: z.array(z.object({
+    action_id: id.optional(),
     name: z.string(), effect: z.string().nullable(),
     acquisition: z.object({ type: z.string(), level: threshold }).passthrough(),
-    source: z.string(), rank: z.number().int().positive(), upgrade_of: z.string().optional(),
+    source: z.string(), rank: z.number().int().positive().nullable(), upgrade_of: z.string().optional(),
   }).passthrough()),
   recruitment_by_route: z.record(z.enum(ROUTES), recruitmentSchema),
   flags: z.object({ recruitable_or_joins_in_part_1: z.boolean(), available_part_1_routes: z.array(z.enum(ROUTES)) }).passthrough(),
   notes: z.array(z.string()),
 }).passthrough();
 export const classSchema = z.object({
-  id, name: z.string().min(1), tier: z.enum(TIERS), playable: z.boolean(),
+  id, name: z.string().min(1), tier: z.enum(TIERS), playable: z.boolean().nullable(),
   movement_tags: z.array(z.string()),
   skill_exp_bonuses: z.partialRecord(skill, z.number().finite()),
   skills_listed_without_exp_bonus: z.array(z.union([skill, z.literal('any_weapon')])),
   weapon_access: z.object({
     usable_weapon_types: skillList, usable_magic_types: skillList, verified: z.boolean(), note: z.string(),
+    evidence_state: z.enum(['reported','confirmed','conflicting','unknown']).optional(),
   }).passthrough(),
   class_growth_rate_modifiers_percent: stats,
   base_stat_modifiers: stats.nullable(),
-  active_class_abilities: z.array(z.object({ name: z.string(), effect: z.string().nullable(), source: z.string() }).passthrough()),
-  mastery: z.object({ ability_name: z.string().nullable(), effect: z.string().nullable(), class_exp_required: threshold, retained_on_reclass: z.boolean().nullable() }).passthrough(),
+  active_class_abilities: z.array(z.object({ action_id:id.optional(), name: z.string(), effect: z.string().nullable(), source: z.string() }).passthrough()),
+  mastery: z.object({ action_id:id.nullable().optional(), ability_name: z.string().nullable(), effect: z.string().nullable(), class_exp_required: threshold, retained_on_reclass: z.boolean().nullable() }).passthrough(),
   certification: z.object({
     tier_rule_id: z.enum(TIERS),
     recommended_skill_grades: z.array(z.object({ skill_id: skill, grade: z.string() }).passthrough()).nullable(),
     skill_rule_is_complete: z.boolean(), logic: z.string().nullable(), grade_source: z.string().nullable(),
     exam_pass_probability_formula: z.string().nullable(), exact_minimum_level: threshold,
     character_exceptions: z.array(object).nullable(),
+    reported_requirements: z.object({ root_id: id, summary: z.string(), evidence: z.enum(['reported','confirmed']) }).strict().nullable().optional(),
+    listed_level: threshold.optional(), listed_renown: threshold.optional(),
+    license_label: z.string().nullable().optional(),
   }).passthrough(),
   known_character_restrictions: z.array(object).nullable(),
   unlock_ids: z.array(id), source_urls: z.array(z.string()),
@@ -67,7 +74,7 @@ export const charactersDocumentSchema = z.object({
     part_1_recruitment_records_by_route: z.record(z.enum(ROUTES), z.number().int()),
   }),
   sources: z.array(source), data_conflicts: z.array(conflict.extend({ character_id: id.nullable() })),
-  characters: z.array(characterSchema).min(1),
+  characters: z.array(characterSchema.extend({personal_abilities:z.array(characterSchema.shape.personal_abilities.element.extend({rank:z.number().int().positive()}))})).min(1),
 }).passthrough();
 export const classesDocumentSchema = z.object({
   metadata: metadata.extend({ class_count: z.number().int(), class_counts_by_tier: z.record(z.enum(TIERS), z.number().int()) }),
@@ -78,12 +85,15 @@ export const classesDocumentSchema = z.object({
   }).passthrough()),
   route_unlocks: z.array(z.object({
     id, route_id: z.enum(ROUTES).nullable(), unlock_class_ids: z.array(id),
+    route_scope:z.enum(['listed','all','unknown','not_applicable']).optional(),
     part: threshold, earliest_chapter: threshold, activity_name: z.string(), requirements: object,
     deadline_in_game: z.string().nullable(), missable: z.boolean().nullable(),
     persists_across_routes: z.boolean().nullable(), status: z.string(), source_url: z.string(),
   }).passthrough()),
   character_restrictions: z.object({ global_character_class_restrictions_verified: z.boolean(), exceptions: z.array(object), note: z.string() }).passthrough(),
-  classes: z.array(classSchema).min(1),
+  // Legacy format 1 inputs still require their original boolean contract.
+  // Nullable playability belongs to the richer library read model, never an implicit v1 cast.
+  classes: z.array(classSchema.extend({playable:z.boolean()})).min(1),
 }).passthrough();
 
 export const gameDateSchema = z.object({
@@ -112,6 +122,7 @@ export const paralogueAvailabilitySchema = z.object({
   missable: z.boolean().nullable(), trigger: z.string().nullable(),
   verification_status: paralogueVerificationSchema, source_keys: sourceKeys,
   note: z.string().nullable(),
+  reported_timing: z.array(z.object({role:z.string(),text:z.string(),semantics:z.string()}).strict()).optional(),
 }).strict();
 export const paralogueSchema = z.object({
   id, name: z.string().min(1), associated_character_name: z.string().min(1),

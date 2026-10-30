@@ -3,3 +3,17 @@ node_modules/
 out/
 database/generated/
 *.log
+
+# Application inputs are maintained data and assets only.
+data/imports/
+data/review/
+private_maintenance/
+design_docs/
+scripts/i[0-6]/
+scripts/capture_yuphas_source.ts
+scripts/inventory_yuphas_source.ts
+scripts/import_yuphas_baseline.ts
+scripts/review_yuphas_candidate.ts
+scripts/activate_yuphas_baseline.ts
+scripts/activate_asset_catalog.ts
+**/i[0-6]_*

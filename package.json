@@ -5,19 +5,27 @@
   "private": true,
   "description": "Local Act 1 reference and team planning for Fortune's Weave",
   "main": ".webpack/main",
-  "engines": { "node": ">=24" },
+  "engines": {
+    "node": ">=24"
+  },
   "scripts": {
-    "start": "npm run data:build && electron-forge start",
-    "package": "npm run check && npm run data:build && electron-forge package",
-    "make": "npm run check && npm run data:build && electron-forge make",
+    "start": "electron-forge start",
+    "package": "npm run data:build && npm run check && electron-forge package",
+    "make": "npm run data:build && npm run check && electron-forge make",
+    "release:validate": "node --import tsx scripts/validate_reference_release.ts",
     "data:build": "node --import tsx scripts/build_database.ts",
+    "assets:validate": "node --import tsx scripts/validate_assets.ts",
     "data:audit": "node --import tsx scripts/audit_source_coverage.ts",
     "data:validate": "node --import tsx scripts/validate_database.ts",
     "typecheck": "tsc --noEmit",
     "test": "node --import tsx --test --test-isolation=none tests/*.test.ts",
-    "check": "npm run typecheck && npm test"
+    "check": "npm run typecheck && npm test && npm run distribution:validate",
+    "distribution:validate": "node --import tsx scripts/distribution_boundary.ts",
+    "source:export": "node --import tsx scripts/export_source.ts"
   },
-  "config": { "forge": "./forge_config.ts" },
+  "config": {
+    "forge": "./forge_config.ts"
+  },
   "dependencies": {
     "better-sqlite3": "13.0.3",
     "react": "19.3.0",

@@ -1,3 +1,4 @@
+import { ActionIcon } from '../../components/action_icon';
 import { useEffect, useRef } from 'react';
 import { ROUTES, ROUTE_NAMES, STATS, type RouteContext } from '../../../shared/catalog';
 import type { Character } from '../../../shared/source_models';
@@ -31,6 +32,6 @@ export function CharacterDetails({ character: c, route, planning, pending, onTog
         {Object.entries(recruitment).filter(([key]) => !['status','earliest_chapter','min_renown','min_support','missable','requirements','source'].includes(key)).map(([key, value]) => <div key={key}><strong>{skillLabel(key)}: </strong><ReadableValue value={value} /></div>)}
       </article>;
     })}</section>
-    <section><h3>Personal abilities</h3>{c.personal_abilities.map((a, i) => <article className="ability" key={i}><h4>{a.name} <small>Rank {a.rank}</small></h4><p>{a.effect ?? 'Effect unknown.'}</p><p className="hint">{skillLabel(a.acquisition.type)} · {a.acquisition.level === null ? 'Acquisition level unknown' : `Level ${a.acquisition.level}`}{a.upgrade_of ? ` · Upgrades ${a.upgrade_of}` : ''}</p></article>)}</section>
+    <section><h3>Personal abilities</h3>{c.personal_abilities.map((a, i) => <article className="ability" key={i}><h4><ActionIcon id={a.action_id} />{a.name} <small>{a.rank===null?'Rank unknown':`Rank ${a.rank}`}</small></h4><p>{a.effect ?? 'Effect unknown.'}</p><p className="hint">{skillLabel(a.acquisition.type)} · {a.acquisition.level === null ? 'Acquisition level unknown' : `Level ${a.acquisition.level}`}{a.upgrade_of ? ` · Upgrades ${a.upgrade_of}` : ''}</p></article>)}</section>
   </aside>;
 }

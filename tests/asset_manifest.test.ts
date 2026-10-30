@@ -2,87 +2,87 @@ import assert from 'node:assert/strict';
 import { test } from 'node:test';
 import fs from 'node:fs';
 import path from 'node:path';
+import os from 'node:os';
+import { assetManifestSchema, assetPathSchema, selectedAsset, selectedAssetUrl, assetUrl, type AssetManifest } from '../src/shared/asset_catalog';
+import { loadAssetFiles, validatedAssetFiles, resolveAssetRequest } from '../src/main/asset_files';
+import { sha256, loadReferenceV3 } from '../scripts/reference_v3_sources';
+import { inspectSourceImage } from '../scripts/image_metadata';
 import { SKILLS } from '../src/shared/catalog';
+import { referenceV3Fixture } from './reference_v3_fixture';
+const root=process.cwd(),read=(p:string)=>JSON.parse(fs.readFileSync(path.join(root,p),'utf8'));
+const manifest=assetManifestSchema.parse(read(`resources/asset_manifest.json`));
+const core=read('data/contracts/retained_core_ids.json') as {id:string;kind:string}[];
+const clone=()=>structuredClone(manifest);
+const derived=['authority','gauntlets','infantry','spears'];
 
-const appRoot = process.cwd();
-const manifest = JSON.parse(fs.readFileSync(path.join(appRoot, 'resources/asset_manifest.json'), 'utf8')) as {
-  schema_version: number;
-  sources: Record<string, { name: string; url: string }>;
-  characters: Record<string, { portrait: string; source: string }>;
-  classes: Record<string, { icon: string; source: string }>;
-  skills: Record<string, { neutral?: string; boon?: string; bane?: string; source: string; bane_source?: string }>;
-  abilities: Record<string, unknown>;
-};
-const characterIds = new Set((JSON.parse(fs.readFileSync(path.join(appRoot, 'data/source/fire_emblem_fortunes_weave_characters.json'), 'utf8')) as { characters: { id: string }[] }).characters.map(c => c.id));
-const classIds = new Set((JSON.parse(fs.readFileSync(path.join(appRoot, 'data/source/fire_emblem_fortunes_weave_classes.json'), 'utf8')) as { classes: { id: string }[] }).classes.map(c => c.id));
-const portraitDir = path.join(appRoot, 'resources/portraits');
-const iconDir = path.join(appRoot, 'resources/class_icons');
-const skillIconDir = path.join(appRoot, 'resources/skill_icons');
-// Deliberate gaps documented in design_docs/artwork_assets_design.md.
-const CHARACTER_GAPS = ['klapka'];
-const CLASS_GAPS = ['commoner', 'noble'];
-// Bane variants unavailable as rips; these are derived recreations pending official art.
-const DERIVED_BANE = ['authority', 'gauntlets', 'infantry', 'spears'];
-
-function magic(file: string): Buffer {
-  const handle = fs.openSync(file, 'r');
-  const header = Buffer.alloc(12);
-  fs.readSync(handle, header, 0, 12, 0);
-  fs.closeSync(handle);
-  return header;
-}
-function isWebp(header: Buffer): boolean { return header.subarray(0, 4).toString('latin1') === 'RIFF' && header.subarray(8, 12).toString('latin1') === 'WEBP'; }
-function isPng(header: Buffer): boolean { return header.subarray(0, 8).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a])); }
-
-test('manifest maps only real IDs to real attributed image files', () => {
-  assert.equal(manifest.schema_version, 1);
-  for (const [id, entry] of Object.entries(manifest.characters)) {
-    assert.ok(characterIds.has(id), `unknown character ID: ${id}`);
-    assert.ok(manifest.sources[entry.source], `unknown source for ${id}`);
-    const file = path.join(portraitDir, `${entry.portrait}.webp`);
-    assert.ok(fs.existsSync(file), `missing portrait file for ${id}`);
-    assert.ok(isWebp(magic(file)), `portrait is not WebP: ${id}`);
-    assert.ok(fs.statSync(file).size > 100, `portrait suspiciously small: ${id}`);
-  }
-  for (const [id, entry] of Object.entries(manifest.classes)) {
-    assert.ok(classIds.has(id), `unknown class ID: ${id}`);
-    assert.ok(manifest.sources[entry.source], `unknown source for ${id}`);
-    const file = path.join(iconDir, `${entry.icon}.png`);
-    assert.ok(fs.existsSync(file), `missing class icon file for ${id}`);
-    assert.ok(isPng(magic(file)), `class icon is not PNG: ${id}`);
-    assert.ok(fs.statSync(file).size > 100, `class icon suspiciously small: ${id}`);
-  }
+test('validates every bundled file hash, byte count, actual dimensions, format and attribution',()=>{
+ assert.equal(manifest.schema_version,2);const files=validatedAssetFiles(path.join(root,'resources'),manifest);
+ assert.equal(files.size,911);
+ for(const r of Object.values(manifest.resources))if(r.file_state==='captured') {
+  const bytes=fs.readFileSync(path.join(root,r.path!)),actual=inspectSourceImage(bytes);
+  assert.deepEqual([actual.format,actual.width,actual.height],[r.format,r.width,r.height]);assert.equal(sha256(bytes),r.sha256);
+  assert.match(r.attribution,/Nintendo/);assert.equal(r.authentic_rip_state,'unassessed');
+  assert.ok(r.sources.every(s=>s.state==='historical_local'||(s.source_url?.startsWith('https://yuphastemple.com/')&&s.retrieved_at&&s.http_status===200)));
+ }
+ for(const entry of fs.readdirSync(path.join(root,'resources/catalog')))assert.ok(Object.values(manifest.resources).some(r=>r.path===`resources/catalog/${entry}`),'Unregistered catalog file');
 });
-
-test('every bundled image file is referenced and only documented gaps are unmapped', () => {
-  const referencedPortraits = new Set(Object.values(manifest.characters).map(e => e.portrait));
-  const referencedIcons = new Set(Object.values(manifest.classes).map(e => e.icon));
-  for (const file of fs.readdirSync(portraitDir)) assert.ok(referencedPortraits.has(file.replace(/\.webp$/, '')), `unreferenced portrait file: ${file}`);
-  for (const file of fs.readdirSync(iconDir)) assert.ok(referencedIcons.has(file.replace(/\.png$/, '')), `unreferenced class icon file: ${file}`);
-  assert.deepEqual([...characterIds].filter(id => !manifest.characters[id]).sort(), CHARACTER_GAPS);
-  assert.deepEqual([...classIds].filter(id => !manifest.classes[id]).sort(), CLASS_GAPS);
-  // Ability icon maps stay empty until their artwork is sourced.
-  assert.deepEqual(Object.keys(manifest.abilities), []);
+test('covers all stable characters/classes and all affinity modes, preserving named variants and derived provenance',()=>{
+ for(const e of core.filter(e=>e.kind==='character')){assert.ok(selectedAsset(manifest,e.id,'portrait'));assert.ok(selectedAsset(manifest,e.id,'thumbnail'));}
+ for(const e of core.filter(e=>e.kind==='class'))assert.ok(selectedAsset(manifest,e.id,'class_icon'));
+ assert.notEqual(selectedAsset(manifest,'noble','class_icon','male')!.id,selectedAsset(manifest,'noble','class_icon','female')!.id);
+ for(const s of SKILLS)for(const v of ['neutral','boon','bane']){
+  const r=selectedAsset(manifest,s,'skill_icon',v);assert.ok(r);
+  assert.equal(r.derived_state,derived.includes(s)&&v==='bane'?'derived_composite':'not_applicable');
+ }
+ for(const s of derived){assert.equal(selectedAsset(manifest,s,'skill_icon','hosted_bane')!.authentic_rip_state,'unassessed');assert.equal(selectedAsset(manifest,s,'skill_icon','hosted_bane')!.derived_state,'not_applicable');}
+ assert.equal(selectedAssetUrl(manifest,'unknown_character','portrait'),null);
 });
-
-test('skill icons cover all skills in every variant; derived banes are marked as recreations', () => {
-  const referenced = new Set<string>();
-  for (const skill of SKILLS) {
-    const entry = manifest.skills[skill];
-    assert.ok(entry, `skill missing from manifest: ${skill}`);
-    assert.ok(manifest.sources[entry.source], `unknown source for ${skill}`);
-    if (DERIVED_BANE.includes(skill)) assert.equal(entry.bane_source, 'derived_composite', `derived bane not marked: ${skill}`);
-    else assert.equal(entry.bane_source, undefined, `unexpected derived bane marking: ${skill}`);
-    for (const variant of ['neutral', 'boon', 'bane'] as const) {
-      const key = entry[variant];
-      assert.ok(key, `missing ${variant} icon key for ${skill}`);
-      const file = path.join(skillIconDir, `${key}.png`);
-      assert.ok(fs.existsSync(file), `missing skill icon file: ${key}`);
-      assert.ok(isPng(magic(file)), `skill icon is not PNG: ${key}`);
-      referenced.add(key);
-    }
-  }
-  assert.ok(manifest.sources.derived_composite, 'derived composite source record missing');
-  assert.deepEqual(Object.keys(manifest.skills).sort(), [...SKILLS].sort());
-  for (const file of fs.readdirSync(skillIconDir)) assert.ok(referenced.has(file.replace(/\.png$/, '')), `unreferenced skill icon file: ${file}`);
+test('mappings distinguish same-name action kinds, shared upgrade artwork, category art and placeholders',()=>{
+ const identities=read(`data/source/identity_registry.json`).records.filter((r:any)=>r.record_kind==='entities').map((r:any)=>r.body);
+ const find=(name:string,kind:string)=>identities.find((e:any)=>e.display_name===name&&e.kind===kind).id;
+ const brio=find('Brio','ability'),plus=find('Brio+','ability');assert.notEqual(brio,plus);
+ assert.equal(selectedAsset(manifest,brio,'icon')!.id,selectedAsset(manifest,plus,'icon')!.id);
+ assert.equal(manifest.bindings.find(b=>b.subject_entity_id===plus&&b.selected&&b.role==='icon')!.kind,'shared');
+ assert.notEqual(selectedAsset(manifest,find('Barrier','ability'),'icon')!.id,selectedAsset(manifest,find('Barrier','spell'),'icon')!.id);
+ assert.ok(manifest.bindings.some(b=>b.selected&&b.kind==='category'&&manifest.resources[b.resource_id].sources.some(s=>s.source_url?.includes('/arts/'))));
+ assert.ok(manifest.bindings.some(b=>b.kind==='placeholder'));
+ const catalogOnly=manifest.bindings.filter(b=>b.catalog_key?.includes('/abilities/'));assert.equal(catalogOnly.length,421);
+ assert.ok(catalogOnly.every(b=>b.subject_entity_id===null&&!b.selected));
+});
+test('accounts for the full captured game-image corpus, excludes website branding, and retains real source gaps',()=>{
+ const staff=Object.values(manifest.resources).find(r=>r.sources.some(s=>s.source_url?.endsWith('/items/staff.png')))!;
+ assert.equal(staff.file_state,'source_missing');assert.equal(staff.path,null);assert.equal(staff.sources[0].http_status,404);
+ assert.ok(manifest.unresolved.some(g=>g.reason.includes('fallback')));
+});
+test('local artwork protocol rejects paths, unknown IDs, authorities, alternate methods and file substitutions',()=>{
+ const files=validatedAssetFiles(path.join(root,'resources'),manifest),r=selectedAsset(manifest,'klapka','portrait')!;
+ assert.equal(resolveAssetRequest(files,assetUrl(r.id)),files.get(r.id));
+ for(const u of ['file:///etc/passwd','https://asset/'+r.id,'loom-art://other/'+r.id,'loom-art://asset/../../etc/passwd','loom-art://asset/%2e%2e%2fetc%2fpasswd','loom-art://asset/%ZZ','loom-art://user:pass@asset/'+r.id,assetUrl(r.id)+'?path=x',assetUrl(r.id)+'#x',assetUrl('unknown')])assert.equal(resolveAssetRequest(files,u),null);
+ assert.equal(resolveAssetRequest(files,assetUrl(r.id),'POST'),null);
+ for(const p of ['../private.png','resources/catalog/../../secret.png','/tmp/a.png','resources/catalog/a.svg'])assert.equal(assetPathSchema.safeParse(p).success,false);
+ const changed=clone();changed.resources[r.id].sha256='0'.repeat(64);assert.throws(()=>validatedAssetFiles(path.join(root,'resources'),changed),/hash differs/);
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'loom_asset_path_'));
+ try {fs.mkdirSync(path.join(dir,'catalog'));fs.symlinkSync(path.join(root,r.path!),path.join(dir,'catalog','escape.webp'));const one=clone();one.resources={[r.id]:{...r,path:'resources/catalog/escape.webp'}};assert.throws(()=>validatedAssetFiles(dir,one),/escapes/);}finally{fs.rmSync(dir,{recursive:true,force:true});}
+});
+test('closed contracts reject ambiguous slots, unknown keys, dangling art and incorrect formats',()=>{
+ const ambiguous=clone(),binding=ambiguous.bindings.find(b=>b.selected&&b.subject_entity_id==='cai'&&b.role==='portrait')!;ambiguous.bindings.push({...binding,id:'another_binding'});assert.equal(assetManifestSchema.safeParse(ambiguous).success,false);
+ const dangling=clone();dangling.bindings[0].resource_id='missing';assert.equal(assetManifestSchema.safeParse(dangling).success,false);
+ const unknown=clone() as any;unknown.hidden_network_fallback=true;assert.equal(assetManifestSchema.safeParse(unknown).success,false);
+ const bad=clone(),r=selectedAsset(bad,'klapka','portrait')!;r.format='png';assert.equal(assetManifestSchema.safeParse(bad).success,false);
+});
+test('asset validation rejects mismatched bindings and changed manifest bytes',()=>{
+ const dir=fs.mkdtempSync(path.join(os.tmpdir(),'loom_asset_validation_'));
+ try {
+  const fixture=referenceV3Fixture(dir),r=selectedAsset(manifest,'klapka','portrait')!,resources=path.join(dir,'resources');fs.mkdirSync(path.join(resources,'catalog'),{recursive:true});fs.copyFileSync(path.join(root,r.path!),path.join(dir,r.path!));
+  fixture.add('assets','asset_resources','art:fixture',{id:r.id,sha256:r.sha256,relative_path:r.path,format:r.format,width_px:r.width,height_px:r.height,byte_count:r.bytes,file_state:r.file_state,attribution:r.attribution,authentic_rip_state:r.authentic_rip_state,derived_state:r.derived_state});
+  fixture.add('assets','asset_bindings','art_binding:fixture',{resource_id:r.id,subject_entity_id:'cai',subject_record_id:null,role:'portrait',variant_json:{},binding_kind:'direct',resolution:'mapped'},'cai');fixture.write();
+  const binding={id:'fixture_binding',subject_entity_id:'cai',subject_skill_id:null,subject_record_id:null,catalog_key:null,role:'portrait',variant:'',resource_id:r.id,kind:'direct',selected:true,evidence:'Synthetic binding integrity fixture.'};
+  const m={...manifest,dataset_version:'test.1',resources:{[r.id]:{...r,sources:[{capture_id:null,source_url:null,retrieved_at:null,http_status:null,state:'historical_local'}]}},bindings:[binding],unresolved:[]};
+  const text=JSON.stringify(m);fs.writeFileSync(path.join(resources,'candidate_manifest.json'),text);const dataset=JSON.parse(fs.readFileSync(path.join(dir,'data/dataset_manifest.json'),'utf8'));dataset.runtime_assets={path:'resources/candidate_manifest.json',sha256:sha256(text)};fs.writeFileSync(path.join(dir,'data/dataset_manifest.json'),JSON.stringify(dataset));
+  loadReferenceV3(dir);
+  const mismatched=JSON.stringify({...m,bindings:[{...binding,role:'class_icon'}]});fs.writeFileSync(path.join(resources,'candidate_manifest.json'),mismatched);dataset.runtime_assets.sha256=sha256(mismatched);fs.writeFileSync(path.join(dir,'data/dataset_manifest.json'),JSON.stringify(dataset));assert.throws(()=>loadReferenceV3(dir),/artwork binding mismatch/);dataset.runtime_assets.sha256=sha256(text);fs.writeFileSync(path.join(dir,'data/dataset_manifest.json'),JSON.stringify(dataset));
+  fs.writeFileSync(path.join(resources,'candidate_manifest.json'),text+' ');assert.throws(()=>loadReferenceV3(dir),/Runtime asset manifest hash/);fs.writeFileSync(path.join(resources,'candidate_manifest.json'),text);
+  fs.writeFileSync(path.join(resources,'asset_manifest.json'),'original runtime manifest');const original=fs.readFileSync(path.join(dir,'data/dataset_manifest.json'));
+  assert.equal(fs.readFileSync(path.join(resources,'asset_manifest.json'),'utf8'),'original runtime manifest');assert.deepEqual(fs.readFileSync(path.join(dir,'data/dataset_manifest.json')),original);
+ }finally{fs.rmSync(dir,{recursive:true,force:true});}
 });

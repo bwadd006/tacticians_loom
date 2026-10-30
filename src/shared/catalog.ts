@@ -9,5 +9,5 @@ export type Stat = typeof STATS[number];
 export type Skill = typeof SKILLS[number];
 export type Tier = typeof TIERS[number];
 export const ROUTE_NAMES: Record<Route, string> = { cai: 'Cai', theodora: 'Theodora', dietrich: 'Dietrich', leda: 'Leda' };
-export const REFERENCE_SCHEMA_VERSION = 2;
-export const IMPORTER_VERSION = '2.0.0';
+export const REFERENCE_SCHEMA_VERSION = 3;
+export const IMPORTER_VERSION = '3.3.0';

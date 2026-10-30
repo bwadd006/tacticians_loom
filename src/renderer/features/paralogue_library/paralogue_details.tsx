@@ -29,7 +29,7 @@ export function ParalogueDetails({ paralogue, data, characters, classes, onClose
           <div><dt>Effective deadline</dt><dd>{formatGameDate(availability.effective_completion_deadline)}</dd></div>
           <div><dt>Forced start</dt><dd>{availability.forced_start_date ? formatGameDate(availability.forced_start_date) : 'None documented'}</dd></div>
           <div><dt>Missable</dt><dd>{availability.missable === null ? 'Unknown' : availability.missable ? 'Yes' : 'No'}</dd></div>
-          <div className="wide_fact"><dt>Trigger</dt><dd>{availability.trigger ?? 'Not documented'}</dd></div>
+          {Boolean(availability.reported_timing?.length) && <div className="wide_fact"><dt>Reported timing</dt><dd><ul>{availability.reported_timing?.map((time,index) => <li key={index}>{time.text} — {skillLabel(time.role)} ({skillLabel(time.semantics)})</li>)}</ul></dd></div>}<div className="wide_fact"><dt>Trigger</dt><dd>{availability.trigger ?? 'Not documented'}</dd></div>
         </dl> : <p>{availability.status === 'unavailable' ? 'Not available on this route.' : 'Availability has not been verified for this route.'}</p>}
       </article>;
     })}</section>

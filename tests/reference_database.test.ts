@@ -1,200 +1,200 @@
 import assert from 'node:assert/strict';
-import { after, before, test } from 'node:test';
+import { test } from 'node:test';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import type Database from 'better-sqlite3';
+import { z } from 'zod';
+import { referenceV3Fixture } from './reference_v3_fixture';
+import { buildReferenceV3, validateReferenceV3, recordDiff } from '../scripts/reference_v3_builder';
+import { loadReferenceV3, sha256 } from '../scripts/reference_v3_sources';
 import { buildDatabase } from '../scripts/database_builder';
-import { validateDatabase } from '../scripts/database_validation';
-import { ROUTES, STATS } from '../src/shared/catalog';
-import { validateSources } from '../src/shared/validate_sources';
-import { getCharacter, getClass, getClassLibrary, getParalogueLibrary, listCharacters, metadata, openReference } from '../src/main/database/reference_queries';
+import { getCharacter, getClassLibrary, getParalogueLibrary, getOverview, listCharacters, openReference, metadata } from '../src/main/database/reference_queries';
+import { loadSqlite } from '../src/main/database/sqlite';
+import { affinity } from '../src/shared/library_query';
+import { fieldSchema, quantitySchema, canonicalDocumentSchema, TABLE_CONTRACTS, bodySchema } from '../src/shared/reference_v3';
+import { openUserDatabase, setCharacterNote, setCharacterShortlisted, listCharacterPlanning } from '../src/main/database/user_database';
+import retainedIds from '../data/contracts/retained_core_ids.json';
+import { sourceQuantity, resolveSourceLabel, sourceShopLayer } from '../src/shared/reference_v3_transforms';
 
-const appRoot = process.cwd();
-const characters = JSON.parse(fs.readFileSync(path.join(appRoot, 'data/source/fire_emblem_fortunes_weave_characters.json'), 'utf8'));
-const classes = JSON.parse(fs.readFileSync(path.join(appRoot, 'data/source/fire_emblem_fortunes_weave_classes.json'), 'utf8'));
-const paralogues = JSON.parse(fs.readFileSync(path.join(appRoot, 'data/source/fire_emblem_fortunes_weave_paralogues.json'), 'utf8'));
-let temporary: string;
-let database: Database.Database;
-before(() => {
-  temporary = fs.mkdtempSync(path.join(os.tmpdir(), 'tacticians_loom_test_'));
-  const file = path.join(temporary, 'reference.sqlite');
-  buildDatabase(appRoot, file);
-  database = openReference(file);
+function fixture(run:(root:string,data:ReturnType<typeof referenceV3Fixture>,output:string)=>void) {
+  const root=fs.mkdtempSync(path.join(os.tmpdir(),'loom_v3_test_'));
+  try {run(root,referenceV3Fixture(root),path.join(root,'candidate.sqlite'));}
+  finally {fs.rmSync(root,{recursive:true,force:true});}
+}
+test('v3 builds normalized selected facts, preserves all 132 IDs and keeps candidates isolated',()=>fixture((root,_,output)=>{
+  assert.throws(()=>buildDatabase(root),/separate output/);
+  const result=buildDatabase(root,output);assert.equal(result.validation,'passed');
+  assert.throws(()=>openReference(output),/Unreviewed candidate/);
+  const db=openReference(output,{allowCandidate:true});try {
+    assert.equal(validateReferenceV3(db).validation,'passed');
+    assert.equal(db.pragma('user_version',{simple:true}),3);
+    assert.equal((db.prepare('SELECT count(*) n FROM entities').get() as {n:number}).n,132);
+    assert.equal(metadata(db,'release_status'),'candidate');
+  }finally{db.close();}
+}));
+test('v3 library adapters preserve zero, partial affinities, grouped certification and unlabeled timing',()=>fixture((root,_,output)=>{
+  buildReferenceV3(root,output);const db=openReference(output,{allowCandidate:true});try {
+    const c=getCharacter(db,'cai')!;
+    assert.equal(c.growth_rates_percent.hp,0);assert.equal(c.growth_rates_percent.magic,null);
+    assert.equal(c.recruitment_by_route.cai.earliest_chapter,0);assert.equal(c.recruitment_by_route.cai.min_renown,null);
+    assert.equal(c.recruitment_by_route.dietrich.status,'unknown');
+    assert.equal(affinity(c,'swords'),'boon');assert.equal(affinity(c,'axes'),'unknown');
+    assert.deepEqual(listCharacters(db,'all').map(c=>c.id),['cai']);assert.deepEqual(listCharacters(db,'cai').map(c=>c.id),['cai']);
+    assert.deepEqual(listCharacters(db,'leda'),[]);assert.equal(getCharacter(db,'leda')!.flags.recruitable_or_joins_in_part_1,false);
+    const cls=getClassLibrary(db).classes[0];assert.equal(cls.skill_exp_bonuses.swords,0);assert.equal(cls.playable,null);
+    assert.equal(cls.certification.listed_level,20);assert.equal(cls.certification.exact_minimum_level,null);
+    assert.equal(cls.certification.reported_requirements?.summary,'All of (swords C)');assert.equal(cls.weapon_access.verified,false);
+    const para=getParalogueLibrary(db).paralogues[0];assert.equal(para.name,'Cai — paralogue');
+    assert.deepEqual(para.route_availability.cai.acceptance_windows,[]);assert.equal(para.route_availability.cai.listed_completion_deadline,null);
+    assert.equal(para.route_availability.cai.reported_timing?.[0].role,'source_span');assert.equal(para.route_availability.leda.status,'unknown');
+    assert.equal(getOverview(db).actOneCount,1);
+  }finally{db.close();}
+}));
+test('closed source contracts reject unknown versions/keys and expose every normalized table contract',()=>fixture((root,data)=>{
+  for(const kind of Object.keys(TABLE_CONTRACTS) as (keyof typeof TABLE_CONTRACTS)[]) assert.doesNotThrow(()=>bodySchema(kind));
+  assert.throws(()=>canonicalDocumentSchema.parse({format_version:'9',family:'characters',capture_ids:[],records:[]}));
+  data.record('class:commoner').body.unreviewed=true;data.write();assert.throws(()=>loadReferenceV3(root),/Unrecognized key/);
+}));
+test('value contracts distinguish false/empty/null/missing and reject invented exact quantities',()=>{
+  const known=(value:unknown)=>({state:'value',value,claim_ids:['c'],selected_claim_id:'c',reason:null});
+  for(const value of [0,false,[],{},'']) assert.deepEqual(fieldSchema(z.unknown()).parse(known(value)).value,value);
+  assert.throws(()=>fieldSchema(z.unknown()).parse(known(null)));
+  const quantity={raw:'2?',state:'value',number:null,lower:null,upper:null,unit:null,qualifier:'uncertain'};
+  assert.equal(quantitySchema.parse(quantity).number,null);
+  assert.throws(()=>quantitySchema.parse({...quantity,number:2}));
+  assert.throws(()=>quantitySchema.parse({...quantity,qualifier:'range'}));
+
 });
-after(() => { database?.close(); if (temporary) fs.rmSync(temporary, { recursive: true, force: true }); });
-
-test('every entity round-trips, database integrity and source counts match', () => {
-  assert.equal(validateDatabase(database).validation, 'passed');
-  for (const c of characters.characters) assert.deepEqual(getCharacter(database, c.id), c);
-  for (const c of classes.classes) assert.deepEqual(getClass(database, c.id), c);
-});
-
-test('Class Library query returns all tier rules, unlock evidence and maintenance uncertainty', () => {
-  const library = getClassLibrary(database);
-  assert.equal(library.classes.length, 60);
-  assert.deepEqual(Object.keys(library.certificationRules).sort(), ['advanced', 'beginner', 'divine', 'master', 'specialty', 'unique']);
-  assert.equal(library.unlocks.length, 19);
-  assert.equal(library.restrictions.verified, false);
-  assert.ok(library.restrictions.note.includes('unverified'));
-  assert.equal(library.conflicts.length, 6);
-  assert.deepEqual(library.classes.slice(0, 2).map(characterClass => characterClass.tier), ['unique', 'unique']);
-});
-
-test('Paralogue Library query returns canonical records and retained conflicts', () => {
-  const library = getParalogueLibrary(database);
-  assert.equal(library.paralogues.length, 9);
-  assert.deepEqual(library.paralogues.map(paralogue => paralogue.name), [...library.paralogues.map(paralogue => paralogue.name)].sort((a, b) => a.localeCompare(b, 'en')));
-  assert.equal(library.conflicts.length, paralogues.data_conflicts.length);
-  assert.ok(library.conflicts.some(conflict => conflict.paralogueId === 'missing-brave-warrior-statue'));
-});
-
-test('All Routes is the distinct Act 1 union; route queries retain all four availability records', () => {
-  const all = listCharacters(database, 'all');
-  const union = new Set(ROUTES.flatMap(r => listCharacters(database, r).map(c => c.id)));
-  assert.deepEqual(new Set(all.map(c => c.id)), union);
-  assert.equal(all.length, union.size);
-  assert.ok(all.every(c => ROUTES.every(r => c.recruitment_by_route[r])));
-  const sortedNames = [...all].sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase())).map(c => c.id);
-  assert.deepEqual(all.map(c => c.id), sortedNames);
-  assert.throws(() => listCharacters(database, 'invalid' as 'all'), /Unknown route/);
-});
-
-test('unknown growths, thresholds and proficiencies remain distinct from zero and empty', () => {
-  assert.equal(getClass(database, 'dancer')!.class_growth_rate_modifiers_percent.hp, null);
-  assert.equal(getClass(database, 'commoner')!.class_growth_rate_modifiers_percent.hp, 0);
-  const unknown = characters.characters.find((c: { skill_proficiencies: { boons: unknown } }) => c.skill_proficiencies.boons === null);
-  assert.equal(getCharacter(database, unknown.id)!.skill_proficiencies.boons, null);
-  assert.deepEqual(database.prepare('SELECT boons_known, banes_known FROM characters WHERE id = ?').get(unknown.id), { boons_known: 0, banes_known: 0 });
-  const c = getCharacter(database, unknown.id)!;
-  assert.equal(c.recruitment_by_route.cai.status, 'not_available_in_part_1_recruitment_table');
-  assert.equal(c.recruitment_by_route.cai.min_renown, null);
-});
-
-test('personal adjustments, class growth, training, weapon access and mastery stay separate', () => {
-  const mu = getCharacter(database, 'mu')!;
-  assert.notDeepEqual(mu.growth_rates_percent, mu.effective_personal_growth_rates_percent);
-  const commoner = getClass(database, 'commoner')!;
-  assert.deepEqual(commoner.skills_listed_without_exp_bonus, ['any_weapon']);
-  assert.equal(commoner.weapon_access.usable_weapon_types, null);
-  assert.deepEqual(commoner.active_class_abilities, []);
-  assert.equal(commoner.mastery.ability_name, 'Combat Basics');
-  assert.equal(commoner.mastery.class_exp_required, null);
-  assert.equal(getClass(database, 'gladiator')!.certification.exact_minimum_level, null);
-});
-
-test('reviewed post-release class facts stay attached to their stable class IDs', () => {
-  const orniusRider = getClass(database, 'ornius-rider')!;
-  assert.equal(orniusRider.weapon_access.verified, true);
-  assert.deepEqual(orniusRider.weapon_access.usable_weapon_types, ['swords', 'spears', 'axes']);
-  assert.deepEqual(orniusRider.weapon_access.usable_magic_types, []);
-  assert.equal(orniusRider.base_stat_modifiers?.speed, 3);
-
-  const diviner = getClass(database, 'diviner')!;
-  assert.equal(diviner.weapon_access.verified, true);
-  assert.deepEqual(diviner.weapon_access.usable_weapon_types, ['swords', 'axes', 'gauntlets']);
-  assert.deepEqual(diviner.weapon_access.usable_magic_types, ['black_magic', 'white_magic']);
-  assert.equal(diviner.base_stat_modifiers?.magic, 1);
-  const specialtyAccess = new Map([
-    ['myrmidon', [['swords', 'spears'], []]],
-    ['brigand', [['swords', 'axes', 'gauntlets'], []]],
-    ['pugilist', [['gauntlets'], []]],
-    ['archer', [['bows'], []]],
-    ['rogue', [['swords', 'bows'], []]],
-    ['armored-knight', [['swords', 'spears', 'axes'], []]],
-    ['light-cavalry', [['swords', 'spears', 'axes'], []]],
-    ['charioteer', [['bows'], []]],
-    ['armored-ornius-rider', [['swords', 'spears', 'axes'], []]],
-    ['wing-soldier', [['swords', 'spears'], []]],
-    ['shaman', [['swords', 'gauntlets'], ['black_magic', 'white_magic']]],
-    ['priest', [['axes', 'gauntlets'], ['black_magic', 'white_magic']]],
-  ]);
-  for (const [classId, [weapons, magic]] of specialtyAccess) {
-    const specialtyClass = getClass(database, classId)!;
-    assert.equal(specialtyClass.weapon_access.verified, true, classId);
-    assert.deepEqual(specialtyClass.weapon_access.usable_weapon_types, weapons, classId);
-    assert.deepEqual(specialtyClass.weapon_access.usable_magic_types, magic, classId);
-    assert.notEqual(specialtyClass.base_stat_modifiers, null, classId);
-  }
-  assert.deepEqual(getClass(database, 'wing-soldier')!.known_character_restrictions?.[0]?.allowed_values, ['female']);
-  assert.equal(getClass(database, 'commoner')!.weapon_access.verified, false);
-  assert.equal(getClass(database, 'noble')!.base_stat_modifiers, null);
-});
-
-test('conflicts, ranked abilities, requirements and conventional stat order are preserved', () => {
-  const conflict = database.prepare("SELECT raw_json FROM data_conflicts WHERE character_id = 'nezha'").get() as { raw_json: string };
-  assert.deepEqual(JSON.parse(conflict.raw_json), characters.data_conflicts.find((c: { character_id: string }) => c.character_id === 'nezha'));
-  assert.equal(getCharacter(database, 'alexandra')!.personal_abilities[2].upgrade_of, 'Soar');
-  assert.deepEqual((database.prepare('SELECT id FROM stats ORDER BY display_order').all() as { id: string }[]).map(r => r.id), [...STATS]);
-  assert.equal(STATS[3], 'dexterity');
-});
-
-test('reference is read-only and IDs cannot inject SQL', () => {
-  assert.throws(() => database.prepare("DELETE FROM characters WHERE id = 'mu'").run(), /readonly/);
-  assert.equal(getCharacter(database, "' OR 1=1 --"), null);
-  assert.equal(getClass(database, 'missing'), null);
-});
-
-test('normalized growth and recruitment tables support a strong-and-fast route query', () => {
-  const rows = database.prepare(`
-    SELECT c.id FROM characters c
-    JOIN recruitment r ON r.character_id = c.id
-    JOIN character_growths strength ON strength.character_id = c.id AND strength.stat_id = 'strength'
-    JOIN character_growths speed ON speed.character_id = c.id AND speed.stat_id = 'speed'
-    WHERE r.route_id = ? AND r.status IN ('recruitable','automatic','mandatory_tutorial')
-      AND strength.personal >= ? AND speed.personal >= ?
-    ORDER BY strength.personal DESC, speed.personal DESC, c.name COLLATE NOCASE, c.id
-  `).all('cai', 40, 35) as { id: string }[];
-  const expected = listCharacters(database, 'cai')
-    .filter(c => c.growth_rates_percent.strength !== null && c.growth_rates_percent.strength >= 40 && c.growth_rates_percent.speed !== null && c.growth_rates_percent.speed >= 35)
-    .sort((a, b) => b.growth_rates_percent.strength! - a.growth_rates_percent.strength! || b.growth_rates_percent.speed! - a.growth_rates_percent.speed! || a.name.localeCompare(b.name));
-  assert.ok(expected.length > 0);
-  assert.deepEqual(rows.map(r => r.id), expected.map(c => c.id));
-});
-
-test('import rejects duplicate IDs, missing routes/stats, invalid types and dangling links', () => {
-  const duplicate = structuredClone(characters); duplicate.characters[1].id = duplicate.characters[0].id;
-  assert.throws(() => validateSources(duplicate, classes, paralogues), /Duplicate character/);
-  const missing = structuredClone(characters); delete missing.characters[0].growth_rates_percent.hp;
-  assert.throws(() => validateSources(missing, classes, paralogues));
-  const route = structuredClone(characters); delete route.characters[0].recruitment_by_route.leda;
-  assert.throws(() => validateSources(route, classes, paralogues));
-  const type = structuredClone(characters); type.characters[0].growth_rates_percent.hp = '30';
-  assert.throws(() => validateSources(type, classes, paralogues));
-  const link = structuredClone(classes); link.route_unlocks[0].unlock_class_ids.push('missing_class');
-  assert.throws(() => validateSources(characters, link, paralogues), /unknown class/);
-});
-
-test('failed candidate preserves prior database and cleans up; corrected version rebuilds with a change report', () => {
-  const fixture = path.join(temporary, 'fixture');
-  fs.mkdirSync(path.join(fixture, 'database'), { recursive: true });
-  fs.cpSync(path.join(appRoot, 'data'), path.join(fixture, 'data'), { recursive: true });
-  fs.copyFileSync(path.join(appRoot, 'database/reference_schema.sql'), path.join(fixture, 'database/reference_schema.sql'));
-  const result = buildDatabase(fixture);
-  const initial = fs.readFileSync(result.outputFile);
-  const sourceFile = path.join(fixture, 'data/source/fire_emblem_fortunes_weave_classes.json');
-  const manifestFile = path.join(fixture, 'data/dataset_manifest.json');
-  const changed = structuredClone(classes);
-  changed.classes[0].name = 'Reviewed Commoner';
-  fs.writeFileSync(sourceFile, JSON.stringify(changed));
-  assert.throws(() => buildDatabase(fixture), /bump dataset_version/);
-  assert.deepEqual(fs.readFileSync(result.outputFile), initial);
-  const manifest = JSON.parse(fs.readFileSync(manifestFile, 'utf8'));
-  manifest.dataset_version += '.test'; manifest.change_summary = 'Test correction';
-  fs.writeFileSync(manifestFile, JSON.stringify(manifest));
-  // Deliberate SQL uniqueness failure after the candidate is created.
-  changed.classes[0].movement_tags.push(changed.classes[0].movement_tags[0]);
-  fs.writeFileSync(sourceFile, JSON.stringify(changed));
-  assert.throws(() => buildDatabase(fixture), /UNIQUE/);
-  assert.deepEqual(fs.readFileSync(result.outputFile), initial);
-  assert.deepEqual(fs.readdirSync(path.dirname(result.outputFile)), ['reference.sqlite']);
-  changed.classes[0].movement_tags.pop();
-  fs.writeFileSync(sourceFile, JSON.stringify(changed));
-  buildDatabase(fixture);
-  const updated = openReference(result.outputFile);
+test('changed maintained bytes fail without replacing the database',()=>fixture((root,_,output)=>{
+ buildReferenceV3(root,output);const before=sha256(fs.readFileSync(output));
+ fs.appendFileSync(path.join(root,'data/source/characters.json'),' ');
+ assert.throws(()=>buildReferenceV3(root,output),/Maintained document hash/);assert.equal(sha256(fs.readFileSync(output)),before);
+}));
+test('same-version changes fail; next version produces a selected-source field diff',()=>fixture((root,data,output)=>{
+  buildReferenceV3(root,output);const before=sha256(fs.readFileSync(output));
+  data.record('growth:cai:hp').body.number_value={state:'value',value:10,claim_ids:['claim:growth:cai:hp:number_value'],selected_claim_id:'claim:growth:cai:hp:number_value',reason:null};
+  data.record('row:claim:growth:cai:hp:number_value').body.value_json=10;data.raw['growth:cai:hp:number_value']=10;data.write();
+  assert.throws(()=>buildReferenceV3(root,output),/bump dataset_version/);assert.equal(sha256(fs.readFileSync(output)),before);
+  data.write('test.2');const result=buildReferenceV3(root,output);
+  assert.ok(result.changeReport.fields.some(f=>f.record_id==='growth:cai:hp'&&f.field_path==='/number_value'&&f.status==='selected_value_changed'));
+  const db=openReference(output,{allowCandidate:true});try{assert.equal(getCharacter(db,'cai')!.growth_rates_percent.hp,10);assert.equal(metadata(db,'previous_release_inputs'),null);}finally{db.close();}
+}));
+test('legacy claims cannot be selected and claim values must justify selected facts',()=>fixture((root,data,output)=>{
+  const claim=data.record('row:claim:growth:cai:hp:number_value');claim.body.origin='legacy';data.write();
+  assert.throws(()=>buildReferenceV3(root,output),/Legacy\/supplemental/);
+  claim.body.origin='preferred_source';claim.body.value_json=12;data.write();assert.throws(()=>buildReferenceV3(root,output),/Unevidenced transform/);
+}));
+test('cross-record claims are rejected',()=>fixture((root,data,output)=>{
+  data.record('row:claim:growth:cai:hp:number_value').body.record_id='class:commoner';data.write();
+  assert.throws(()=>buildReferenceV3(root,output),/another record/);
+}));
+test('condition cycles and contradictory route scope fail validation',()=>fixture((root,data,output)=>{
+  data.add('context','condition_children','cycle',{parent_id:'grade',child_id:'and',display_order:0});
+  data.record('condition:grade').body.node_kind='all';data.record('condition:grade').body.value_json={kind:'group'};data.write();
+  assert.throws(()=>buildReferenceV3(root,output),/Condition cycle/);
+  data.groups.get('context')!.splice(data.groups.get('context')!.findIndex(r=>r.id==='cycle'),1);
+  data.record('ctx:act1').body.route_scope='unknown';data.write();assert.throws(()=>buildReferenceV3(root,output),/route scope/);
+}));
+test('wrong entity kinds, dangling IDs and removed identities are rejected',()=>fixture((root,data,output)=>{
+  buildReferenceV3(root,output);
+  data.record('entity:cai').body.kind='class';data.write('test.2');assert.throws(()=>buildReferenceV3(root,output),/Wrong entity kind/);
+  data.record('entity:cai').body.kind='character';data.record('recruit:cai').body.character_id='absent';data.write('test.2');assert.throws(()=>buildReferenceV3(root,output),/Dangling/);
+}));
+test('SQL failure after candidate creation preserves the last good database and cleans temporary output',()=>fixture((root,data,output)=>{
+  buildReferenceV3(root,output);const before=sha256(fs.readFileSync(output));
+  // Both rows have valid individual contracts; their duplicate domain key fails inside the transaction.
+  const original=data.record('class_skill:commoner:swords');data.add('classes','class_skills','duplicate_training',{...original.body},'commoner');
+  // No selected fields on duplicate: use unknown fields so field-claim ownership remains valid.
+  const duplicate=data.record('duplicate_training');
+  for(const key of ['training_bonus','access_state']) duplicate.body[key]={state:'source_missing',value:null,claim_ids:[],selected_claim_id:null,reason:'Not established'};
+  duplicate.body.access_claim_id=null;data.write('test.2');
+  assert.throws(()=>buildReferenceV3(root,output),/UNIQUE constraint/);assert.equal(sha256(fs.readFileSync(output)),before);
+  assert.deepEqual(fs.readdirSync(root).filter(p=>p.endsWith('.tmp')),[]);
+}));
+test('validation detects normalized-column tampering and preserves claim immutability',()=>fixture((root,_,output)=>{
+  buildReferenceV3(root,output);const Sqlite=loadSqlite(),db=new Sqlite(output);try{
+    assert.throws(()=>db.prepare("UPDATE source_claims SET origin='legacy'").run(),/immutable/);
+    db.prepare("UPDATE stat_values SET number_value=99 WHERE stat_id='hp'").run();
+    assert.throws(()=>validateReferenceV3(db),/column\/body mismatch/);
+  }finally{db.close();}
+}));
+test('reviewed release opens normally and saved IDs outside Act 1 survive reference changes',()=>fixture((root,data,output)=>{
+  data.write('reviewed.1','reviewed');buildReferenceV3(root,output);const reference=openReference(output);
+  const user=openUserDatabase(path.join(root,'player.sqlite'));try{
+    for(const entry of retainedIds.filter(e=>e.kind==='character')) {setCharacterShortlisted(user,{characterId:entry.id,shortlisted:true},'old');setCharacterNote(user,{characterId:entry.id,note:`Retained ${entry.id}`},'old');}
+    assert.equal(user.pragma('user_version',{simple:true}),4);
+    const before=listCharacterPlanning(user);assert.equal(before.length,63);
+    assert.equal(listCharacters(reference,'all').length,1);assert.deepEqual(listCharacterPlanning(user),before);
+    assert.ok(before.some(r=>r.characterId==='leda'&&r.shortlisted));
+  }finally{user.close();reference.close();}
+}));
+test('maintained document paths cannot escape through traversal or symlinks',()=>fixture((root)=>{
+  const manifest=JSON.parse(fs.readFileSync(path.join(root,'data/dataset_manifest.json'),'utf8'));
+  manifest.documents[0].path='../outside.json';fs.writeFileSync(path.join(root,'data/dataset_manifest.json'),JSON.stringify(manifest));
+  assert.throws(()=>loadReferenceV3(root),/application-relative/);
+  const outside=path.join(fs.mkdtempSync(path.join(os.tmpdir(),'loom_outside_')),'identity.json');
   try {
-    assert.equal(getClass(updated, 'commoner')!.name, 'Reviewed Commoner');
-    const report = metadata(updated, 'change_report') as { classes: { changed: string[] } };
-    assert.deepEqual(report.classes.changed, ['commoner']);
-  } finally { updated.close(); }
+    fs.copyFileSync(path.join(root,'data/source/identity.json'),outside);
+    fs.symlinkSync(outside,path.join(root,'data/source/link.json'));
+    manifest.documents[0].path='data/source/link.json';fs.writeFileSync(path.join(root,'data/dataset_manifest.json'),JSON.stringify(manifest));
+    assert.throws(()=>loadReferenceV3(root),/escapes/);
+  }finally{fs.rmSync(path.dirname(outside),{recursive:true,force:true});}
+}));
+test('field diffs retain semantic gaps and legacy alternatives',()=>{
+  const record={id:'test',record_kind:'annotations' as const,entity_id:null,context_id:null,body:{text:{state:'source_missing',value:null,claim_ids:[],selected_claim_id:null,reason:'Source omits text'}}};
+  const next=structuredClone(record);next.body.text.state='unresolved';next.body.text.reason='Source semantics unclear';
+  const report=recordDiff([record],[next]);assert.equal(report.fields[0].status,'unresolved_semantics');
 });
+test('lexical quantities and inventory transforms preserve uncertainty and field-wise empty replacements',()=>{
+  assert.equal(sourceQuantity('2?',null).number,null);assert.equal(sourceQuantity('28+10','stat_points').number,null);
+  assert.equal(sourceQuantity('0','gold').number,0);assert.equal(sourceQuantity('',null).number,null);
+  assert.equal(sourceQuantity('Unlimited',null).qualifier,'unlimited');assert.deepEqual([sourceQuantity('1–3',null).lower,sourceQuantity('1–3',null).upper],[1,3]);
+  const base={sh:['Armory'],shn:['Base note'],sp:{Armory:[['Sword','']]}};
+  const result=sourceShopLayer(base,{sh:[],sp:{}});assert.deepEqual(result.effective,{sh:[],shn:['Base note'],sp:{}});
+  assert.equal(result.states.sh,'replaced');assert.equal(result.states.shn,'inherited');
+  assert.throws(()=>sourceShopLayer(base,{unreviewed:[]}));
+  const entities=[{id:'ability:barrier',kind:'ability',display_name:'Barrier'},{id:'spell:barrier',kind:'spell',display_name:'Barrier'}];
+  assert.equal(resolveSourceLabel('Barrier','spell',entities,[]).target_id,'spell:barrier');
+  assert.equal(resolveSourceLabel('Missing','spell',entities,[]).state,'unresolved');
+  assert.equal(resolveSourceLabel('Barrier','spell',[...entities,{id:'other',kind:'spell',display_name:'Barrier'}],[]).state,'ambiguous');
+});
+test('normalized table contracts match the v3 SQL schema exactly',()=>{
+  const Sqlite=loadSqlite(),db=new Sqlite(':memory:');try{
+    db.exec(fs.readFileSync(path.join(process.cwd(),'database/reference_schema_v3.sql'),'utf8'));
+    for(const [table,contract] of Object.entries(TABLE_CONTRACTS)) {
+      const actual=db.pragma(`table_info("${table}")`) as {name:string;type:string;notnull:number;pk:number}[];
+      assert.deepEqual(contract.columns,actual.map(c=>({name:c.name,type:c.type,nullable:!c.notnull,primary:!!c.pk})),table);
+    }
+  }finally{db.close();}
+});
+test('removed custom identities require tombstones across releases',()=>fixture((root,data,output)=>{
+  data.add('identity','entities','entity:custom',{id:'custom',kind:'person',display_name:'A source subject',namespace:'person',identity_state:'name_only',retired:0});
+  data.write();buildReferenceV3(root,output);
+  const identity=data.groups.get('identity')!;identity.splice(identity.findIndex(r=>r.id==='entity:custom'),1);data.write('test.2');
+  assert.throws(()=>buildReferenceV3(root,output),/tombstone/);
+  data.add('identity','entities','entity:custom',{id:'custom',kind:'person',display_name:'A source subject',namespace:'person',identity_state:'name_only',retired:1});
+  data.write('test.2');assert.equal(buildReferenceV3(root,output).validation,'passed');
+}));
+test('registered numeric transforms are reproducible and repeated builds do not duplicate release history',()=>fixture((root,data,output)=>{
+  const value=data.record('growth:cai:hp').body.number_value as {value:number};value.value=10;
+  const claim=data.record('row:claim:growth:cai:hp:number_value');claim.body.value_json='10';claim.body.semantic_role='numeric_lexeme';data.raw['growth:cai:hp:number_value']='10';data.write();
+  buildReferenceV3(root,output);buildReferenceV3(root,output);
+  const db=openReference(output,{allowCandidate:true});try{assert.equal(getCharacter(db,'cai')!.growth_rates_percent.hp,10);assert.equal(metadata(db,'previous_release_inputs'),null);}finally{db.close();}
+  value.value=99;data.write('test.2');assert.throws(()=>buildReferenceV3(root,output),/Unevidenced transform/);
+}));
+test('legacy alternatives survive a full round trip without changing preferred baseline selections',()=>fixture((root,data,output)=>{
+  data.addLegacy();data.write();const result=buildReferenceV3(root,output);
+  assert.equal(result.changeReport.counts.legacy_claims,1);
+  const selected=result.changeReport.selected.find(s=>s.record_id==='growth:cai:hp'&&s.field_path==='/number_value')!;
+  assert.equal(selected.value,0);assert.equal(selected.alternatives[0].value_json,47);
+  const db=openReference(output,{allowCandidate:true});try{
+    assert.equal(getCharacter(db,'cai')!.growth_rates_percent.hp,0);
+    assert.equal((db.prepare("SELECT value_json FROM source_claims WHERE id='legacy_growth'").get() as {value_json:string}).value_json,'47');
+    assert.equal(validateReferenceV3(db).validation,'passed');
+  }finally{db.close();}
+}));
+test('unknown or incompatible stat units cannot enter numeric growth comparisons',()=>fixture((root,data,output)=>{
+  data.record('growth:cai:hp').body.unit='unknown';data.write();buildReferenceV3(root,output);
+  const db=openReference(output,{allowCandidate:true});try{assert.equal(getCharacter(db,'cai')!.growth_rates_percent.hp,null);}finally{db.close();}
+  data.record('growth:cai:hp').body.unit='unreviewed_currency';data.write('test.2');assert.throws(()=>buildReferenceV3(root,output),/Invalid option/);
+}));

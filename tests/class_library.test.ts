@@ -10,10 +10,13 @@ import { loadClassSetup, loadSetup, openUserDatabase, saveClassSetup, saveSetup 
 import { defaultSetup } from '../src/shared/library_setup';
 import { loadSqlite } from '../src/main/database/sqlite';
 
-const document = classesDocumentSchema.parse(JSON.parse(fs.readFileSync(path.join(process.cwd(), 'data/source/fire_emblem_fortunes_weave_classes.json'), 'utf8')));
-const classes = document.classes, unlocks = document.route_unlocks;
+import { classLibrary } from './library_fixture';
+const classes=classLibrary.classes,unlocks=classLibrary.unlocks;
+// Synthetic missing growths verify filter/sort behavior independently of current source coverage.
+const uncertainClasses=structuredClone(classes);
+for(const c of uncertainClasses.filter(c=>['cataphract','dancer'].includes(c.id)))for(const key of Object.keys(c.class_growth_rate_modifiers_percent))c.class_growth_rate_modifiers_percent[key as keyof typeof c.class_growth_rate_modifiers_percent]=null;
 const ids = (rows: CharacterClass[]) => rows.map(row => row.id);
-const withFilter = (rule: ClassFilterRule, overrides: Partial<ClassLibrarySetup> = {}) => queryClassLibrary(classes, unlocks, { ...defaultClassSetup(), ...overrides, filters: [rule] });
+const withFilter = (rule: ClassFilterRule, overrides: Partial<ClassLibrarySetup> = {}, input=classes) => queryClassLibrary(input, unlocks, { ...defaultClassSetup(), ...overrides, filters: [rule] });
 
 test('default Class Library includes every class while tier scope remains outside any-mode rules', () => {
   assert.equal(queryClassLibrary(classes, unlocks, defaultClassSetup()).length, 60);
@@ -21,15 +24,15 @@ test('default Class Library includes every class while tier scope remains outsid
   const rows = queryClassLibrary(classes, unlocks, setup);
   assert.equal(rows.length, 0);
   assert.ok(rows.every(row => row.tier === 'beginner'));
-  assert.equal(queryClassLibrary(classes, unlocks, { ...defaultClassSetup(), tiers: ['advanced'] }).length, 17);
+  assert.equal(queryClassLibrary(uncertainClasses, unlocks, { ...defaultClassSetup(), tiers: ['advanced'] }).length, 17);
 });
 
 test('growth filters preserve unknown values and growth sorting keeps unknowns last', () => {
-  assert.deepEqual(ids(withFilter({ kind: 'number', field: 'hp', min: null, max: null, unknown: 'only' })).sort(), ['cataphract', 'dancer']);
+  assert.deepEqual(ids(withFilter({ kind: 'number', field: 'hp', min: null, max: null, unknown: 'only' },{},uncertainClasses)).sort(), ['cataphract', 'dancer']);
   const known = withFilter({ kind: 'number', field: 'magic', min: 20, max: null, unknown: 'exclude' });
   assert.ok(known.length > 0 && known.every(row => row.class_growth_rate_modifiers_percent.magic! >= 20));
   for (const direction of ['asc', 'desc'] as const) {
-    const sorted = queryClassLibrary(classes, unlocks, { ...defaultClassSetup(), tiers: ['advanced'], sorts: [{ field: 'hp', direction }] });
+    const sorted = queryClassLibrary(uncertainClasses, unlocks, { ...defaultClassSetup(), tiers: ['advanced'], sorts: [{ field: 'hp', direction }] });
     assert.deepEqual(sorted.slice(-2).map(row => row.id).sort(), ['cataphract', 'dancer']);
   }
 });
@@ -50,16 +53,16 @@ test('training, certification, mastery and unlock filters use only documented ev
   assert.ok(grades.length > 0 && grades.every(row => row.certification.recommended_skill_grades?.some(grade => grade.skill_id === 'bows')));
   assert.ok(withFilter({ kind: 'mastery', query: 'Hit' }).length > 0);
   const documented = withFilter({ kind: 'unlock', match: 'has' });
-  assert.equal(documented.length, 23);
+  assert.equal(documented.length, 32);
   assert.ok(documented.every(row => unlocksFor(row, unlocks).length > 0));
   assert.ok(withFilter({ kind: 'unlock_part', part: 1 }).every(row => unlocksFor(row, unlocks).some(unlock => unlock.part === 1)));
 });
 
 test('data-state filters expose uncertainty without inferring eligibility or availability', () => {
-  assert.deepEqual(ids(withFilter({ kind: 'data_state', state: 'unknown_growths' })).sort(), ['cataphract', 'dancer']);
+  assert.deepEqual(ids(withFilter({ kind: 'data_state', state: 'unknown_growths' },{},uncertainClasses)).sort(), ['cataphract', 'dancer']);
   assert.equal(withFilter({ kind: 'data_state', state: 'incomplete_certification' }).length, 60);
-  assert.equal(withFilter({ kind: 'data_state', state: 'unverified_weapon_access' }).length, 43);
-  assert.equal(withFilter({ kind: 'unlock', match: 'none' }).length, 37);
+  assert.equal(withFilter({ kind: 'data_state', state: 'unverified_weapon_access' }).length, 60);
+  assert.equal(withFilter({ kind: 'unlock', match: 'none' }).length, 28);
 });
 
 test('Class Library setup validation retains and reports unresolved identifiers', () => {

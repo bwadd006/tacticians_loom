@@ -1,0 +1,530 @@
+[
+  {
+    "id": "alexandra",
+    "kind": "character"
+  },
+  {
+    "id": "anatolia",
+    "kind": "character"
+  },
+  {
+    "id": "aswan",
+    "kind": "character"
+  },
+  {
+    "id": "benditz",
+    "kind": "character"
+  },
+  {
+    "id": "bertrand",
+    "kind": "character"
+  },
+  {
+    "id": "bonaventure",
+    "kind": "character"
+  },
+  {
+    "id": "buccar",
+    "kind": "character"
+  },
+  {
+    "id": "cai",
+    "kind": "character"
+  },
+  {
+    "id": "catania",
+    "kind": "character"
+  },
+  {
+    "id": "centurio",
+    "kind": "character"
+  },
+  {
+    "id": "creek",
+    "kind": "character"
+  },
+  {
+    "id": "dadao",
+    "kind": "character"
+  },
+  {
+    "id": "dante",
+    "kind": "character"
+  },
+  {
+    "id": "diego",
+    "kind": "character"
+  },
+  {
+    "id": "dietrich",
+    "kind": "character"
+  },
+  {
+    "id": "eshmel",
+    "kind": "character"
+  },
+  {
+    "id": "esmeralda",
+    "kind": "character"
+  },
+  {
+    "id": "fabio",
+    "kind": "character"
+  },
+  {
+    "id": "fianna",
+    "kind": "character"
+  },
+  {
+    "id": "gaitz",
+    "kind": "character"
+  },
+  {
+    "id": "goliath",
+    "kind": "character"
+  },
+  {
+    "id": "guzran",
+    "kind": "character"
+  },
+  {
+    "id": "halvin",
+    "kind": "character"
+  },
+  {
+    "id": "hong-hua",
+    "kind": "character"
+  },
+  {
+    "id": "inyoni",
+    "kind": "character"
+  },
+  {
+    "id": "io",
+    "kind": "character"
+  },
+  {
+    "id": "jasmine",
+    "kind": "character"
+  },
+  {
+    "id": "jester",
+    "kind": "character"
+  },
+  {
+    "id": "kiroc",
+    "kind": "character"
+  },
+  {
+    "id": "klapka",
+    "kind": "character"
+  },
+  {
+    "id": "leda",
+    "kind": "character"
+  },
+  {
+    "id": "lilian",
+    "kind": "character"
+  },
+  {
+    "id": "loretta",
+    "kind": "character"
+  },
+  {
+    "id": "ludia",
+    "kind": "character"
+  },
+  {
+    "id": "lysander",
+    "kind": "character"
+  },
+  {
+    "id": "majide",
+    "kind": "character"
+  },
+  {
+    "id": "mikaela",
+    "kind": "character"
+  },
+  {
+    "id": "mu",
+    "kind": "character"
+  },
+  {
+    "id": "nathan",
+    "kind": "character"
+  },
+  {
+    "id": "nezha",
+    "kind": "character"
+  },
+  {
+    "id": "ninae",
+    "kind": "character"
+  },
+  {
+    "id": "noctula",
+    "kind": "character"
+  },
+  {
+    "id": "nuzzuo",
+    "kind": "character"
+  },
+  {
+    "id": "nydine",
+    "kind": "character"
+  },
+  {
+    "id": "olympia",
+    "kind": "character"
+  },
+  {
+    "id": "orchel",
+    "kind": "character"
+  },
+  {
+    "id": "peppe",
+    "kind": "character"
+  },
+  {
+    "id": "peter",
+    "kind": "character"
+  },
+  {
+    "id": "seteth",
+    "kind": "character"
+  },
+  {
+    "id": "sha-lan",
+    "kind": "character"
+  },
+  {
+    "id": "simon",
+    "kind": "character"
+  },
+  {
+    "id": "sirocco",
+    "kind": "character"
+  },
+  {
+    "id": "sofia",
+    "kind": "character"
+  },
+  {
+    "id": "tahonia",
+    "kind": "character"
+  },
+  {
+    "id": "talimun",
+    "kind": "character"
+  },
+  {
+    "id": "theodora",
+    "kind": "character"
+  },
+  {
+    "id": "tialla",
+    "kind": "character"
+  },
+  {
+    "id": "tobias",
+    "kind": "character"
+  },
+  {
+    "id": "troy",
+    "kind": "character"
+  },
+  {
+    "id": "ultand",
+    "kind": "character"
+  },
+  {
+    "id": "ursula",
+    "kind": "character"
+  },
+  {
+    "id": "yang-jie",
+    "kind": "character"
+  },
+  {
+    "id": "zarcone",
+    "kind": "character"
+  },
+  {
+    "id": "commoner",
+    "kind": "class"
+  },
+  {
+    "id": "noble",
+    "kind": "class"
+  },
+  {
+    "id": "gladiator",
+    "kind": "class"
+  },
+  {
+    "id": "hunter",
+    "kind": "class"
+  },
+  {
+    "id": "soldier",
+    "kind": "class"
+  },
+  {
+    "id": "ornius-rider",
+    "kind": "class"
+  },
+  {
+    "id": "diviner",
+    "kind": "class"
+  },
+  {
+    "id": "myrmidon",
+    "kind": "class"
+  },
+  {
+    "id": "brigand",
+    "kind": "class"
+  },
+  {
+    "id": "pugilist",
+    "kind": "class"
+  },
+  {
+    "id": "archer",
+    "kind": "class"
+  },
+  {
+    "id": "rogue",
+    "kind": "class"
+  },
+  {
+    "id": "armored-knight",
+    "kind": "class"
+  },
+  {
+    "id": "light-cavalry",
+    "kind": "class"
+  },
+  {
+    "id": "charioteer",
+    "kind": "class"
+  },
+  {
+    "id": "armored-ornius-rider",
+    "kind": "class"
+  },
+  {
+    "id": "wing-soldier",
+    "kind": "class"
+  },
+  {
+    "id": "shaman",
+    "kind": "class"
+  },
+  {
+    "id": "priest",
+    "kind": "class"
+  },
+  {
+    "id": "shido",
+    "kind": "class"
+  },
+  {
+    "id": "dancer",
+    "kind": "class"
+  },
+  {
+    "id": "warrior",
+    "kind": "class"
+  },
+  {
+    "id": "blacksmith",
+    "kind": "class"
+  },
+  {
+    "id": "sniper",
+    "kind": "class"
+  },
+  {
+    "id": "forest-knight",
+    "kind": "class"
+  },
+  {
+    "id": "ranger",
+    "kind": "class"
+  },
+  {
+    "id": "guardian",
+    "kind": "class"
+  },
+  {
+    "id": "dreadnought",
+    "kind": "class"
+  },
+  {
+    "id": "bardinger",
+    "kind": "class"
+  },
+  {
+    "id": "cataphract",
+    "kind": "class"
+  },
+  {
+    "id": "caladrius",
+    "kind": "class"
+  },
+  {
+    "id": "elephant-rider",
+    "kind": "class"
+  },
+  {
+    "id": "dragoon",
+    "kind": "class"
+  },
+  {
+    "id": "ovate",
+    "kind": "class"
+  },
+  {
+    "id": "bishop",
+    "kind": "class"
+  },
+  {
+    "id": "troubadour",
+    "kind": "class"
+  },
+  {
+    "id": "swordmaster",
+    "kind": "class"
+  },
+  {
+    "id": "high-savant",
+    "kind": "class"
+  },
+  {
+    "id": "battlemaster",
+    "kind": "class"
+  },
+  {
+    "id": "war-monk",
+    "kind": "class"
+  },
+  {
+    "id": "bow-adept",
+    "kind": "class"
+  },
+  {
+    "id": "bow-knight",
+    "kind": "class"
+  },
+  {
+    "id": "shadow-seeker",
+    "kind": "class"
+  },
+  {
+    "id": "sentinel",
+    "kind": "class"
+  },
+  {
+    "id": "castle-knight",
+    "kind": "class"
+  },
+  {
+    "id": "orichaldia",
+    "kind": "class"
+  },
+  {
+    "id": "great-knight",
+    "kind": "class"
+  },
+  {
+    "id": "celestial-trooper",
+    "kind": "class"
+  },
+  {
+    "id": "bau-lord",
+    "kind": "class"
+  },
+  {
+    "id": "druid",
+    "kind": "class"
+  },
+  {
+    "id": "wiseman",
+    "kind": "class"
+  },
+  {
+    "id": "valkyrium",
+    "kind": "class"
+  },
+  {
+    "id": "the-blade",
+    "kind": "class"
+  },
+  {
+    "id": "the-apsara",
+    "kind": "class"
+  },
+  {
+    "id": "the-eternal",
+    "kind": "class"
+  },
+  {
+    "id": "the-godhand",
+    "kind": "class"
+  },
+  {
+    "id": "the-calamity",
+    "kind": "class"
+  },
+  {
+    "id": "the-trident",
+    "kind": "class"
+  },
+  {
+    "id": "the-cavalier",
+    "kind": "class"
+  },
+  {
+    "id": "the-avatar",
+    "kind": "class"
+  },
+  {
+    "id": "great-escape",
+    "kind": "paralogue"
+  },
+  {
+    "id": "sealed-off-past",
+    "kind": "paralogue"
+  },
+  {
+    "id": "missing-brave-warrior-statue",
+    "kind": "paralogue"
+  },
+  {
+    "id": "diversionary-tactics",
+    "kind": "paralogue"
+  },
+  {
+    "id": "golden-secret",
+    "kind": "paralogue"
+  },
+  {
+    "id": "secret-of-the-vanished-carriage",
+    "kind": "paralogue"
+  },
+  {
+    "id": "orchels-regret",
+    "kind": "paralogue"
+  },
+  {
+    "id": "friendly-match-with-brigids-king",
+    "kind": "paralogue"
+  },
+  {
+    "id": "queen-of-the-erased",
+    "kind": "paralogue"
+  }
+]

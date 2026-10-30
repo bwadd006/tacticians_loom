@@ -19,6 +19,7 @@ export function statusLabel(status: string): string {
 }
 export function affinity(character: Character, skill: string): 'boon' | 'bane' | 'neutral' | 'unknown' {
   if (!(SKILLS as readonly string[]).includes(skill)) return 'unknown';
+  if (character.skill_proficiencies.affinities) return character.skill_proficiencies.affinities[skill as Skill] ?? 'unknown';
   const { boons, banes } = character.skill_proficiencies;
   if (boons?.includes(skill as Skill)) return 'boon';
   if (banes?.includes(skill as Skill)) return 'bane';

@@ -31,7 +31,7 @@ function matches(characterClass: CharacterClass, unlocks: ClassUnlock[], rule: C
   if (rule.match === 'has') return unlocks.length > 0;
   if (rule.match === 'none') return unlocks.length === 0;
   if (rule.match === 'route_specific') return unlocks.some(unlock => unlock.route_id !== null);
-  if (rule.match === 'shared') return unlocks.some(unlock => unlock.route_id === null);
+  if (rule.match === 'shared') return unlocks.some(unlock => unlock.route_id === null&&unlock.route_scope!=='unknown');
   return unlocks.some(unlock => unlock.missable === true);
 }
 

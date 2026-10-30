@@ -2,6 +2,17 @@ import { contextBridge, ipcRenderer } from 'electron';
 import { CHANNELS, type ReferenceApi } from '../shared/api';
 
 const api: ReferenceApi = {
+  referenceCatalog:request=>ipcRenderer.invoke(CHANNELS.referenceCatalog,request),
+  characterLearning:id=>ipcRenderer.invoke(CHANNELS.characterLearning,id),
+  classRewards:id=>ipcRenderer.invoke(CHANNELS.classRewards,id),
+  actionReference:id=>ipcRenderer.invoke(CHANNELS.actionReference,id),
+  characterSocial:id=>ipcRenderer.invoke(CHANNELS.characterSocial,id),
+  itemReference:id=>ipcRenderer.invoke(CHANNELS.itemReference,id),
+  locationReference:request=>ipcRenderer.invoke(CHANNELS.locationReference,request),
+  mapSurfaceReference:id=>ipcRenderer.invoke(CHANNELS.mapSurfaceReference,id),
+  mapMarkers:request=>ipcRenderer.invoke(CHANNELS.mapMarkers,request),
+  mapMarkerReference:request=>ipcRenderer.invoke(CHANNELS.mapMarkerReference,request),
+  referenceEvidence:ids=>ipcRenderer.invoke(CHANNELS.referenceEvidence,ids),
   overview: () => ipcRenderer.invoke(CHANNELS.overview),
   characters: route => ipcRenderer.invoke(CHANNELS.characters, route),
   character: id => ipcRenderer.invoke(CHANNELS.character, id),

@@ -9,13 +9,10 @@ import { queryParalogueLibrary } from '../src/shared/paralogue_library_query';
 import { applyParalogueColumnSort, defaultParalogueSetup, paralogueRouteSortField, paralogueSetupSchema, type ParalogueLibrarySetup } from '../src/shared/paralogue_library_setup';
 import { loadParalogueSetup, openUserDatabase, saveParalogueSetup } from '../src/main/database/user_database';
 import { loadSqlite } from '../src/main/database/sqlite';
-import { buildDataCoverageReport } from '../src/shared/data_coverage';
 import { charactersDocumentSchema, classesDocumentSchema } from '../src/shared/source_models';
 
-const document = paraloguesDocumentSchema.parse(JSON.parse(fs.readFileSync(path.join(process.cwd(), 'data/source/fire_emblem_fortunes_weave_paralogues.json'), 'utf8')));
-const paralogues = document.paralogues;
-const characterDocument = charactersDocumentSchema.parse(JSON.parse(fs.readFileSync(path.join(process.cwd(), 'data/source/fire_emblem_fortunes_weave_characters.json'), 'utf8')));
-const classDocument = classesDocumentSchema.parse(JSON.parse(fs.readFileSync(path.join(process.cwd(), 'data/source/fire_emblem_fortunes_weave_classes.json'), 'utf8')));
+import { paralogueLibrary } from './library_fixture';
+const paralogues=paralogueLibrary.paralogues;
 const characterIds = new Set(paralogues.flatMap(paralogue => [paralogue.associated_character_id, ...paralogue.requirements.map(requirement => requirement.character_id)]).filter((value): value is string => value !== null));
 const ids = (rows: Paralogue[]) => rows.map(row => row.id);
 
@@ -24,14 +21,6 @@ test('catalog has nine canonical paralogues and the reviewed four-route totals',
   assert.deepEqual(Object.fromEntries(ROUTES.map(route => [route, paralogues.filter(paralogue => paralogue.route_availability[route].status === 'available').length])), { cai: 4, dietrich: 8, theodora: 7, leda: 4 });
   assert.ok(paralogues.every(paralogue => ROUTES.every(route => paralogue.route_availability[route])));
   assert.equal(paralogues.find(paralogue => paralogue.id === 'golden-secret')?.associated_character_id, null);
-});
-
-test('maintenance coverage reports the paralogue dataset and provenance', () => {
-  const report = buildDataCoverageReport(characterDocument, classDocument, document);
-  assert.equal(report.paralogues.records, 9);
-  assert.equal(report.paralogues.route_records, 36);
-  assert.equal(report.paralogues.available_route_records, 23);
-  assert.equal(report.provenance.paralogue_conflicts, 7);
 });
 
 test('default query is alphabetical and route scope always applies outside any-mode rules', () => {
@@ -43,14 +32,15 @@ test('default query is alphabetical and route scope always applies outside any-m
   assert.ok(matches.every(paralogue => paralogue.route_availability.leda.status === 'available' && paralogue.route_availability.cai.status === 'available'));
 });
 
-test('timing, requirement, outcome, search, and unknown-aware filters use structured facts', () => {
-  const query = (setup: Partial<ParalogueLibrarySetup>) => queryParalogueLibrary(paralogues, { ...defaultParalogueSetup(), ...setup }, characterIds);
-  assert.deepEqual(ids(query({ filters: [{ kind: 'timing', state: 'multiple_windows' }] })), ['secret-of-the-vanished-carriage']);
-  assert.deepEqual(ids(query({ filters: [{ kind: 'timing', state: 'forced_start' }] })).sort(), ['diversionary-tactics', 'great-escape']);
-  assert.ok(query({ filters: [{ kind: 'requirement', type: 'location_or_npc' }] }).length > 0);
-  assert.ok(query({ filters: [{ kind: 'outcome', type: 'recruited_character' }] }).every(paralogue => paralogue.outcomes.some(outcome => outcome.type === 'recruited_character')));
-  assert.deepEqual(ids(query({ search: 'Carriage' })), ['secret-of-the-vanished-carriage']);
-  assert.deepEqual(ids(query({ filters: [{ kind: 'chapter', route: 'cai', min: null, max: null, unknown: 'only' }] })).sort(), ['diversionary-tactics', 'great-escape', 'missing-brave-warrior-statue', 'queen-of-the-erased', 'sealed-off-past']);
+test('unresolved source spans do not become acceptance windows or forced starts', () => {
+ const query=(setup:Partial<ParalogueLibrarySetup>)=>queryParalogueLibrary(paralogues,{...defaultParalogueSetup(),...setup},characterIds);
+ assert.deepEqual(ids(query({filters:[{kind:'timing',state:'multiple_windows'}]})),[]);
+ assert.deepEqual(ids(query({filters:[{kind:'timing',state:'forced_start'}]})),[]);
+ const talimun=paralogues.find(p=>p.id==='secret-of-the-vanished-carriage')!;
+ assert.equal(talimun.route_availability.cai.reported_timing?.length,2);
+ assert.deepEqual(talimun.route_availability.cai.acceptance_windows,[]);
+ assert.equal(query({filters:[{kind:'chapter',route:'cai',min:null,max:null,unknown:'only'}]}).length,9);
+ assert.deepEqual(ids(query({search:'Talimun'})),['secret-of-the-vanished-carriage']);
 });
 
 test('character filters include associated and required characters while unresolved saved IDs are ignored', () => {

@@ -1,9 +1,109 @@
 {
-  "dataset_version": "2026.10.25.2",
-  "change_summary": "Add the reviewed nine-paralogue Act 1 catalog with four-route availability, timing, requirements, outcomes, retained conflicts, and stable links from character recruitment requirements.",
-  "source_files": {
-    "characters": "fire_emblem_fortunes_weave_characters.json",
-    "classes": "fire_emblem_fortunes_weave_classes.json",
-    "paralogues": "fire_emblem_fortunes_weave_paralogues.json"
+  "manifest_version": "2.0.0",
+  "dataset_version": "2026.10.30.2",
+  "change_summary": "Maintain complete reference facts, uncertainty and source citations independently of data acquisition tooling.",
+  "reference_schema_version": 3,
+  "importer_version": "3.3.0",
+  "release_status": "reviewed",
+  "documents": [
+    {
+      "family": "identity",
+      "path": "data/source/identity_registry.json",
+      "format_version": "2.0.0",
+      "sha256": "839242bd3df0e6899c0f60953646a5fce1f7ff34e899b773b621a27828723e3c"
+    },
+    {
+      "family": "context",
+      "path": "data/source/context_reference.json",
+      "format_version": "2.0.0",
+      "sha256": "cf1ea43e9ae14f266ba37e27bce945993bb023270d08356f36b54ea3b225c591"
+    },
+    {
+      "family": "evidence",
+      "path": "data/source/evidence_reference.json",
+      "format_version": "2.0.0",
+      "sha256": "f625686036e3e4c7c1e70820823c57bfdb037126c35ebbdc7494be3fcc21460b"
+    },
+    {
+      "family": "evidence",
+      "path": "data/source/source_claims_reference.json",
+      "format_version": "2.0.0",
+      "sha256": "8dac4ee7ee0686ff956ea9107ad90760fe6eae81e47727a0a2cfd6937cf2b4fc"
+    },
+    {
+      "family": "evidence",
+      "path": "data/source/legacy_claims_reference.json",
+      "format_version": "2.0.0",
+      "sha256": "70f916a0bf8b74eef442d683c89ee8bea723a809845ae6dcce8313a2cbc21acc"
+    },
+    {
+      "family": "evidence",
+      "path": "data/source/coverage_reference.json",
+      "format_version": "2.0.0",
+      "sha256": "5ccda5ee7275ad4f64f5dbbe066e46347193b688249ce51c75b199f823172256"
+    },
+    {
+      "family": "characters",
+      "path": "data/source/fire_emblem_fortunes_weave_characters.json",
+      "format_version": "2.0.0",
+      "sha256": "26e06d491df1811380a708e87a4b013c415ee28e645b66fe169ee404559a5914"
+    },
+    {
+      "family": "classes",
+      "path": "data/source/fire_emblem_fortunes_weave_classes.json",
+      "format_version": "2.0.0",
+      "sha256": "271c25fa1517eee7c2e5b37674e2dc8bb387aeeb808b049c279db54bdf8099ee"
+    },
+    {
+      "family": "paralogues",
+      "path": "data/source/fire_emblem_fortunes_weave_paralogues.json",
+      "format_version": "2.0.0",
+      "sha256": "2305fbb064824c0404228a7fc3f0d0fb9477496e5846353d3dd2a7596c5c33fc"
+    },
+    {
+      "family": "combat",
+      "path": "data/source/combat_reference.json",
+      "format_version": "2.0.0",
+      "sha256": "4f5a0376843dfa489e2c7abb7bcb9d5244e47bbfcb9493592a059ccfbbf2992d"
+    },
+    {
+      "family": "social",
+      "path": "data/source/social_reference.json",
+      "format_version": "2.0.0",
+      "sha256": "7e4c470e3aee951819c6d216e5aa69fc74dae58f998569d25a38f339ac18cc5c"
+    },
+    {
+      "family": "items",
+      "path": "data/source/item_reference.json",
+      "format_version": "2.0.0",
+      "sha256": "ab8af5164959bd98ce575f902c39b56e20ae6a2f27bbe7355a39f480cbe98003"
+    },
+    {
+      "family": "mounts",
+      "path": "data/source/mount_reference.json",
+      "format_version": "2.0.0",
+      "sha256": "d0e43e4a17c08ca503cd8f89829578493aa2fcaf50ca0fdcf679af09e19b9bdb"
+    },
+    {
+      "family": "world",
+      "path": "data/source/world_reference.json",
+      "format_version": "2.0.0",
+      "sha256": "cd084c8b925243f66098a62d53cc2fde35b7b6b49cbc19df4a9bf83b61a372b4"
+    },
+    {
+      "family": "assets",
+      "path": "data/source/asset_reference.json",
+      "format_version": "2.0.0",
+      "sha256": "05fe54d1f5168e818bdb9ceff1ce507041fefea7ed6f62038b4939481e3e772c"
+    }
+  ],
+  "identity_registry_sha256": "839242bd3df0e6899c0f60953646a5fce1f7ff34e899b773b621a27828723e3c",
+  "ui_associations": {
+    "path": "data/ability_associations.json",
+    "sha256": "720c64506b63e39b1ee9186ea78b54177eb555bbd20410f83cc89c7d1babf8b4"
+  },
+  "runtime_assets": {
+    "path": "resources/asset_manifest.json",
+    "sha256": "473e2f4240dad90fd524c35fdc4e36ee20b54df7fe919790f9853bf135805b26"
   }
 }

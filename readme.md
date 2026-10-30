@@ -1,5 +1,8 @@
 # Tactician's Loom
 
+See the [change log](change_log.md) for features, fixes, data updates, and save
+compatibility notes.
+
 Standalone Electron/React/TypeScript desktop application. The reference-data
 foundation, Character Library, Class Library, Shortlist & Compare workspace,
 and Paralogue Library are implemented. The Character Library provides its route selector, growth
@@ -35,80 +38,77 @@ the maintained data for updates but are intentionally absent from the app UI.
 
 ## Develop
 
-Use Node.js 24 or newer and npm. From this directory:
+Use Node.js 24 or newer and npm. Run from this directory:
 
 ```sh
 npm ci
+npm run data:build
 npm start
 ```
 
-`npm start` validates and builds the local reference database before opening the
-desktop window. It does not open an external browser. Run commands from this app
-directory, not the outer design workspace.
+Build the reference database once after setup and explicitly after changing maintained
+reference data. `npm start` compiles the application and opens its desktop window
+using the existing database. Restarting does not rebuild data or contact sources.
 
-The lockfile pins dependencies. Forge uses a pinned Electron `node-gyp` Git
-dependency, declared directly to work with npm 12's `allow-git=root` setting.
-The package script policy permits Electron/esbuild setup and skips rebuilding
-`better-sqlite3` 13, which supplies native prebuilds. No global npm settings are
-required. Initial dependency installation needs network access; the packaged
-application works offline.
+## Maintained data
 
-## Check and package
+`data/source/` contains the complete maintained reference records, their source
+citations, uncertainty states, and retained conflicting evidence. Stable character,
+class, and paralogue IDs preserve saved player choices. `data/dataset_manifest.json`
+records the dataset version and input hashes. Update those hashes and the dataset
+version when changing maintained inputs. `resources/asset_manifest.json` maps local
+artwork to stable IDs and records attribution, missing assets, and derived artwork.
+
+The build consumes these local files only. It does not require source websites,
+external maintenance tools, captured website files, or old database builds.
+The generated read-only reference database contains current records, citations,
+and compact validation metadata. Player saves remain in the operating system's
+application-data directory and are never opened by the data builder.
+
+## Validate and package
 
 ```sh
 npm run check
-npm run data:build
 npm run data:validate
+npm run assets:validate
+npm run release:validate
 npm run package
-npm run make
 ```
 
-`package` creates a platform application directory under `out/`; `make` creates a
-ZIP. Both run checks and rebuild the reference data. Linux is the initial target.
-Run packaging and runtime checks on Windows before distributing a Windows build.
-Installer formats and automatic updates are deferred.
+`check` runs TypeScript, automated tests, and the application distribution boundary
+check. Build reference data before running tests on a fresh checkout. `package`
+and `make` build and validate reference data explicitly before packaging. Packaged
+users need no Node.js, npm, database tools, or network connection.
 
-The executable accepts `--smoke-test` to exercise the packaged renderer, preload,
-IPC, all libraries' reference queries, saved-setup and shortlist/note round
-trips, comparison rendering, bundled-image loading,
-print `SMOKE_PASSED` and exit. A graphical desktop is normally required; a CI
-environment may supply a virtual display.
+Release validation checks application relationships and isolated player-save
+fixtures. Linux packages are tested locally; Windows packaging/runtime validation
+remains pending.
 
-## Data and boundaries
+## Source distribution
 
-- Edit the reviewed JSON in `data/source/`, never the generated SQLite database.
-- Run `npm run data:audit` before and after a review batch to inspect the
-  validated completeness baseline and coverage delta.
-- Update `data/dataset_manifest.json` for a changed dataset, then rebuild.
-- `data:build` reports entity changes and replaces the previous database only
-  after candidate validation succeeds.
-- Unknown values and source disagreements are retained; an import check does
-  not verify the underlying game claims.
-- `resources/asset_manifest.json` maps character/class/skill IDs to the
-  bundled portraits, class icons, and skill affinity icons with source
-  attribution. Ability maps remain empty until their artwork is sourced;
-  unmapped IDs use stub fallbacks, and four bane icons are locally derived
-  recreations marked `derived_composite` in the manifest. Artwork is
-  © Nintendo / Intelligent Systems / Koei Tecmo and is bundled for this
-  private, non-distributed app only.
-- Runtime reference access is read-only. Player saves (library setups,
-  shortlist membership, and notes) use a separate `user_data.sqlite` in the
-  operating system's application-data directory. Active comparison selection
-  and open detail-panel selection are session-only. Paralogue progress is not
-  tracked.
+Only application code, maintained data, bundled artwork, build configuration, and
+functional tests belong in this repository. The distribution check rejects private
+maintenance directories, acquisition tools, and embedded original document bodies.
+It also runs before Forge packaging.
 
-Design documents and agent instructions live outside this application directory.
+To prepare a source tree without any existing Git history or generated files:
 
-## Roadmap
+```sh
+npm run source:export -- --output /path/to/new_directory
+```
 
-The recommended next feature is the cross-route recruitment planner. Later
-phases are:
+The destination must be new and outside this application directory. The export is
+suitable for review before creating a fresh repository. Deleting files in a working
+tree does not erase them from existing Git history.
 
-1. Cross-route recruitment planning.
-2. Saved route team building with optional roles, classes, and notes.
-3. Coverage, overlap, and player-directed swap comparison.
-4. Windows validation, migrations, export/import, and release hardening.
+## Sources and artwork
 
-These are planned phases, not implemented features. Act 2 mechanics, repeated
-route history, automatic team optimization, combat simulation, cloud sync, and
-automatic data updates remain separate deferred work.
+Reference information credits [Yu Phas' Temple](https://yuphastemple.com/).
+Additional sources remain attached to individual facts and retained evidence.
+Portrait provenance includes the Fortune's Weave Support Browser and Fire Emblem
+Wiki; skill-affinity artwork includes Fire Emblem Wiki assets. Exact source URLs
+and attribution are retained in the asset manifest. Four missing bane variants are
+marked as locally derived composites, and missing source artwork remains explicit.
+
+Game artwork © Nintendo / Intelligent Systems / Koei Tecmo. No artwork license or
+authentic-rip status is asserted. This remains a private, non-distributed project.

@@ -9,6 +9,7 @@ import { abilityMatches, affinity, availabilityLabel, queryLibrary, statusLabel 
 import { applyColumnSort, defaultSetup, fieldLabel, initialDrafts, recruitmentSortField, setupIssues, setupSchema, skillLabel, sortableFields, type LibrarySetup } from '../src/shared/library_setup';
 import { loadSetup, openUserDatabase, saveSetup } from '../src/main/database/user_database';
 import { loadSqlite } from '../src/main/database/sqlite';
+import associations from '../data/ability_associations.json';
 
 type Status = 'recruitable' | 'automatic' | 'mandatory_tutorial' | 'not_available_in_part_1_recruitment_table' | 'unavailable' | 'unknown';
 interface FixtureOptions {
@@ -97,10 +98,11 @@ test('skill filters distinguish boon, bane, neutral and unknown without treating
 });
 
 test('ability filters use reviewed associations and recheck them against the active dataset', () => {
-  const archer = fixture('aswan', 'Aswan', { statuses: { cai: 'recruitable' }, abilities: [{ name: 'Princess of Arrows', effect: 'Hit +20 while using bows.' }] });
+  const reviewedEvidence=associations.entries.find(e=>e.characterId==='aswan'&&e.abilityName==='Princess of Arrows')!.evidence;
+  const archer = fixture('aswan', 'Aswan', { statuses: { cai: 'recruitable' }, abilities: [{ name: 'Princess of Arrows', effect: reviewedEvidence }] });
   assert.equal(abilityMatches(archer, 'bows').length, 1);
   assert.equal(abilityMatches(archer, 'axes').length, 0);
-  const stale = fixture('aswan', 'Aswan', { statuses: { cai: 'recruitable' }, abilities: [{ name: 'Princess of Arrows', effect: 'Hit +30 while using bows.' }] });
+  const stale = fixture('aswan', 'Aswan', { statuses: { cai: 'recruitable' }, abilities: [{ name: 'Princess of Arrows', effect: reviewedEvidence+' stale' }] });
   assert.equal(abilityMatches(stale, 'bows').length, 0);
   const setup: LibrarySetup = { ...defaultSetup(), filters: [skillRule('bows', 'ability')] };
   assert.deepEqual(ids(queryLibrary([...roster, archer], 'all', setup)), ['aswan']);
