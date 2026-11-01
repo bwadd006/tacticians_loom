@@ -47,6 +47,9 @@ Entries started October 30, 2026. The application version remains `0.1.0`.
 
 ### Fixed
 
+- Updated TypeScript module resolution to remove the deprecated Node10 setting
+  reported by newer editor TypeScript versions, and declared renderer stylesheet
+  imports for TypeScript 6 compatibility.
 - Widened the character picker to show about six portraits per row on desktop,
   with fewer columns on narrower windows.
 - `npm start` now uses the existing reference database instead of rebuilding it
