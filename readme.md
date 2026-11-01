@@ -30,8 +30,15 @@ Chapter, Renown, or Support independently for every route even in All Routes,
 while the table retains one combined recruitment column per route. Ch, R, and
 S header buttons provide direct sorting. Successive column clicks append sort
 priorities in click order, while clicking an active column reverses its direction.
+The Character Library table uses 18-pixel text, 56 × 70-pixel portraits and
+36-pixel affinity icons. Smaller windows keep those sizes and scroll horizontally
+with shortlist controls and character names pinned.
 The Class Library provides one all-class table with tier title rows, class dossiers,
 filters, ordered sorting, unlock evidence, and one global saved setup.
+Its Unique, Beginner, Specialty, Advanced, Master and Divine sections default to
+the game order shown by Yu Phas' Temple. Reset Sorting restores Game order;
+custom sorting remains available, and loading an existing saved alphabetical or
+custom setup preserves its priorities. Noble follows Commoner in Unique.
 The shared shortlist adds immediate persistent membership, retained global
 notes, a temporary Character Library shortlist scope, a sortable compact list,
 and an unlimited session comparison with focus fields, collapsible evidence,
@@ -65,8 +72,9 @@ Part III reference browsing adds no later-part planning or completion tracking.
 
 The current interface uses desktop navigation among Character Profile, Map, and
 the four existing planning views, with a
-responsive deep-dark layout with a 16-pixel text
-baseline and enlarged local artwork. Its table always ends with recruitment for
+responsive deep-dark layout with a 16-pixel text baseline, 18-pixel Character
+Library table text and enlarged local artwork. The Character Library table always
+ends with recruitment for
 Cai, Dietrich, Theodora, and Leda. Recruitable/tutorial entries show Chapter,
 Renown, Support, and additional requirements; automatic joins show only their
 join chapter. The dossier includes recruitment only on documented available

@@ -38,6 +38,9 @@ Entries started October 30, 2026. The application version remains `0.1.0`.
 
 ### Changed
 
+- Class Library now starts in the game order shown by Yu Phas' Temple within
+  Unique, Beginner, Specialty, Advanced, Master, and Divine. Reset Sorting
+  restores that order; custom sorting and previously saved setups remain usable.
 - Development packaging can use a matching local Electron archive through
   `LOOM_ELECTRON_ZIP_DIR`, allowing packaging without an Electron download.
 - Character bloodmarks and crests display bundled icons and open detailed popups
@@ -60,6 +63,9 @@ Entries started October 30, 2026. The application version remains `0.1.0`.
 
 ### Fixed
 
+- Enlarged Character Library table text, character portraits, affinity icons,
+  and recruitment sort buttons, with more cell spacing. Smaller windows retain
+  readable sizes and scroll horizontally with character names pinned.
 - Map marker artwork and clickable areas now grow with zoom and stay over their
   underlying tile symbols. Partially visible enlarged markers remain clickable.
 - Updated TypeScript module resolution to remove the deprecated Node10 setting
@@ -74,6 +80,9 @@ Entries started October 30, 2026. The application version remains `0.1.0`.
 
 ### Compatibility
 
+- Character Library readability and Class Library game-order sorting keep the
+  existing dataset and database schemas. Saved alphabetical/custom class sorts
+  retain their meaning; Game order uses the existing saved-setup format.
 - Player schema 6 adds an independent map browsing preference while preserving
   earlier notes, shortlist membership, library setups, profile selection, and
   unresolved saved IDs. Reference schema 3 and dataset `2026.10.30.2` are unchanged.

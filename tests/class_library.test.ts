@@ -11,6 +11,8 @@ import { defaultSetup } from '../src/shared/library_setup';
 import { loadSqlite } from '../src/main/database/sqlite';
 
 import { classLibrary } from './library_fixture';
+import { CLASS_DISPLAY_ORDER } from '../src/shared/class_display_order';
+import { TIERS } from '../src/shared/catalog';
 const classes=classLibrary.classes,unlocks=classLibrary.unlocks;
 // Synthetic missing growths verify filter/sort behavior independently of current source coverage.
 const uncertainClasses=structuredClone(classes);
@@ -27,6 +29,47 @@ test('default Class Library includes every class while tier scope remains outsid
   assert.equal(queryClassLibrary(uncertainClasses, unlocks, { ...defaultClassSetup(), tiers: ['advanced'] }).length, 17);
 });
 
+test('game order covers every maintained class exactly once in its existing tier', () => {
+  const orderedIds = TIERS.flatMap(tier => CLASS_DISPLAY_ORDER[tier]);
+  assert.equal(new Set(orderedIds).size, classes.length);
+  assert.deepEqual([...orderedIds].sort(), ids(classes).sort());
+  for (const tier of TIERS) assert.ok(CLASS_DISPLAY_ORDER[tier].every(id => classes.find(c => c.id === id)?.tier === tier));
+});
+
+test('default ordering follows the reviewed game sequence independently of input order', () => {
+  const rows = queryClassLibrary([...classes].reverse(), unlocks, defaultClassSetup());
+  const tierIds = (tier: string) => ids(rows.filter(row => row.tier === tier)).join(',');
+  assert.equal(tierIds('unique'), 'commoner,noble');
+  assert.equal(tierIds('beginner'), 'gladiator,hunter,soldier,ornius-rider,diviner');
+  assert.equal(tierIds('specialty'), 'myrmidon,brigand,pugilist,archer,rogue,armored-knight,light-cavalry,charioteer,armored-ornius-rider,wing-soldier,shaman,priest');
+  assert.equal(tierIds('advanced'), 'shido,dancer,warrior,blacksmith,sniper,forest-knight,ranger,guardian,dreadnought,bardinger,cataphract,caladrius,elephant-rider,dragoon,ovate,bishop,troubadour');
+  assert.equal(tierIds('master'), 'swordmaster,high-savant,battlemaster,war-monk,bow-adept,bow-knight,shadow-seeker,sentinel,castle-knight,orichaldia,great-knight,celestial-trooper,bau-lord,druid,wiseman,valkyrium');
+  assert.equal(tierIds('divine'), 'the-blade,the-apsara,the-eternal,the-godhand,the-calamity,the-trident,the-cavalier,the-avatar');
+  assert.deepEqual(ids(queryClassLibrary(classes, unlocks, { ...defaultClassSetup(), search: 'r', tiers: ['beginner'] })), ['gladiator', 'hunter', 'soldier', 'ornius-rider', 'diviner']);
+  assert.deepEqual(ids(queryClassLibrary(classes, unlocks, { ...defaultClassSetup(), sorts: [] })), ids(rows));
+});
+
+test('game order stays a final priority after column clicks and can be reversed', () => {
+  const hpFirst = applyClassColumnSort(defaultClassSetup(), 'hp');
+  const strengthSecond = applyClassColumnSort(hpFirst, 'strength');
+  assert.deepEqual(strengthSecond.sorts, [{ field: 'hp', direction: 'desc' }, { field: 'strength', direction: 'desc' }, { field: 'game_order', direction: 'asc' }]);
+  assert.deepEqual(applyClassColumnSort(strengthSecond, 'hp').sorts, [{ field: 'hp', direction: 'asc' }, { field: 'strength', direction: 'desc' }, { field: 'game_order', direction: 'asc' }]);
+  const tied = classes.map(c => ({ ...c, class_growth_rate_modifiers_percent: { ...c.class_growth_rate_modifiers_percent, hp: 10, strength: 5 } }));
+  assert.deepEqual(ids(queryClassLibrary(tied, unlocks, strengthSecond)), ids(queryClassLibrary(tied, unlocks, defaultClassSetup())));
+  const reversed = applyClassColumnSort(defaultClassSetup(), 'game_order');
+  assert.deepEqual(ids(queryClassLibrary(classes, unlocks, { ...reversed, tiers: ['beginner'] })), ['diviner', 'ornius-rider', 'soldier', 'hunter', 'gladiator']);
+});
+
+test('classes without a reviewed position stay after ranked classes with deterministic name fallback', () => {
+  const prototype = classes.find(c => c.id === 'gladiator')!;
+  const future = [{ ...prototype, id: 'future-z', name: 'Z Future' }, { ...prototype, id: 'future-a', name: 'A Future' }];
+  for (const direction of ['asc', 'desc'] as const) {
+    const rows = queryClassLibrary([...future, ...classes], unlocks, { ...defaultClassSetup(), tiers: ['beginner'], sorts: [{ field: 'game_order', direction }] });
+    assert.equal(rows.length, 7);
+    assert.deepEqual(ids(rows.slice(-2)), ['future-a', 'future-z']);
+  }
+});
+
 test('growth filters preserve unknown values and growth sorting keeps unknowns last', () => {
   assert.deepEqual(ids(withFilter({ kind: 'number', field: 'hp', min: null, max: null, unknown: 'only' },{},uncertainClasses)).sort(), ['cataphract', 'dancer']);
   const known = withFilter({ kind: 'number', field: 'magic', min: 20, max: null, unknown: 'exclude' });
@@ -38,7 +81,7 @@ test('growth filters preserve unknown values and growth sorting keeps unknowns l
 });
 
 test('Class Library column shortcuts append in click order before the Name tie-breaker', () => {
-  const hpFirst = applyClassColumnSort(defaultClassSetup(), 'hp');
+  const hpFirst = applyClassColumnSort({ ...defaultClassSetup(), sorts: [{ field: 'name', direction: 'asc' }] }, 'hp');
   assert.deepEqual(hpFirst.sorts, [{ field: 'hp', direction: 'desc' }, { field: 'name', direction: 'asc' }]);
   const strengthSecond = applyClassColumnSort(hpFirst, 'strength');
   assert.deepEqual(strengthSecond.sorts, [{ field: 'hp', direction: 'desc' }, { field: 'strength', direction: 'desc' }, { field: 'name', direction: 'asc' }]);
@@ -92,6 +135,10 @@ test('global Class Library setup round-trips independently from Character Librar
     saveClassSetup(db, defaultClassSetup(), 'dataset-v2');
     assert.deepEqual(loadClassSetup(db)?.setup, defaultClassSetup());
     assert.equal(db.prepare('SELECT count(*) FROM class_library_setup').pluck().get(), 1);
+    const alphabetical: ClassLibrarySetup = { ...defaultClassSetup(), sorts: [{ field: 'name', direction: 'asc' }] };
+    saveClassSetup(db, alphabetical, 'dataset-v1');
+    assert.deepEqual(loadClassSetup(db)?.setup, alphabetical);
+    assert.deepEqual(ids(queryClassLibrary(classes, unlocks, loadClassSetup(db)!.setup)), ids([...classes].sort((a, b) => a.name.localeCompare(b.name, 'en') || a.id.localeCompare(b.id, 'en'))));
   } finally { db.close(); }
 });
 

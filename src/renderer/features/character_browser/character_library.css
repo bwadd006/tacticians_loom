@@ -36,12 +36,24 @@
 .library_workspace.with_details { grid-template-columns: minmax(0, 1fr) var(--details-panel-width); }
 .results { min-width: 0; }
 .table_scroll { overflow: auto; max-height: max(var(--workspace-min-height), calc(100vh - var(--workspace-offset))); border: 1px solid var(--border); border-radius: 4px; scrollbar-color: var(--scroll-thumb) var(--background); background: var(--table-row); }
-.character_table { border-collapse: separate; border-spacing: 0; min-width: 100%; font-size: var(--table-font-size); text-align: left; }
-.character_table th, .character_table td { border-bottom: 1px solid var(--table-divider); padding: 10px 9px; vertical-align: middle; }
+.character_table {
+  --table-font-size: 18px;
+  --table-portrait-width: 56px;
+  --table-portrait-height: 70px;
+  --skill-icon-size: 36px;
+  --shortlist-column-width: 104px;
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 100%;
+  font-size: var(--table-font-size);
+  line-height: 1.45;
+  text-align: left;
+}
+.character_table th, .character_table td { border-bottom: 1px solid var(--table-divider); padding: 12px; vertical-align: middle; }
 .character_table thead th { position: sticky; top: 0; background: var(--table-header); z-index: 2; white-space: nowrap; }
 .character_table thead button { font-size: var(--table-font-size); padding: 4px 0; border: 0; background: transparent; text-align: left; min-width: 32px; }
-.character_table .name_cell { position: sticky; left: 74px; z-index: 1; background: var(--surface-alt); min-width: 180px; border-right: 1px solid var(--border); }
-.shortlist_column { width: 74px; min-width: 74px; text-align: center; }
+.character_table .name_cell { position: sticky; left: var(--shortlist-column-width); z-index: 1; background: var(--surface-alt); min-width: 260px; border-right: 1px solid var(--border); }
+.shortlist_column { width: var(--shortlist-column-width); min-width: var(--shortlist-column-width); max-width: var(--shortlist-column-width); text-align: center; }
 .character_table tbody .shortlist_column { position: sticky; left: 0; z-index: 1; background: var(--surface-alt); }
 .character_table thead .shortlist_column { position: sticky; left: 0; z-index: 4; background: var(--table-header); }
 .shortlist_toggle { min-width: 38px; color: var(--muted); font-size: 18px; padding: 5px 8px; }
@@ -51,13 +63,15 @@
 .character_table tbody tr:nth-child(even) { background: var(--table-row-alt); }
 .character_table tbody tr:hover, .character_table tbody tr.selected { background: var(--table-row-active); }
 .character_table tbody tr:hover .name_cell, .character_table tbody tr.selected .name_cell { background: var(--table-row-active); }
-.character_name { display: flex; align-items: center; gap: 8px; border: 0; padding: 0; background: transparent; font-weight: 600; width: 100%; text-align: left; }
+.character_name { display: flex; align-items: center; gap: 12px; border: 0; padding: 0; background: transparent; font-weight: 600; width: 100%; text-align: left; }
 .portrait_stub { display: inline-flex; justify-content: center; align-items: center; width: var(--table-portrait-width); height: var(--table-portrait-height); border: 1px solid var(--accent-soft); color: var(--accent); font-family: Georgia, serif; font-size: 19px; flex-shrink: 0; }
 .portrait { object-fit: contain; flex-shrink: 0; background: var(--background); }
 .portrait_table { width: var(--table-portrait-width); height: var(--table-portrait-height); border: 1px solid var(--accent-soft); }
 .portrait_details { width: var(--detail-portrait-width); height: var(--detail-portrait-height); border: 1px solid var(--border); border-radius: 4px; }
-.character_table .growth { text-align: center; font-variant-numeric: tabular-nums; }
-.character_table .affinities { width: 184px; min-width: 168px; max-width: 194px; font-size: 13px; line-height: 1.35; white-space: normal; }
+.character_table .growth { min-width: 58px; text-align: center; font-variant-numeric: tabular-nums; }
+.character_table .affinities { width: 240px; min-width: 240px; max-width: 260px; white-space: normal; }
+.character_table .skill_icon { object-fit: contain; }
+.character_table .skill_icon_fallback { font-size: 16px; }
 .boons { color: var(--positive); }
 .banes { color: var(--negative); }
 .skill_icon { width: var(--skill-icon-size); height: var(--skill-icon-size); vertical-align: middle; border-radius: 4px; margin: 1px 2px 1px 0; }
@@ -65,13 +79,13 @@
 .affinity_chip { display: inline-flex; align-items: center; gap: 4px; margin-right: 9px; }
 .ability_match { color: var(--accent); margin-top: 5px; }
 .available { color: var(--positive); }
-.route_summary_column, .route_summary_cell { min-width: 225px; }
+.route_summary_column, .route_summary_cell { min-width: 320px; }
 .route_column_heading { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; }
 .route_sort_shortcuts { display: flex; gap: 4px; }
-.character_table thead .route_sort_shortcuts button { min-width: 31px; padding: 3px 5px; border: 1px solid var(--border); border-radius: 3px; color: var(--muted); font-size: 12px; text-align: center; }
+.character_table thead .route_sort_shortcuts button { min-width: 40px; min-height: 34px; padding: 4px 7px; border: 1px solid var(--border); border-radius: 3px; color: var(--muted); font-size: 16px; text-align: center; }
 .character_table thead .route_sort_shortcuts button:hover { border-color: var(--accent-soft); color: var(--text); }
 .character_table thead .route_sort_shortcuts button.active { border-color: var(--accent); color: var(--accent); background: var(--surface-alt); }
-.route_summary_cell { vertical-align: top !important; line-height: 1.35; }
+.route_summary_cell { vertical-align: top !important; line-height: 1.45; }
 .route_summary_status { display: block; margin-bottom: 5px; color: inherit; }
 .route_summary_facts { display: flex; flex-wrap: wrap; gap: 3px 12px; color: var(--muted); }
 .route_summary_facts span { white-space: nowrap; }
@@ -112,9 +126,6 @@
   .result_bar { gap: 8px; margin-top: 7px; margin-bottom: 6px; }
   .result_bar button { padding-top: 6px; padding-bottom: 6px; }
   .library_workspace { gap: 12px; }
-  .character_table th, .character_table td { padding: 7px 7px; }
-  .character_table .name_cell { min-width: 172px; }
-  .character_table .affinities { width: 172px; min-width: 158px; max-width: 180px; }
   .details_panel { padding: 14px; }
   .details_panel section { margin-top: 17px; padding-top: 13px; }
   .stat_strip { margin: 10px 0; }

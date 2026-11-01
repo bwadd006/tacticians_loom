@@ -1,6 +1,7 @@
 import { SKILLS, STATS, TIERS, type Skill, type Stat } from './catalog';
 import type { CharacterClass, ClassUnlock } from './source_models';
 import { classFilterIssue, classSortableFields, type ClassFilterRule, type ClassLibrarySetup } from './class_library_setup';
+import { classDisplayRank } from './class_display_order';
 
 export function unlocksFor(characterClass: CharacterClass, unlocks: ClassUnlock[]): ClassUnlock[] {
   const ids = new Set(characterClass.unlock_ids);
@@ -36,6 +37,7 @@ function matches(characterClass: CharacterClass, unlocks: ClassUnlock[], rule: C
 }
 
 function sortValue(characterClass: CharacterClass, unlocks: ClassUnlock[], field: string): number | string | null {
+  if (field === 'game_order') return classDisplayRank(characterClass.id);
   if (field === 'name') return characterClass.name;
   if (field === 'movement') return characterClass.movement_tags.join(', ');
   if (field === 'certification') return characterClass.certification.recommended_skill_grades?.map(grade => `${grade.skill_id}:${grade.grade}`).join('|') ?? null;
@@ -52,7 +54,8 @@ function sortValue(characterClass: CharacterClass, unlocks: ClassUnlock[], field
 export function queryClassLibrary(classes: CharacterClass[], unlocks: ClassUnlock[], setup: ClassLibrarySetup): CharacterClass[] {
   const knownTiers = setup.tiers.filter(tier => (TIERS as readonly string[]).includes(tier));
   const rules = setup.filters.filter(rule => classFilterIssue(rule) === null);
-  const sorts = setup.sorts.filter(rule => classSortableFields().includes(rule.field));
+  const supportedSorts = setup.sorts.filter(rule => classSortableFields().includes(rule.field));
+  const sorts = supportedSorts.length ? supportedSorts : [{ field: 'game_order', direction: 'asc' }];
   const search = setup.search.trim().toLocaleLowerCase('en');
   return classes.filter(characterClass => {
     if (!knownTiers.includes(characterClass.tier) || !characterClass.name.toLocaleLowerCase('en').includes(search)) return false;
