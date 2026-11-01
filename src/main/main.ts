@@ -1,3 +1,6 @@
+import {interactiveMapSmoke,mapRestoreSmoke,mapRecoverySmoke,mapRetrySaveSmoke} from './interactive_map_smoke';
+import { mapOverview,mapLocationDetail,mapEntityDetail } from './database/interactive_map';
+import { loadMapPreference,saveMapPreference } from './database/user_database';
 import { characterProfileSmoke } from './character_profile_smoke';
 import { characterProfile } from './database/character_profile';
 import { loadCharacterProfilePreference,saveCharacterProfilePreference } from './database/user_database';
@@ -67,7 +70,7 @@ function createWindow() {
   const window = new BrowserWindow({
     title: "Tactician's Loom", width: 1440, height: 900, minWidth: 800, minHeight: 600,
     backgroundColor: '#080a0d', show: false,
-    webPreferences: { preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY, contextIsolation: true, nodeIntegration: false, sandbox: true },
+    webPreferences: { preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY, contextIsolation: true, nodeIntegration: false, sandbox: true, backgroundThrottling: !smokeTest },
   });
   window.removeMenu();
   window.webContents.setWindowOpenHandler(() => ({ action: 'deny' }));
@@ -104,6 +107,10 @@ app.whenReady().then(async () => {
   });
   reference = openReference(referenceFile,{allowCandidate:smokeTest});
   if(smokeTest&&!smokeReference&&reference.pragma('user_version',{simple:true})===3)seedExistingSmokeSave(getUserDatabase());
+  if(smokeTest&&!smokeReference&&process.argv.includes('--smoke-map-recovery')) {
+    getUserDatabase().prepare('INSERT INTO map_preference VALUES (1,?)').run(JSON.stringify({version:99}));
+    getUserDatabase().exec(`CREATE TEMP TRIGGER map_smoke_write_failure BEFORE UPDATE OF preference_json ON map_preference BEGIN SELECT RAISE(ABORT,'Simulated map write failure'); END;`);
+  }
   // Only the main frame displaying our entry page may use the purpose-specific API.
   function handle(channel: string, fn: (value: unknown) => unknown) {
     ipcMain.handle(channel, (event, value: unknown) => {
@@ -115,6 +122,11 @@ app.whenReady().then(async () => {
       return fn(value);
     });
   }
+  handle(CHANNELS.mapOverview,value=>mapOverview(reference!,value));
+  handle(CHANNELS.mapLocationDetail,value=>mapLocationDetail(reference!,value));
+  handle(CHANNELS.mapEntityDetail,value=>mapEntityDetail(reference!,value));
+  handle(CHANNELS.loadMapPreference,()=>loadMapPreference(getUserDatabase()));
+  handle(CHANNELS.saveMapPreference,value=>saveMapPreference(getUserDatabase(),value));
   handle(CHANNELS.characterProfile,value=>characterProfile(reference!,value));
   handle(CHANNELS.loadCharacterProfilePreference,()=>loadCharacterProfilePreference(getUserDatabase()));
   handle(CHANNELS.saveCharacterProfilePreference,value=>saveCharacterProfilePreference(getUserDatabase(),value));
@@ -189,6 +201,37 @@ app.whenReady().then(async () => {
       try {
         let decodedAssets=0;
         const profileCheck=!smokeReference?await window.webContents.executeJavaScript(characterProfileSmoke):{};
+        let mapRecovery={};
+        if(!smokeReference&&process.argv.includes('--smoke-map-recovery')) {
+          const recovery=await window.webContents.executeJavaScript(mapRecoverySmoke);
+          if(getUserDatabase().prepare('SELECT preference_json FROM map_preference').pluck().get()!==JSON.stringify({version:99}))throw Error('Failed map recovery changed the unread preference');
+          getUserDatabase().exec('DROP TRIGGER map_smoke_write_failure');
+          mapRecovery={...recovery,...await window.webContents.executeJavaScript(mapRetrySaveSmoke)};
+        }
+        const mapCheck=!smokeReference?await window.webContents.executeJavaScript(interactiveMapSmoke):{};
+        if(!smokeReference&&process.argv.includes('--review-map')) {
+          const directory=path.join(os.tmpdir(),'tacticians_loom_map_review');fs.mkdirSync(directory,{recursive:true});
+          for(const [width,height]of [[1600,1000],[800,900],[2200,1200]]) {
+            window.setSize(width,height);await new Promise(resolve=>setTimeout(resolve,350));
+            const screenshot=await window.webContents.capturePage(undefined,{stayHidden:true,stayAwake:true});
+            const file=path.join(directory,`map_${width}.png`);fs.writeFileSync(file,screenshot.toPNG());console.log('MAP_REVIEW_SCREENSHOT',file);
+            const overflow=await window.webContents.executeJavaScript('document.documentElement.scrollWidth>innerWidth');if(overflow)throw Error('Map overflows resized window');
+          }
+          window.setSize(1440,900);
+        }
+        if(!smokeReference){await new Promise<void>(resolve=>{window.webContents.once('did-finish-load',()=>resolve());window.webContents.reload();});await window.webContents.executeJavaScript(mapRestoreSmoke);}
+        if(!smokeReference&&process.argv.includes('--review-map')) {
+          window.setSize(1600,1000);
+          await window.webContents.executeJavaScript(`(()=>{const buttons=[...document.querySelectorAll('.interactive_map button')];buttons.find(b=>b.textContent==='Clear Search').click();buttons.find(b=>b.textContent==='Reset Map View').click();})()`);
+          await new Promise(resolve=>setTimeout(resolve,400));
+          const fitCorrect=await window.webContents.executeJavaScript(`(()=>{const frame=document.querySelector('.map_canvas').getBoundingClientRect(),image=document.querySelector('.map_image_plane').getBoundingClientRect();return Math.abs(image.width-Math.min(frame.width,frame.height))<2&&Math.abs((image.left+image.width/2)-(frame.left+frame.width/2))<2&&Math.abs((image.top+image.height/2)-(frame.top+frame.height/2))<2;})()`);
+          if(!fitCorrect)throw Error('Fit Map did not use the actual viewport dimensions');
+          fs.writeFileSync(path.join(os.tmpdir(),'tacticians_loom_map_review','map_full.png'),(await window.webContents.capturePage(undefined,{stayHidden:true,stayAwake:true})).toPNG());
+          await window.webContents.executeJavaScript(`(async()=>{const input=document.querySelector('#map_search_input');Object.getOwnPropertyDescriptor(HTMLInputElement.prototype,'value').set.call(input,'Regia');input.dispatchEvent(new Event('input',{bubbles:true}));for(let n=0;n<100;n++){const result=[...document.querySelectorAll('.map_suggestions button')].find(b=>b.querySelector('strong').textContent==='Regia');if(result){result.click();break;}await new Promise(r=>setTimeout(r,50));}for(let n=0;n<100;n++){if(document.querySelector('.map_content_group'))break;await new Promise(r=>setTimeout(r,50));}})()`);
+          await new Promise(resolve=>setTimeout(resolve,400));
+          fs.writeFileSync(path.join(os.tmpdir(),'tacticians_loom_map_review','map_location.png'),(await window.webContents.capturePage(undefined,{stayHidden:true,stayAwake:true})).toPNG());
+          window.setSize(1440,900);
+        }
         const expanded=reference!.pragma('user_version',{simple:true})===3&&!smokeReference?await window.webContents.executeJavaScript(referenceReleaseSmoke):{};
         if(!smokeReference){
           const images=Object.values(art.manifest.resources).filter(r=>r.file_state==='captured').map(r=>[assetUrl(r.id),r.width,r.height]);
@@ -201,7 +244,7 @@ app.whenReady().then(async () => {
         }
         const result = await window.webContents.executeJavaScript(smokeReference?referenceV3Smoke:referenceBaselineSmoke);
         if(outboundRequests!==0)throw new Error('Offline smoke attempted an HTTP(S) request');
-        console.log('SMOKE_PASSED', JSON.stringify({...result,...expanded,...profileCheck,decodedAssets,outboundRequests,httpBlocked:app.isPackaged}));
+        console.log('SMOKE_PASSED', JSON.stringify({...result,...expanded,...profileCheck,...mapCheck,...mapRecovery,decodedAssets,outboundRequests,httpBlocked:app.isPackaged}));
         clearTimeout(timeout);
         window.destroy();
         closeDatabases();

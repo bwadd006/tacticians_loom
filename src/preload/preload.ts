@@ -2,6 +2,11 @@ import { contextBridge, ipcRenderer } from 'electron';
 import { CHANNELS, type ReferenceApi } from '../shared/api';
 
 const api: ReferenceApi = {
+  mapOverview:context=>ipcRenderer.invoke(CHANNELS.mapOverview,context),
+  mapLocationDetail:value=>ipcRenderer.invoke(CHANNELS.mapLocationDetail,value),
+  mapEntityDetail:value=>ipcRenderer.invoke(CHANNELS.mapEntityDetail,value),
+  loadMapPreference:()=>ipcRenderer.invoke(CHANNELS.loadMapPreference),
+  saveMapPreference:value=>ipcRenderer.invoke(CHANNELS.saveMapPreference,value),
   characterProfile:id=>ipcRenderer.invoke(CHANNELS.characterProfile,id),
   loadCharacterProfilePreference:()=>ipcRenderer.invoke(CHANNELS.loadCharacterProfilePreference),
   saveCharacterProfilePreference:value=>ipcRenderer.invoke(CHANNELS.saveCharacterProfilePreference,value),

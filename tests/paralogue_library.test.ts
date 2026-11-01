@@ -68,7 +68,7 @@ after(() => { if (temporary) fs.rmSync(temporary, { recursive: true, force: true
 test('global setup validates and round-trips in user database version four', () => {
   const db = openUserDatabase(path.join(temporary, 'round_trip.sqlite'));
   try {
-    assert.equal(db.pragma('user_version', { simple: true }), 5);
+    assert.equal(db.pragma('user_version', { simple: true }), 6);
     assert.equal(loadParalogueSetup(db), null);
     const custom: ParalogueLibrarySetup = { ...defaultParalogueSetup(), search: 'escape', route: 'leda', filters: [{ kind: 'timing', state: 'forced_start' }] };
     assert.doesNotThrow(() => paralogueSetupSchema.parse(custom));
@@ -90,7 +90,7 @@ test('version-three user databases migrate without altering existing player data
   legacy.close();
   const migrated = openUserDatabase(file);
   try {
-    assert.equal(migrated.pragma('user_version', { simple: true }), 5);
+    assert.equal(migrated.pragma('user_version', { simple: true }), 6);
     assert.equal(migrated.prepare('SELECT note FROM character_planning WHERE character_id = ?').pluck().get('alexandra'), 'Keep me');
     assert.equal(loadParalogueSetup(migrated), null);
   } finally { migrated.close(); }

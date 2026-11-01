@@ -1,3 +1,4 @@
+import { InteractiveMap } from '../features/interactive_map/interactive_map';
 import { CharacterProfile } from '../features/character_profile/character_profile';
 import { useEffect, useRef, useState } from 'react';
 import type { ClassLibraryData, ParalogueLibraryData, ReferenceApi, ReferenceOverview } from '../../shared/api';
@@ -17,7 +18,9 @@ export function App() {
   const [planning, setPlanning] = useState<CharacterPlanning[]>([]);
   const [pendingIds, setPendingIds] = useState<Set<string>>(new Set());
   const [planningError, setPlanningError] = useState('');
-  const [view, setView] = useState<'profile' | 'characters' | 'classes' | 'paralogues' | 'shortlist'>('profile');
+  const [view, setView] = useState<'profile' | 'characters' | 'classes' | 'paralogues' | 'shortlist' | 'map'>('profile');
+  const [mapOpened,setMapOpened]=useState(false);
+  useEffect(()=>{if(view==='map')setMapOpened(true);},[view]);
   const [error, setError] = useState(false);
   const [attempt, setAttempt] = useState(0);
   const planningQueues = useRef(new Map<string, Promise<void>>());
@@ -30,7 +33,7 @@ export function App() {
     return () => { current = false; };
   }, [attempt]);
   useEffect(()=>{
-    if(view==='profile'||data||!overview)return;let current=true;setLibraryError(false);
+    if(view==='profile'||view==='map'||data||!overview)return;let current=true;setLibraryError(false);
     Promise.all([window.loom.characters('all'),window.loom.classLibrary(),window.loom.paralogueLibrary()])
       .then(([characters,classes,paralogues])=>{if(current)setData({characters,classes,paralogues,overview});})
       .catch(()=>{if(current)setLibraryError(true);});return()=>{current=false;};
@@ -60,11 +63,12 @@ export function App() {
   };
   const shortlistCount = planning.filter(record => record.shortlisted).length;
   return <main>
-    <header className="app_header"><div><p className="eyebrow">Fortune’s Weave · Local planner</p><h1>Tactician’s Loom</h1></div><nav className="app_navigation" aria-label="Planning views"><button aria-current={view === 'profile' ? 'page' : undefined} onClick={() => setView('profile')}>Character Profile</button><button aria-current={view === 'characters' ? 'page' : undefined} onClick={() => setView('characters')}>Character Library</button><button aria-current={view === 'classes' ? 'page' : undefined} onClick={() => setView('classes')}>Class Library</button><button aria-current={view === 'paralogues' ? 'page' : undefined} onClick={() => setView('paralogues')}>Paralogue Library</button><button aria-current={view === 'shortlist' ? 'page' : undefined} onClick={() => setView('shortlist')}>Shortlist &amp; Compare ({shortlistCount})</button></nav><span className="chapter_marker">{view === 'profile' ? 'All Characters' : view === 'characters' ? 'Act 1 Characters' : view === 'classes' ? 'All Classes' : view === 'paralogues' ? 'Act 1 Paralogues' : 'Player Shortlist'}</span></header>
+    <header className="app_header"><div><p className="eyebrow">Fortune’s Weave · Local planner</p><h1>Tactician’s Loom</h1></div><nav className="app_navigation" aria-label="Planning views"><button aria-current={view === 'profile' ? 'page' : undefined} onClick={() => setView('profile')}>Character Profile</button><button aria-current={view === 'characters' ? 'page' : undefined} onClick={() => setView('characters')}>Character Library</button><button aria-current={view === 'classes' ? 'page' : undefined} onClick={() => setView('classes')}>Class Library</button><button aria-current={view === 'paralogues' ? 'page' : undefined} onClick={() => setView('paralogues')}>Paralogue Library</button><button aria-current={view === 'map' ? 'page' : undefined} onClick={() => setView('map')}>Map</button><button aria-current={view === 'shortlist' ? 'page' : undefined} onClick={() => setView('shortlist')}>Shortlist &amp; Compare ({shortlistCount})</button></nav><span className="chapter_marker">{view === 'profile' ? 'All Characters' : view === 'characters' ? 'Act 1 Characters' : view === 'classes' ? 'All Classes' : view === 'paralogues' ? 'Act 1 Paralogues' : view==='map'?'Part I & III Map':'Player Shortlist'}</span></header>
     {error ? <div role="alert"><p>Reference data could not be loaded.</p><button onClick={() => setAttempt(attempt + 1)}>Try again</button></div>
       : overview ? <><section hidden={view !== 'profile'}><CharacterProfile key={overview.datasetVersion} planning={planningController}/></section>
-        {view!=='profile'&&libraryError&&<div role="alert">Libraries could not be loaded. <button onClick={()=>setAttempt(n=>n+1)}>Retry libraries</button></div>}
-        {view!=='profile'&&!data&&!libraryError&&<p role="status">Opening the libraries…</p>}
+        {mapOpened&&<section hidden={view!=='map'}><InteractiveMap key={overview.datasetVersion} active={view==='map'}/></section>}
+        {view!=='profile'&&view!=='map'&&libraryError&&<div role="alert">Libraries could not be loaded. <button onClick={()=>setAttempt(n=>n+1)}>Retry libraries</button></div>}
+        {view!=='profile'&&view!=='map'&&!data&&!libraryError&&<p role="status">Opening the libraries…</p>}
         {data&&<><section hidden={view !== 'characters'}><CharacterLibrary characters={data.characters} overview={data.overview} planning={planningController} /></section><section hidden={view !== 'classes'}><ClassLibrary data={data.classes} overview={data.overview} /></section><section hidden={view !== 'paralogues'}><ParalogueLibrary data={data.paralogues} overview={data.overview} characters={data.characters} classes={data.classes.classes} /></section><section hidden={view !== 'shortlist'}><ShortlistWorkspace characters={data.characters} overview={data.overview} planning={planningController} onBrowseCharacters={() => setView('characters')} /></section></>}
       </> : <p role="status">Opening Tactician’s Loom…</p>}
   </main>;

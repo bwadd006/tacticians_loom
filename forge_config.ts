@@ -10,6 +10,7 @@ import { rendererConfig } from './webpack_renderer_config';
 const config: ForgeConfig = {
   hooks: { prePackage: async () => { validateDistributionBoundary(process.cwd()); } },
   packagerConfig: {
+    ...(process.env.LOOM_ELECTRON_ZIP_DIR ? { electronZipDir: process.env.LOOM_ELECTRON_ZIP_DIR } : {}),
     asar: true,
     name: 'tacticians_loom',
     executableName: 'tacticians_loom',

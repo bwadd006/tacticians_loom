@@ -1,3 +1,4 @@
+import type { MapOverview, MapLocationDetail, MapEntityDetail, MapPreference } from './interactive_map';
 import type { CharacterProfile,ProfilePreference } from './character_profile';
 import type { Route, RouteContext } from './catalog';
 import type { Character, CharacterClass, Paralogue } from './source_models';
@@ -32,6 +33,11 @@ export interface ParalogueLibraryData {
   conflicts: { paralogueId: string; routeId: Route | null; field: string; status: string; details: string }[];
 }
 export interface ReferenceApi {
+  mapOverview(contextId?:string):Promise<MapOverview>;
+  mapLocationDetail(request:{locationId:string;contextId:string}):Promise<MapLocationDetail|null>;
+  mapEntityDetail(request:{id:string;kind:'mount'|'battalion'}):Promise<MapEntityDetail|null>;
+  loadMapPreference():Promise<MapPreference|null>;
+  saveMapPreference(value:MapPreference):Promise<MapPreference>;
   characterProfile(id:string):Promise<CharacterProfile|null>;
   loadCharacterProfilePreference():Promise<ProfilePreference|null>;
   saveCharacterProfilePreference(value:ProfilePreference):Promise<ProfilePreference>;
@@ -66,6 +72,7 @@ export interface ReferenceApi {
   clearCharacterNote(characterId: string): Promise<CharacterPlanning | null>;
 }
 export const CHANNELS = {
+  mapOverview:'map:overview',mapLocationDetail:'map:location',mapEntityDetail:'map:entity',loadMapPreference:'map:load_preference',saveMapPreference:'map:save_preference',
   characterProfile:'reference:character_profile',loadCharacterProfilePreference:'profile:load_preference',saveCharacterProfilePreference:'profile:save_preference',
   referenceCatalog:'reference:catalog',characterLearning:'reference:character_learning',classRewards:'reference:class_rewards',
   crestReference:'reference:crest_detail',actionReference:'reference:action_detail',characterSocial:'reference:character_social',itemReference:'reference:item_detail',

@@ -299,13 +299,13 @@ test('a database from a newer schema version is refused without data loss', () =
   const file = path.join(temporary, 'newer.sqlite');
   const db = openUserDatabase(file);
   saveSetup(db, 'cai', defaultSetup(), 'dataset-v1');
-  db.pragma('user_version = 6');
+  db.pragma('user_version = 7');
   db.close();
   assert.throws(() => openUserDatabase(file), /newer application/);
   const Sqlite = loadSqlite();
   const raw = new Sqlite(file);
   try {
-    raw.pragma('user_version = 5');
+    raw.pragma('user_version = 6');
     assert.deepEqual(raw.prepare('SELECT context FROM library_setups').pluck().all(), ['cai']);
   } finally { raw.close(); }
   // Reopening a current-version database preserves saved setups.

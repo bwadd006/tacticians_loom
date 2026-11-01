@@ -45,8 +45,26 @@ one global browsing setup is saved without completion or shortlist state.
 Portraits and skill affinity icons are bundled game artwork (see the asset
 manifest for attribution and the few documented gaps and derived recreations).
 
-The current interface uses desktop navigation among Character Profile and the
-four existing planning views, with a
+The dedicated Map page covers Part I across Cai, Dietrich, Theodora, and Leda,
+plus the source's single Part III view. Browse 309 documented locations across
+those views, toggle 17 marker categories, drag to pan, scroll to zoom, and use
+Fit or the keyboard (arrows, plus/minus, Home). Marker artwork and click targets
+scale with the map so they continue to cover the underlying nodes at close zoom.
+Search locations, regions, items,
+mounts, or battalions; selecting content shows a Found at list with exact variants.
+The location panel keeps shops, chests, gatherables, and other contents scoped to
+the active view. Click an entry for focused reference details. Unknown stock,
+prices, rates, and availability remain explicit; a labeled item price is a
+general reference price, not a confirmed shop-specific price.
+
+Map context, center/zoom, filters, committed search, and selected location restore
+automatically. Clear Search, Reset Filters, and Reset Map View act independently;
+Reset All Map returns to Cai with every category enabled and the full map fitted.
+Map preferences are separate from library setups, notes, and shortlist choices.
+Part III reference browsing adds no later-part planning or completion tracking.
+
+The current interface uses desktop navigation among Character Profile, Map, and
+the four existing planning views, with a
 responsive deep-dark layout with a 16-pixel text
 baseline and enlarged local artwork. Its table always ends with recruitment for
 Cai, Dietrich, Theodora, and Leda. Recruitable/tutorial entries show Chapter,
@@ -74,9 +92,9 @@ using the existing database. Restarting does not rebuild data or contact sources
 ## Maintained data
 
 Current application version: `0.1.0`; dataset `2026.10.30.2`; reference schema 3;
-player schema 5. The player migration adds the last-viewed character preference
-while preserving existing library setups, shortlist membership, notes and
-unresolved stable IDs.
+player schema 6. The player migration adds automatic map restoration independently
+of the earlier last-viewed character preference, preserving existing library
+setups, shortlist membership, notes, and unresolved stable IDs.
 
 `data/source/` contains the complete maintained reference records, their source
 citations, uncertainty states, and retained conflicting evidence. Stable character,
@@ -105,6 +123,12 @@ npm run package
 check. Build reference data before running tests on a fresh checkout. `package`
 and `make` build and validate reference data explicitly before packaging. Packaged
 users need no Node.js, npm, database tools, or network connection.
+
+For offline packaging after dependencies are installed, set `LOOM_ELECTRON_ZIP_DIR`
+to a directory containing the matching Electron ZIP for the target version,
+platform, and architecture. Forge then uses that local archive instead of
+downloading Electron. This is a development packaging option, not a runtime
+requirement.
 
 Release validation checks application relationships and isolated player-save
 fixtures. Linux packages are tested locally; Windows packaging/runtime validation

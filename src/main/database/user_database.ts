@@ -1,3 +1,4 @@
+import {mapPreferenceSchema,type MapPreference} from '../../shared/interactive_map';
 import fs from 'node:fs';
 import { profilePreferenceSchema,type ProfilePreference } from '../../shared/character_profile';
 import path from 'node:path';
@@ -14,7 +15,7 @@ export function openUserDatabase(filename: string): Database.Database {
   const db = new Sqlite(filename);
   try {
     const version = Number(db.pragma('user_version', { simple: true }));
-    if (![0, 1, 2, 3, 4, 5].includes(version)) throw new Error('Saved planning data requires a newer application. Your data has been preserved.');
+    if (![0, 1, 2, 3, 4, 5, 6].includes(version)) throw new Error('Saved planning data requires a newer application. Your data has been preserved.');
     db.pragma('journal_mode = WAL');
     if (version === 0) db.transaction(() => {
       db.exec(`CREATE TABLE library_setups (
@@ -50,6 +51,12 @@ export function openUserDatabase(filename: string): Database.Database {
         singleton INTEGER PRIMARY KEY CHECK(singleton=1),
         character_id TEXT NOT NULL CHECK(length(character_id) BETWEEN 1 AND 200)
       ) STRICT; PRAGMA user_version = 5;`);
+    })();
+    if (version < 6) db.transaction(() => {
+      db.exec(`CREATE TABLE map_preference (
+        singleton INTEGER PRIMARY KEY CHECK(singleton=1),
+        preference_json TEXT NOT NULL CHECK(json_valid(preference_json))
+      ) STRICT; PRAGMA user_version = 6;`);
     })();
     return db;
   } catch (error) { db.close(); throw error; }
@@ -160,5 +167,15 @@ export function loadCharacterProfilePreference(db:Database.Database):ProfilePref
 export function saveCharacterProfilePreference(db:Database.Database,input:unknown):ProfilePreference {
   const value=profilePreferenceSchema.parse(input);
   db.prepare('INSERT INTO character_profile_preference VALUES (1,?) ON CONFLICT(singleton) DO UPDATE SET character_id=excluded.character_id').run(value.characterId);
+  return value;
+}
+
+export function loadMapPreference(db:Database.Database):MapPreference|null {
+  const row=db.prepare('SELECT preference_json FROM map_preference WHERE singleton=1').get() as {preference_json:string}|undefined;
+  return row?mapPreferenceSchema.parse(JSON.parse(row.preference_json)):null;
+}
+export function saveMapPreference(db:Database.Database,input:unknown):MapPreference {
+  const value=mapPreferenceSchema.parse(input);
+  db.prepare('INSERT INTO map_preference VALUES (1,?) ON CONFLICT(singleton) DO UPDATE SET preference_json=excluded.preference_json').run(JSON.stringify(value));
   return value;
 }

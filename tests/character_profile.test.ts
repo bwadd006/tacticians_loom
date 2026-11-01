@@ -29,8 +29,8 @@ test('profile preserves unadjusted-base uncertainty, expressions, conditional gr
 });
 test('last character preference migrates schema-4 saves, persists unresolved IDs and rejects arbitrary input',()=>{
  const root=fs.mkdtempSync(path.join(os.tmpdir(),'loom_profile_saves_')),file=path.join(root,'player.sqlite');
- try{let db=openUserDatabase(file);setCharacterNote(db,{characterId:'unresolved_character',note:'Keep this note'},'old');db.exec('DROP TABLE character_profile_preference; PRAGMA user_version=4');const before=listCharacterPlanning(db);db.close();db=openUserDatabase(file);
-  assert.equal(db.pragma('user_version',{simple:true}),5);assert.deepEqual(listCharacterPlanning(db),before);assert.equal(loadCharacterProfilePreference(db),null);
+ try{let db=openUserDatabase(file);setCharacterNote(db,{characterId:'unresolved_character',note:'Keep this note'},'old');db.exec('DROP TABLE map_preference; DROP TABLE character_profile_preference; PRAGMA user_version=4');const before=listCharacterPlanning(db);db.close();db=openUserDatabase(file);
+  assert.equal(db.pragma('user_version',{simple:true}),6);assert.deepEqual(listCharacterPlanning(db),before);assert.equal(loadCharacterProfilePreference(db),null);
   saveCharacterProfilePreference(db,{characterId:'eshmel'});saveCharacterProfilePreference(db,{characterId:'unresolved_saved_character'});assert.equal(db.prepare('SELECT count(*) FROM character_profile_preference').pluck().get(),1);
   for(const value of [{characterId:''},{characterId:'cai',sql:'DELETE'},{characterId:'\0'},null])assert.throws(()=>saveCharacterProfilePreference(db,value));db.close();db=openUserDatabase(file);assert.deepEqual(loadCharacterProfilePreference(db),{characterId:'unresolved_saved_character'});assert.deepEqual(listCharacterPlanning(db),before);db.close();
  }finally{fs.rmSync(root,{recursive:true,force:true});}

@@ -10,6 +10,17 @@ Entries started October 30, 2026. The application version remains `0.1.0`.
 
 ### Added
 
+- Dedicated Map page covering the four Part I routes and Part III, with all
+  309 documented locations across those views, local map tiles and marker art,
+  category filters, pan/zoom, and keyboard navigation.
+- Search for locations, regions, items, mounts, and battalions; content searches
+  show distinct destinations and retain exact weapon variants. Location panels
+  show context-specific chests, gatherables, shops, mounts, farming options, and
+  battalions, with focused item/mount/battalion reference dialogs.
+- Automatic restoration of map context, viewport, category filters, committed
+  search, and location selection, with separate search/filter/view resets and
+  Reset All Map. Missing information remains explicit; Part III does not imply
+  any particular route or add completion tracking.
 - Character Profile as the opening page, with a searchable portrait picker for
   all 63 characters, a persistent summary, and Arts & Abilities, Recruitment,
   Liked Gifts, Bird Time, and Supports tabs.
@@ -27,6 +38,8 @@ Entries started October 30, 2026. The application version remains `0.1.0`.
 
 ### Changed
 
+- Development packaging can use a matching local Electron archive through
+  `LOOM_ELECTRON_ZIP_DIR`, allowing packaging without an Electron download.
 - Character bloodmarks and crests display bundled icons and open detailed popups
   with reported effects, dragon associations, and documented bearers. All 15
   records are retained; unavailable effects and the two missing icons stay explicit.
@@ -47,6 +60,8 @@ Entries started October 30, 2026. The application version remains `0.1.0`.
 
 ### Fixed
 
+- Map marker artwork and clickable areas now grow with zoom and stay over their
+  underlying tile symbols. Partially visible enlarged markers remain clickable.
 - Updated TypeScript module resolution to remove the deprecated Node10 setting
   reported by newer editor TypeScript versions, and declared renderer stylesheet
   imports for TypeScript 6 compatibility.
@@ -59,9 +74,12 @@ Entries started October 30, 2026. The application version remains `0.1.0`.
 
 ### Compatibility
 
+- Player schema 6 adds an independent map browsing preference while preserving
+  earlier notes, shortlist membership, library setups, profile selection, and
+  unresolved saved IDs. Reference schema 3 and dataset `2026.10.30.2` are unchanged.
 - Existing shortlist membership, character notes, and saved library setups retain
-  their stable IDs. The player database migrates to schema version 5 to store
-  the last viewed character; existing saved records are preserved.
+  their stable IDs. The earlier schema-5 migration stores the last viewed
+  character and remains intact in schema 6.
 - Current planning workflows remain focused on Act 1 across Cai, Dietrich,
   Theodora, and Leda. Expanded reference data does not add later-part planning.
 
