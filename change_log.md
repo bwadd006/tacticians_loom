@@ -38,6 +38,11 @@ Entries started October 30, 2026. The application version remains `0.1.0`.
 
 ### Changed
 
+- Widened the Character Profile picker to 98% of the window width to fit fifteen
+  characters per row on large screens, with 120 × 150-pixel portraits and readable names.
+  Up to 98% window height and compact spacing fit all 63 characters without
+  scrolling on large desktop windows. Smaller windows reduce the column count
+  and retain scrolling and portrait size.
 - Class Library now starts in the game order shown by Yu Phas' Temple within
   Unique, Beginner, Specialty, Advanced, Master, and Divine. Reset Sorting
   restores that order; custom sorting and previously saved setups remain usable.
@@ -71,8 +76,6 @@ Entries started October 30, 2026. The application version remains `0.1.0`.
 - Updated TypeScript module resolution to remove the deprecated Node10 setting
   reported by newer editor TypeScript versions, and declared renderer stylesheet
   imports for TypeScript 6 compatibility.
-- Widened the character picker to show about six portraits per row on desktop,
-  with fewer columns on narrower windows.
 - `npm start` now uses the existing reference database instead of rebuilding it
   on every launch. Initial setup and reference-data changes use an explicit build.
 - Missing development reference data now produces an actionable build instruction.

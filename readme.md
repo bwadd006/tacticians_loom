@@ -8,9 +8,12 @@ Profile covers all 63 maintained characters with a searchable portrait picker,
 a persistent summary and five tabs: Arts & Abilities, Recruitment, Liked Gifts,
 Bird Time and Supports. It restores the last viewed character, shares shortlist
 membership and notes, and preserves unknown starting/stat/story information.
-The picker shows about six portraits per row at desktop widths. Class preview
-remains a deferred stretch goal. The Character Library retains its existing
-Act 1 scope and behavior.
+The picker spans 98% of the window width, with 120 × 150-pixel portraits and
+fifteen characters per row in windows at least 2400 pixels wide. It can use up to
+98% of the window height; compact spacing fits all 63 characters without scrolling on a large
+desktop window. Smaller windows reduce columns and scroll while retaining
+portrait size. Class preview remains a deferred stretch goal. The Character
+Library retains its existing Act 1 scope and behavior.
 
 Click an ability, combat art, spell or Blaze action to open a detail popup with
 reported stats, effects, upgrades, acquisition requirements and large learner

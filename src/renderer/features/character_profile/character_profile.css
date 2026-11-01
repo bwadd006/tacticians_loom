@@ -33,11 +33,14 @@
 .profile_support_table { width:100%; border-collapse:collapse; }.profile_support_table th,.profile_support_table td { text-align:left; vertical-align:top; padding:12px; border-bottom:1px solid var(--border); white-space:normal; }.profile_support_table th:first-child { width:180px; }.profile_support_person { display:flex; align-items:center; gap:10px; }.profile_support_variant { padding-bottom:12px; }.profile_support_variant p { margin:4px 0; }
 button.profile_link { padding:0; background:transparent; border:0; color:var(--accent); text-align:left; text-decoration:underline; }
 .profile_picker,.profile_detail_dialog { color:var(--text); background:var(--surface); border:1px solid var(--accent-soft); border-radius:8px; padding:24px; width:min(1400px,94vw); max-height:90dvh; }
-.profile_picker { width:min(920px,94vw); max-width:920px; }
+.profile_picker { --detail-portrait-width:120px; --detail-portrait-height:150px; width:98vw; max-width:98vw; max-height:98dvh; padding:16px; }
 .profile_detail_dialog { width:min(780px,94vw); }.profile_picker::backdrop,.profile_detail_dialog::backdrop { background:rgb(0 0 0 / 75%); }
 .profile_picker header,.profile_detail_dialog header { display:flex; align-items:center; justify-content:space-between; gap:20px; margin-bottom:20px; }
-.profile_picker_grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(125px,1fr)); gap:10px; }.profile_picker_grid button { display:flex; flex-direction:column; align-items:center; justify-content:end; gap:8px; padding:12px; }
-.profile_picker_grid .portrait_details { width:90px; height:112px; object-fit:contain; }.profile_picker_grid [aria-pressed=true] { border-color:var(--accent); background:var(--raised-hover); }
+.profile_picker header { margin-bottom:8px; }
+.profile_picker > p { margin:4px 0 8px; }
+.profile_picker_grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:8px; }.profile_picker_grid button { display:flex; flex-direction:column; align-items:center; justify-content:end; gap:6px; padding:8px 10px; font-size:18px; }
+.profile_picker_grid .portrait_details { width:var(--detail-portrait-width); height:var(--detail-portrait-height); object-fit:contain; }.profile_picker_grid [aria-pressed=true] { border-color:var(--accent); background:var(--raised-hover); }
+@media(min-width:2400px) { .profile_picker_grid { grid-template-columns:repeat(15,minmax(0,1fr)); } }
 .profile_player_controls details { margin-top:16px; }.profile_player_controls .note_editor { margin-top:10px; }
 @media(max-width:1250px) { .profile_arts_grid { grid-template-columns:1fr; }.profile_recruitment_grid { grid-template-columns:1fr; } }
 @media(max-width:1000px) { .character_profile { grid-template-columns:1fr; height:auto; }.profile_summary { overflow:visible; }.profile_summary .profile_skills { grid-template-columns:repeat(2,minmax(0,1fr)); }.profile_workspace { min-height:60dvh; }.profile_tab_content { overflow:visible; }.profile_tab_bar { position:sticky; top:0; background:var(--surface); z-index:2; }.profile_stats { grid-template-columns:repeat(9,minmax(0,1fr)); } }
