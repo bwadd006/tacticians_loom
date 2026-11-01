@@ -1,3 +1,6 @@
+import { characterProfileSmoke } from './character_profile_smoke';
+import { characterProfile } from './database/character_profile';
+import { loadCharacterProfilePreference,saveCharacterProfilePreference } from './database/user_database';
 import path from 'node:path';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -112,9 +115,13 @@ app.whenReady().then(async () => {
       return fn(value);
     });
   }
+  handle(CHANNELS.characterProfile,value=>characterProfile(reference!,value));
+  handle(CHANNELS.loadCharacterProfilePreference,()=>loadCharacterProfilePreference(getUserDatabase()));
+  handle(CHANNELS.saveCharacterProfilePreference,value=>saveCharacterProfilePreference(getUserDatabase(),value));
   handle(CHANNELS.referenceCatalog,value=>referenceDetails.referenceCatalog(reference!,value));
   handle(CHANNELS.characterLearning,value=>referenceDetails.characterLearning(reference!,value));
   handle(CHANNELS.classRewards,value=>referenceDetails.classRewards(reference!,value));
+  handle(CHANNELS.crestReference,value=>referenceDetails.crestReference(reference!,value));
   handle(CHANNELS.actionReference,value=>referenceDetails.actionReference(reference!,value));
   handle(CHANNELS.characterSocial,value=>referenceDetails.characterSocial(reference!,value));
   handle(CHANNELS.itemReference,value=>referenceDetails.itemReference(reference!,value));
@@ -147,13 +154,41 @@ app.whenReady().then(async () => {
   handle(CHANNELS.setCharacterNote, value => setCharacterNote(getUserDatabase(), setCharacterNoteRequestSchema.parse(value), getOverview(reference!).datasetVersion));
   handle(CHANNELS.clearCharacterNote, value => clearCharacterNote(getUserDatabase(), validateId(value), getOverview(reference!).datasetVersion));
   const window = createWindow();
+  // Explicit hidden visual-review mode uses the same disposable player profile.
+  if(smokeTest&&process.argv.includes('--review-profile')) {
+    window.setSize(1600,1000);
+    window.webContents.once('did-finish-load',()=>{
+      setTimeout(()=>{void (async()=>{
+        for(let n=0;n<100;n++) {
+          if(await window.webContents.executeJavaScript("Boolean(document.querySelector('.profile_identity_button') && document.querySelector('.profile_action'))"))break;
+          await new Promise(resolve=>setTimeout(resolve,100));
+        }
+        if(process.argv.includes('--review-popup'))await window.webContents.executeJavaScript(`(async()=>{
+          const wait=async(fn)=>{for(let n=0;n<100;n++){if(fn())return;await new Promise(r=>setTimeout(r,100));}throw Error('Popup review timed out');};
+          document.querySelector('.profile_identity_button').click();await wait(()=>document.querySelector('[data-profile-choice="cai"]'));
+          document.querySelector('[data-profile-choice="cai"]').click();await wait(()=>[...document.querySelectorAll('.profile_action_trigger')].some(b=>b.textContent.includes('Wrath Strike')));
+          [...document.querySelectorAll('.profile_action_trigger')].find(b=>b.textContent.includes('Wrath Strike')).click();await wait(()=>document.querySelector('.action_popup_stats'));
+        })()`);
+        for(const [width,height] of [[1600,1000],[800,900],[2200,1200]]) {
+          window.setSize(width,height);
+          await window.webContents.capturePage(undefined,{stayHidden:true,stayAwake:true});
+          const image=await window.webContents.capturePage(undefined,{stayHidden:true,stayAwake:true});
+          const file=path.join(smokeUserData!,`profile_review_${width}.png`);fs.writeFileSync(file,image.toPNG());
+          const layout=await window.webContents.executeJavaScript("({width:innerWidth,scrollWidth:document.documentElement.scrollWidth})");
+          if(layout.scrollWidth>layout.width)throw Error('Profile layout overflows its window');
+          console.log('PROFILE_REVIEW_SCREENSHOT',file,JSON.stringify(layout));
+        }
+      })().catch(error=>console.error('PROFILE_REVIEW_FAILED',error));},2000);
+    });
+  }
   // Bounded integration check uses the actual packaged renderer, preload, IPC and SQLite.
-  if (smokeTest) {
+  if (smokeTest && !process.argv.includes('--review-profile')) {
     window.webContents.on('console-message', event => console.error('RENDERER:', event.message));
-    const timeout = setTimeout(() => { console.error('SMOKE_FAILED: renderer timed out'); app.exit(1); }, 20000);
+    const timeout = setTimeout(() => { console.error('SMOKE_FAILED: renderer timed out'); app.exit(1); }, 60000);
     window.webContents.once('did-finish-load', async () => {
       try {
         let decodedAssets=0;
+        const profileCheck=!smokeReference?await window.webContents.executeJavaScript(characterProfileSmoke):{};
         const expanded=reference!.pragma('user_version',{simple:true})===3&&!smokeReference?await window.webContents.executeJavaScript(referenceReleaseSmoke):{};
         if(!smokeReference){
           const images=Object.values(art.manifest.resources).filter(r=>r.file_state==='captured').map(r=>[assetUrl(r.id),r.width,r.height]);
@@ -166,7 +201,7 @@ app.whenReady().then(async () => {
         }
         const result = await window.webContents.executeJavaScript(smokeReference?referenceV3Smoke:referenceBaselineSmoke);
         if(outboundRequests!==0)throw new Error('Offline smoke attempted an HTTP(S) request');
-        console.log('SMOKE_PASSED', JSON.stringify({...result,...expanded,decodedAssets,outboundRequests,httpBlocked:app.isPackaged}));
+        console.log('SMOKE_PASSED', JSON.stringify({...result,...expanded,...profileCheck,decodedAssets,outboundRequests,httpBlocked:app.isPackaged}));
         clearTimeout(timeout);
         window.destroy();
         closeDatabases();

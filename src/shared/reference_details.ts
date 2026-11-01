@@ -9,6 +9,19 @@ const record=<K extends string,S extends z.ZodRawShape>(kind:K,shape:S)=>z.objec
 // Purpose-specific read contracts preserve source value states and references.
 // Neither a raw SQL query nor an arbitrary record-kind request crosses preload.
 export const detailRecordSchemas={
+ character_identity:record('character_identity',{character_id:id,faction_text:textFact,epithet_text:textFact,gender_text:textFact,unique_class_id:nullableId,bloodmark_text:textFact}),
+ stat_profiles:record('stat_profiles',{owner_id:id,role:str,level_low:integer.nullable(),level_high:integer.nullable(),level_text:str.nullable(),class_id:nullableId,modifier_source_id:nullableId,interpretation_state:str}),
+ stat_values:record('stat_values',{profile_id:id,stat_id:id,number_value:numberFact,unit:str,expression_text:textFact,value_state:str}),
+ initial_skills:record('initial_skills',{character_id:id,skill_id:id,grade_id:textFact,grade_state:str,affinity:textFact,affinity_state:str}),
+ starting_states:record('starting_states',{character_id:id,level_value:integerFact,class_id:nullableId,class_state:str,observation_profile_id:nullableId,source_context_json:z.object({source_label:str.optional(),role:str.optional(),route_ids:z.array(id).optional(),part:integer.nullable().optional(),condition_ids:z.array(id).optional(),profile_record_id:id.optional()}).strict()}),
+ loadout_entries:record('loadout_entries',{starting_state_id:id,target_id:nullableId,label:str,role:str,quantity_value:numberFact,quantity_json:quantitySchema,resolution:str,source_order:integer.nullable()}),
+ recruitment_events:record('recruitment_events',{character_id:id,join_kind:textFact,chapter_value:integerFact,renown_value:integerFact,support_value:integerFact,when_text:textFact,condition_id:nullableId,event_scope_state:str}),
+ time_assertions:record('time_assertions',{owner_record_id:id,timing_role:str,calendar_id:str,start_month:integerFact,start_day:integerFact,end_month:integerFact,end_day:integerFact,time_text:textFact,deadline_turns:integerFact,timing_text:textFact,semantics_state:str,source_order:integer.nullable()}),
+ crest_associations:record('crest_associations',{person_id:id,crest_id:nullableId,crest_label:str,dragon_label:textFact,effect_text:textFact}),
+ crest_profiles:record('crest_profiles',{crest_id:id,effect_text:textFact,trigger_json:quantitySchema}),
+ blaze_associations:record('blaze_associations',{character_id:nullableId,person_id:nullableId,action_id:nullableId,blaze_type_id:nullableId,acquisition_text:textFact,role:str}),
+ blaze_type_profiles:record('blaze_type_profiles',{blaze_type_id:id,description_text:textFact}),
+ action_relations:record('action_relations',{from_id:id,to_id:id,relation:str,condition_id:nullableId}),
  learning_rules:record('learning_rules',{scope:str,source_roster_capture_id:nullableId,skill_id:nullableId,rule_completeness:str}),
  learning_awards:record('learning_awards',{rule_id:nullableId,character_id:nullableId,acquired_entity_id:nullableId,acquired_label:str,skill_id:nullableId,grade_id:nullableId,acquisition_kind:str,level_value:integer.nullable(),active_at_start:integer.nullable(),condition_id:nullableId,applicability:str}),
  action_profiles:record('action_profiles',{action_id:id,effect_text:textFact,damage_type:textFact,equipment_restriction_text:textFact,upgrade_text:textFact,parameters_json:parameterMapSchema}),
@@ -59,11 +72,18 @@ const conditionValueSchema=z.discriminatedUnion('kind',[
 export const conditionSchema=z.object({id,node_kind:z.enum(['all','any','not','leaf','unspecified']),predicate:str.nullable(),subject_id:nullableId,object_id:nullableId,value:conditionValueSchema,claim_id:nullableId,children:z.array(z.object({id,order:integer}).strict())}).strict();
 export interface ReferenceScope{contexts:z.infer<typeof contextSchema>[];conditions:z.infer<typeof conditionSchema>[]}
 export interface ProfileLink{ownerRecordId:string;profileRecordId:string}
+export interface CrestReference extends ReferenceScope{crest:EntitySummary;profiles:DetailRecord<'crest_profiles'>[];associations:DetailRecord<'crest_associations'>[];people:EntitySummary[]}
 export interface CharacterLearning extends ReferenceScope{character:EntitySummary;awards:DetailRecord<'learning_awards'>[];rules:DetailRecord<'learning_rules'>[];actions:ActionSummary[];profiles:DetailRecord<'action_profiles'>[];profileLinks:ProfileLink[]}
 export interface ClassRewards extends ReferenceScope{characterClass:EntitySummary;rewards:DetailRecord<'class_rewards'>[];actions:ActionSummary[];profiles:DetailRecord<'action_profiles'>[];profileLinks:ProfileLink[]}
-export interface ActionReference extends ReferenceScope{action:ActionSummary;profiles:DetailRecord<'action_profiles'>[];parameters:DetailRecord<'action_parameters'>[];itemLinks:DetailRecord<'item_action_links'>[];items:EntitySummary[]}
+export interface ActionReference extends ReferenceScope {
+ action:ActionSummary;profiles:DetailRecord<'action_profiles'>[];parameters:DetailRecord<'action_parameters'>[];
+ itemLinks:DetailRecord<'item_action_links'>[];items:EntitySummary[];
+ awards:DetailRecord<'learning_awards'>[];blaze:DetailRecord<'blaze_associations'>[];profileLinks:ProfileLink[];
+ learners:{character:EntitySummary;awardIds:string[];blazeIds:string[]}[];
+ classRewards:DetailRecord<'class_rewards'>[];classes:EntitySummary[];relations:DetailRecord<'action_relations'>[];relatedActions:ActionSummary[];
+}
 export interface SourceCoverage{field:string;captureState:string;semanticState:string;canonicalState:string;importState:string;reason:string|null}
-export interface CharacterSocial extends ReferenceScope{character:EntitySummary;coverage:SourceCoverage[];birdTime:{prompt:DetailRecord<'bird_prompts'>;answers:{id:string;responseId:string;text:z.infer<typeof textFact>}[]}[];preferences:DetailRecord<'preferences'>[];subjects:EntitySummary[];itemIds:string[];supports:{id:string;people:[string,string];variants:DetailRecord<'support_variants'>[];directionalClaims:DetailRecord<'support_directional_claims'>[]}[]}
+export interface CharacterSocial extends ReferenceScope{character:EntitySummary;coverage:SourceCoverage[];people:EntitySummary[];birdTime:{prompt:DetailRecord<'bird_prompts'>;answers:{id:string;responseId:string;text:z.infer<typeof textFact>}[]}[];preferences:DetailRecord<'preferences'>[];subjects:EntitySummary[];itemIds:string[];supports:{id:string;people:[string,string];variants:DetailRecord<'support_variants'>[];directionalClaims:DetailRecord<'support_directional_claims'>[]}[]}
 export interface ItemReference extends ReferenceScope{item:EntitySummary;profiles:DetailRecord<'item_profiles'>[];requirements:DetailRecord<'item_requirements'>[];actionLinks:DetailRecord<'item_action_links'>[];variants:DetailRecord<'item_variants'>[];recipes:DetailRecord<'recipes'>[];recipeInputs:DetailRecord<'recipe_inputs'>[];acquisition:DetailRecord<'acquisition_sources'>[];containerContents:DetailRecord<'container_contents'>[];locationContents:DetailRecord<'location_contents'>[];shopOffers:DetailRecord<'shop_offers'>[];locations:EntitySummary[]}
 export interface LocationReference extends ReferenceScope{location:EntitySummary;region:EntitySummary|null;profiles:DetailRecord<'location_profiles'>[];locationContexts:DetailRecord<'location_contexts'>[];contents:DetailRecord<'location_contents'>[];shops:{entity:EntitySummary;layers:DetailRecord<'inventory_layers'>[];offers:DetailRecord<'shop_offers'>[]}[];targets:EntitySummary[];markers:DetailRecord<'map_markers'>[]}
 export interface MapSurfaceReference{surface:EntitySummary;spatial:{id:string;coordinateKind:string;axisOrder:string;unitsX:number|null;unitsY:number|null;flipY:boolean|null;width:number|null;height:number|null};backgroundAssetId:string|null;tileSize:number|null;tileVersion:string|null;tiles:DetailRecord<'map_tiles'>[];geometries:DetailRecord<'map_geometries'>[];categories:{id:string;label:string;group:string;order:number;groupOrder:number}[]}

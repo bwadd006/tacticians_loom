@@ -1,0 +1,38 @@
+export const characterProfileSmoke=`(async()=>{
+ const wait=async(test,message)=>{for(let n=0;n<120;n++){if(test())return;await new Promise(r=>setTimeout(r,50));}throw Error(message);};
+ const root=()=>document.querySelector('.character_profile');
+ await wait(()=>root()?.getAttribute('data-profile-character')==='alexandra'&&root().querySelector('.profile_identity_button'),'Default profile did not open');
+ if([...document.querySelectorAll('.app_navigation button')].find(b=>b.getAttribute('aria-current')==='page')?.textContent!=='Character Profile')throw Error('Profile is not the opening view');
+ if(document.querySelector('#result_count'))throw Error('Opening profile unnecessarily loaded libraries');
+ const tabs=[...root().querySelectorAll('[role=tab]')];if(tabs.map(t=>t.textContent).join('|')!=='Arts & Abilities|Recruitment|Liked Gifts|Bird Time|Supports')throw Error('Profile tabs differ');
+ const choose=async id=>{root().querySelector('.profile_identity_button').click();await wait(()=>document.querySelector('.profile_picker[open]'),'Picker did not open');if(document.querySelectorAll('[data-profile-choice]').length!==63)throw Error('Picker catalog was truncated');document.querySelector('[data-profile-choice="'+id+'"]').click();await wait(()=>root().getAttribute('data-profile-character')===id&&root().querySelector('.profile_identity_button')?.textContent.includes(id==='cai'?'Cai':id==='fabio'?'Fabio':id==='klapka'?'Klapka':'Eshmel'),'Character did not change');};
+ await choose('cai');
+ await wait(()=>root().querySelectorAll('.profile_action').length>10,'Learnsets not rendered');
+ const crestButton=[...root().querySelectorAll('.profile_crest_trigger')].find(b=>b.textContent.includes('Diadem of the Apostle'));
+ if(!crestButton||!crestButton.querySelector('.crest_icon'))throw Error('Bloodmark icon or trigger missing');
+ crestButton.click();await wait(()=>document.querySelector('.crest_popup_bearers'),'Bloodmark popup missing');
+ const crestPopup=document.querySelector('.profile_detail_dialog');
+ if(!crestPopup.textContent.includes('Ice Dragon')||!crestPopup.textContent.includes('Grants Hit+20. Trigger % = 20.')||!crestPopup.textContent.includes('Yuri'))throw Error('Bloodmark facts or bearers missing');
+ await crestPopup.querySelector('img.crest_icon').decode();
+ crestPopup.dispatchEvent(new Event('cancel',{cancelable:true}));await wait(()=>!document.querySelector('.profile_detail_dialog'),'Bloodmark close failed');
+ const wrath=[...root().querySelectorAll('.profile_action_trigger')].find(b=>b.textContent.includes('Wrath Strike'));if(!wrath||root().querySelector('details.profile_action'))throw Error('Action rows still expand inline');
+ const scroll=root().querySelector('.profile_tab_content');scroll.scrollTop=100;const beforeScroll=scroll.scrollTop;wrath.focus({preventScroll:true});wrath.click();
+ await wait(()=>document.querySelector('.profile_action_dialog .action_popup_stats'),'Combat art popup missing');
+ const popup=document.querySelector('.profile_action_dialog');if(!popup.textContent.includes('High Hit.')||!popup.textContent.includes('15 Hit')||popup.querySelectorAll('.action_popup_learners button').length!==36)throw Error('Action popup facts or learners missing');
+ popup.dispatchEvent(new Event('cancel',{cancelable:true}));await wait(()=>!document.querySelector('.profile_detail_dialog'),'Popup Escape handler failed');if(document.activeElement!==wrath||scroll.scrollTop!==beforeScroll)throw Error('Popup close lost focus or scroll');
+ if(root().querySelector('[data-preview-state]')?.getAttribute('data-preview-state')!=='deferred')throw Error('Class preview was enabled');
+ const go=async id=>{document.querySelector('#profile_tab_'+id).click();await wait(()=>root().getAttribute('data-profile-tab')===id&&!root().querySelector('.profile_tab_content [role=status]'),'Tab failed '+id);};
+ await go('recruitment');await wait(()=>root().textContent.includes('Part 3'),'Later-story recruitment missing');
+ await go('liked_gifts');await wait(()=>root().querySelector('.profile_gift_grid'),'Gifts missing');
+ const gift=[...root().querySelectorAll('.profile_gift_grid button')].find(b=>b.textContent==='Sharp Fishhook');if(!gift)throw Error('Item-linked gift missing');gift.click();await wait(()=>document.querySelector('.profile_detail_dialog[open]')?.textContent.includes('Sharp Fishhook'),'Item detail dialog failed');document.querySelector('.profile_detail_dialog header button').click();
+ await go('bird_time');await wait(()=>root().querySelector('.profile_bird_prompt strong'),'Bird Time answers missing');
+ await go('supports');await wait(()=>root().querySelector('.profile_support_table'),'Support table missing');
+ const partner=root().querySelector('.profile_support_person button');if(partner){const before=root().getAttribute('data-profile-character');partner.click();await wait(()=>root().getAttribute('data-profile-character')!==before&&root().querySelector('.profile_identity_button'),'Support partner navigation failed');if(root().getAttribute('data-profile-tab')!=='supports')throw Error('Partner navigation lost Supports');}
+ await choose('fabio');if(root().getAttribute('data-profile-tab')!=='supports')throw Error('Character switch lost active tab');
+ await go('arts_abilities');await wait(()=>root().querySelector('.profile_action'),'Fabio learnsets missing');root().querySelector('.profile_action_trigger').click();await wait(()=>document.querySelector('.profile_detail_dialog[open]'),'Action details failed');document.querySelector('.profile_detail_dialog header button').click();
+ await choose('klapka');await go('bird_time');await wait(()=>root().textContent.includes('Bird Time information not documented'),'Missing Bird Time became known absence');
+ await choose('eshmel');await wait(()=>root().querySelector('.profile_summary')?.textContent.includes('28+10'),'Stat expression lost');
+ const pref=await window.loom.loadCharacterProfilePreference();if(pref?.characterId!=='eshmel')throw Error('Last character was not saved');
+ const profile=await window.loom.characterProfile('cai');if(profile.crests.length!==2||!profile.blaze.length)throw Error('Complete profile bridge failed');
+ return {characterProfile:true,profileTabs:5,profileCatalog:63,profileSelectionSaved:true,classPreviewDeferred:true};
+})()`;

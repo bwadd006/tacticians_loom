@@ -68,6 +68,6 @@ test('evidence retrieval retains preferred and legacy values with exact pointers
  assert.throws(()=>q.referenceEvidence(db,Array(101).fill('x')));assert.throws(()=>q.referenceEvidence(db,[]));assert.throws(()=>q.actionReference(db,'a'.repeat(201)));assert.throws(()=>q.itemReference(db,'\0'));
  assert.deepEqual(q.referenceEvidence(db,['missing_claim']),[]);assert.throws(()=>db.prepare("UPDATE entities SET display_name='changed'").run(),/readonly|read.only/i);
 });
-test('schema-1 through schema-4 player fixtures retain notes, rules, timestamps and unresolved IDs',()=>{
- const result=validateSavedDataCompatibility(db);assert.equal(result.versions.length,4);assert.equal(result.retainedCharacterIds,63);assert.equal(result.realUserDataOpened,false);
+test('schema-1 through schema-5 player fixtures retain notes, rules, timestamps and unresolved IDs',()=>{
+ const result=validateSavedDataCompatibility(db);assert.equal(result.versions.length,5);assert.equal(result.retainedCharacterIds,63);assert.equal(result.realUserDataOpened,false);
 });

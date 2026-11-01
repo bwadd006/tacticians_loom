@@ -1,4 +1,5 @@
 import fs from 'node:fs';
+import { profilePreferenceSchema,type ProfilePreference } from '../../shared/character_profile';
 import path from 'node:path';
 import type Database from 'better-sqlite3';
 import { loadSqlite } from './sqlite';
@@ -13,7 +14,7 @@ export function openUserDatabase(filename: string): Database.Database {
   const db = new Sqlite(filename);
   try {
     const version = Number(db.pragma('user_version', { simple: true }));
-    if (![0, 1, 2, 3, 4].includes(version)) throw new Error('Saved planning data requires a newer application. Your data has been preserved.');
+    if (![0, 1, 2, 3, 4, 5].includes(version)) throw new Error('Saved planning data requires a newer application. Your data has been preserved.');
     db.pragma('journal_mode = WAL');
     if (version === 0) db.transaction(() => {
       db.exec(`CREATE TABLE library_setups (
@@ -43,6 +44,12 @@ export function openUserDatabase(filename: string): Database.Database {
         singleton INTEGER PRIMARY KEY CHECK(singleton = 1),
         setup_json TEXT NOT NULL CHECK(json_valid(setup_json)), saved_at TEXT NOT NULL, dataset_version TEXT NOT NULL
       ) STRICT; PRAGMA user_version = 4;`);
+    })();
+    if (version < 5) db.transaction(() => {
+      db.exec(`CREATE TABLE character_profile_preference (
+        singleton INTEGER PRIMARY KEY CHECK(singleton=1),
+        character_id TEXT NOT NULL CHECK(length(character_id) BETWEEN 1 AND 200)
+      ) STRICT; PRAGMA user_version = 5;`);
     })();
     return db;
   } catch (error) { db.close(); throw error; }
@@ -144,4 +151,14 @@ export function loadSetup(db: Database.Database, context: unknown): SavedSetup |
   const parsed = setupSchema.safeParse(JSON.parse(row.setup_json));
   if (!parsed.success) throw new Error('This saved setup has an unsupported format. It has been preserved; your current view is unchanged.');
   return { setup: normalizeLegacyRecruitmentSorts(parsed.data, route), savedAt: row.saved_at, datasetVersion: row.dataset_version };
+}
+
+export function loadCharacterProfilePreference(db:Database.Database):ProfilePreference|null {
+  const row=db.prepare('SELECT character_id FROM character_profile_preference WHERE singleton=1').get() as {character_id:string}|undefined;
+  return row?profilePreferenceSchema.parse({characterId:row.character_id}):null;
+}
+export function saveCharacterProfilePreference(db:Database.Database,input:unknown):ProfilePreference {
+  const value=profilePreferenceSchema.parse(input);
+  db.prepare('INSERT INTO character_profile_preference VALUES (1,?) ON CONFLICT(singleton) DO UPDATE SET character_id=excluded.character_id').run(value.characterId);
+  return value;
 }

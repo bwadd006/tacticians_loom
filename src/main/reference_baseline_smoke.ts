@@ -6,6 +6,7 @@ export const referenceBaselineSmoke=`(async()=>{
   const nuzzuo=await window.loom.character('nuzzuo');if(nuzzuo.recruitment_by_route.cai.earliest_chapter!==6)throw new Error('Preferred-source correction missing');
   const cai=await window.loom.character('cai');if(cai.recruitment_by_route.cai.min_renown!==null||cai.recruitment_by_route.cai.earliest_chapter!==null)throw new Error('Starting join invented thresholds');
   if(typeof window.require!=='undefined')throw new Error('Node leaked into renderer');
+  [...document.querySelectorAll('.app_navigation button')].find(b=>b.textContent==='Character Library').click();
   await wait(()=>document.querySelector('#result_count strong')?.textContent==='50','Character Library did not render');
   const img=document.querySelector('.portrait_table');await wait(()=>img?.complete&&img.naturalWidth>0,'Bundled portrait failed');
   document.querySelector('[data-character-id="cai"] .character_name').click();

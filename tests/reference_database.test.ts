@@ -122,7 +122,7 @@ test('reviewed release opens normally and saved IDs outside Act 1 survive refere
   data.write('reviewed.1','reviewed');buildReferenceV3(root,output);const reference=openReference(output);
   const user=openUserDatabase(path.join(root,'player.sqlite'));try{
     for(const entry of retainedIds.filter(e=>e.kind==='character')) {setCharacterShortlisted(user,{characterId:entry.id,shortlisted:true},'old');setCharacterNote(user,{characterId:entry.id,note:`Retained ${entry.id}`},'old');}
-    assert.equal(user.pragma('user_version',{simple:true}),4);
+    assert.equal(user.pragma('user_version',{simple:true}),5);
     const before=listCharacterPlanning(user);assert.equal(before.length,63);
     assert.equal(listCharacters(reference,'all').length,1);assert.deepEqual(listCharacterPlanning(user),before);
     assert.ok(before.some(r=>r.characterId==='leda'&&r.shortlisted));

@@ -3,8 +3,26 @@
 See the [change log](change_log.md) for features, fixes, data updates, and save
 compatibility notes.
 
-Standalone Electron/React/TypeScript desktop application. The reference-data
-foundation, Character Library, Class Library, Shortlist & Compare workspace,
+Standalone Electron/React/TypeScript desktop application. The opening Character
+Profile covers all 63 maintained characters with a searchable portrait picker,
+a persistent summary and five tabs: Arts & Abilities, Recruitment, Liked Gifts,
+Bird Time and Supports. It restores the last viewed character, shares shortlist
+membership and notes, and preserves unknown starting/stat/story information.
+The picker shows about six portraits per row at desktop widths. Class preview
+remains a deferred stretch goal. The Character Library retains its existing
+Act 1 scope and behavior.
+
+Click an ability, combat art, spell or Blaze action to open a detail popup with
+reported stats, effects, upgrades, acquisition requirements and large learner
+portraits. Skill lists group combat arts before abilities and hide shared
+Lv. 1–5 skill abilities while retaining Faire abilities; the underlying reference
+records remain complete. Bloodmarks and crests show local icons and open popups
+with effects, dragon associations and documented bearers. The maintained catalog
+contains all 15 crests and 80 bearer associations. Temperance and Entirety have
+no reported effects or available icons in the reviewed source and use explicit
+fallbacks. Close a popup or press Escape to return to the same profile position.
+
+The reference-data foundation, Character Library, Class Library, Shortlist & Compare workspace,
 and Paralogue Library are implemented. The Character Library provides its route selector, growth
 table, filters, prioritized sorting,
 details panel and saved per-route setups. Its ordered controls can sort by
@@ -27,14 +45,17 @@ one global browsing setup is saved without completion or shortlist state.
 Portraits and skill affinity icons are bundled game artwork (see the asset
 manifest for attribution and the few documented gaps and derived recreations).
 
-The current interface uses desktop navigation among all four planning views and a
+The current interface uses desktop navigation among Character Profile and the
+four existing planning views, with a
 responsive deep-dark layout with a 16-pixel text
 baseline and enlarged local artwork. Its table always ends with recruitment for
 Cai, Dietrich, Theodora, and Leda. Recruitable/tutorial entries show Chapter,
 Renown, Support, and additional requirements; automatic joins show only their
 join chapter. The dossier includes recruitment only on documented available
-routes. Provenance, conflict records, notes, and starting information remain in
-the maintained data for updates but are intentionally absent from the app UI.
+routes. The Character Library dossier hides maintenance provenance, conflict
+records, general source notes and starting information. Character Profile shows
+the fuller reported starting observations separately, and player-authored notes
+remain available in the profile and shortlist.
 
 ## Develop
 
@@ -51,6 +72,11 @@ reference data. `npm start` compiles the application and opens its desktop windo
 using the existing database. Restarting does not rebuild data or contact sources.
 
 ## Maintained data
+
+Current application version: `0.1.0`; dataset `2026.10.30.2`; reference schema 3;
+player schema 5. The player migration adds the last-viewed character preference
+while preserving existing library setups, shortlist membership, notes and
+unresolved stable IDs.
 
 `data/source/` contains the complete maintained reference records, their source
 citations, uncertainty states, and retained conflicting evidence. Stable character,

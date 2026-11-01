@@ -2,9 +2,13 @@ import { contextBridge, ipcRenderer } from 'electron';
 import { CHANNELS, type ReferenceApi } from '../shared/api';
 
 const api: ReferenceApi = {
+  characterProfile:id=>ipcRenderer.invoke(CHANNELS.characterProfile,id),
+  loadCharacterProfilePreference:()=>ipcRenderer.invoke(CHANNELS.loadCharacterProfilePreference),
+  saveCharacterProfilePreference:value=>ipcRenderer.invoke(CHANNELS.saveCharacterProfilePreference,value),
   referenceCatalog:request=>ipcRenderer.invoke(CHANNELS.referenceCatalog,request),
   characterLearning:id=>ipcRenderer.invoke(CHANNELS.characterLearning,id),
   classRewards:id=>ipcRenderer.invoke(CHANNELS.classRewards,id),
+  crestReference:id=>ipcRenderer.invoke(CHANNELS.crestReference,id),
   actionReference:id=>ipcRenderer.invoke(CHANNELS.actionReference,id),
   characterSocial:id=>ipcRenderer.invoke(CHANNELS.characterSocial,id),
   itemReference:id=>ipcRenderer.invoke(CHANNELS.itemReference,id),

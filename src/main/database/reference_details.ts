@@ -2,7 +2,7 @@ import type Database from 'better-sqlite3';
 import { z } from 'zod';
 import { fieldSchema } from '../../shared/reference_v3';
 import { detailRecordSchemas, referenceIdSchema, catalogRequestSchema, locationRequestSchema, markerRequestSchema, markerListRequestSchema, evidenceRequestSchema, contextSchema, conditionSchema, actionKindSchema,
- type DetailKind,type DetailRecord,type EntitySummary,type ActionSummary,type ReferenceScope,type ReferencePage,type CharacterLearning,type ClassRewards,type ActionReference,type CharacterSocial,type ItemReference,type LocationReference,type MapSurfaceReference,type MarkerReference,type MarkerSummary,type ClaimEvidence,type ProfileLink } from '../../shared/reference_details';
+ type DetailKind,type DetailRecord,type EntitySummary,type ActionSummary,type ReferenceScope,type ReferencePage,type CharacterLearning,type ClassRewards,type CrestReference,type ActionReference,type CharacterSocial,type ItemReference,type LocationReference,type MapSurfaceReference,type MarkerReference,type MarkerSummary,type ClaimEvidence,type ProfileLink } from '../../shared/reference_details';
 
 type SqlValue=string|number|null;
 type Row=Record<string,any>; // SQL rows are parsed into closed shared read contracts below.
@@ -48,11 +48,13 @@ export function referenceCatalog(db:Database.Database,input:unknown):ReferencePa
  const rows=query(db,`SELECT e.* FROM "${tables[r.kind]}" f JOIN entities e ON e.id=f.id WHERE ${where} ORDER BY e.display_name COLLATE NOCASE,e.id LIMIT ? OFFSET ?`,...args,r.limit,r.offset).map(e=>({id:e.id,kind:e.kind,name:e.display_name,identityState:e.identity_state,retired:e.retired===1}));
  return {rows,total,limit:r.limit,offset:r.offset,nextOffset:r.offset+rows.length<total?r.offset+rows.length:null};
 }
+// The same roster restriction applies in both directions of a learning relation.
+const sharedRosterLearning=(characterExpression:string)=>`(f.character_id IS NULL AND f.applicability='source_roster_scoped' AND EXISTS (
+ SELECT 1 FROM learning_rules lr JOIN source_documents sd ON sd.capture_id=lr.source_roster_capture_id JOIN source_bindings sb ON sb.document_id=sd.id
+ WHERE lr.record_id=f.rule_id AND lr.scope='captured_source_roster_shared' AND sb.entity_id=${characterExpression} AND sb.pointer LIKE '/DATA/characters/%/name'))`;
 export function characterLearning(db:Database.Database,input:unknown):CharacterLearning|null {
  v3(db);const id=referenceIdSchema.parse(input),character=entity(db,id);if(!character||!one(db,'SELECT id FROM characters WHERE id=?',id))return null;
- const awards=facts(db,'learning_awards',`f.character_id=? OR (f.character_id IS NULL AND f.applicability='source_roster_scoped' AND EXISTS (
- SELECT 1 FROM learning_rules lr JOIN source_documents sd ON sd.capture_id=lr.source_roster_capture_id JOIN source_bindings sb ON sb.document_id=sd.id
- WHERE lr.record_id=f.rule_id AND lr.scope='captured_source_roster_shared' AND sb.entity_id=? AND sb.pointer LIKE '/DATA/characters/%/name'))`,id,id);
+ const awards=facts(db,'learning_awards',`f.character_id=? OR ${sharedRosterLearning('?')}`,id,id);
  const ruleIds=unique(awards.map(a=>a.body.rule_id)),rules=byRecordIds(db,'learning_rules',ruleIds),actionRows=actions(db,awards.map(a=>a.body.acquired_entity_id));
  const profiles=profileLinks(db,awards.map(a=>({id:a.id,actionId:a.body.acquired_entity_id})));
  return {character,awards,rules,actions:actionRows,...profiles,...scope(db,[...awards,...rules,...profiles.profiles])};
@@ -65,8 +67,23 @@ export function classRewards(db:Database.Database,input:unknown):ClassRewards|nu
 export function actionReference(db:Database.Database,input:unknown):ActionReference|null {
  v3(db);const id=referenceIdSchema.parse(input),a=action(db,id);if(!a)return null;
  const profiles=facts(db,'action_profiles','f.action_id=?',id),parameters=facts(db,'action_parameters','f.action_id=?',id),itemLinks=facts(db,'item_action_links','f.action_id=?',id);
- return {action:a,profiles,parameters,itemLinks,items:entities(db,itemLinks.map(i=>i.body.item_id)),...scope(db,[...profiles,...parameters,...itemLinks])};
+ const awards=facts(db,'learning_awards','f.acquired_entity_id=?',id),blaze=facts(db,'blaze_associations','f.action_id=?',id),classRewards=facts(db,'class_rewards','f.action_id=?',id);
+ const learnerRows=query(db,`SELECT DISTINCT c.id,f.record_id FROM characters c JOIN entities e ON e.id=c.id
+ JOIN learning_awards f ON f.acquired_entity_id=? AND (f.character_id=c.id OR ${sharedRosterLearning('c.id')}) WHERE e.retired=0`,id);
+ const blazeLearners=query(db,'SELECT c.id,b.record_id FROM characters c JOIN entities e ON e.id=c.id JOIN blaze_associations b ON b.character_id=c.id OR b.person_id=c.id WHERE b.action_id=? AND e.retired=0',id);
+ const learners=entities(db,[...learnerRows.map(r=>r.id),...blazeLearners.map(r=>r.id)]).map(character=>({character,awardIds:learnerRows.filter(r=>r.id===character.id).map(r=>String(r.record_id)),blazeIds:blazeLearners.filter(r=>r.id===character.id).map(r=>String(r.record_id))}));
+ const links=profileLinks(db,[...awards.map(r=>({id:r.id,actionId:r.body.acquired_entity_id})),...blaze.map(r=>({id:r.id,actionId:r.body.action_id})),...classRewards.map(r=>({id:r.id,actionId:r.body.action_id}))]);
+ const relations=facts(db,'action_relations','f.from_id=? OR f.to_id=?',id,id);
+ return {action:a,profiles,parameters,itemLinks,items:entities(db,itemLinks.map(i=>i.body.item_id)),awards,blaze,profileLinks:links.profileLinks,learners,classRewards,classes:entities(db,classRewards.map(r=>r.body.class_id)),relations,relatedActions:actions(db,relations.flatMap(r=>[r.body.from_id,r.body.to_id])),...scope(db,[...profiles,...parameters,...itemLinks,...awards,...blaze,...classRewards,...relations])};
 }
+
+export function crestReference(db:Database.Database,input:unknown):CrestReference|null {
+ v3(db);const id=referenceIdSchema.parse(input),crest=entity(db,id);
+ if(!crest||!one(db,'SELECT id FROM crests WHERE id=?',id))return null;
+ const profiles=facts(db,'crest_profiles','f.crest_id=?',id),associations=facts(db,'crest_associations','f.crest_id=?',id);
+ return {crest,profiles,associations,people:entities(db,associations.map(a=>a.body.person_id)),...scope(db,[...profiles,...associations])};
+}
+
 export function characterSocial(db:Database.Database,input:unknown):CharacterSocial|null {
  v3(db);const id=referenceIdSchema.parse(input),character=entity(db,id);if(!character||!one(db,'SELECT id FROM characters WHERE id=?',id))return null;
  const prompts=facts(db,'bird_prompts','f.character_id=?',id).sort((a,b)=>(a.body.source_order??0)-(b.body.source_order??0)||a.id.localeCompare(b.id));
@@ -75,7 +92,7 @@ export function characterSocial(db:Database.Database,input:unknown):CharacterSoc
  const supports=query(db,'SELECT * FROM support_pairs WHERE person_low_id=? OR person_high_id=? ORDER BY id',id,id).map(p=>({id:String(p.id),people:[p.person_low_id,p.person_high_id] as [string,string],variants:facts(db,'support_variants','f.pair_id=?',p.id),directionalClaims:facts(db,'support_directional_claims','f.pair_id=?',p.id)}));
  const ids=unique(preferences.map(p=>p.body.subject_id));
  const coverage=query(db,"SELECT c.* FROM coverage c JOIN records r ON r.id=c.record_id WHERE r.entity_id=? AND c.field_path IN ('/bird_time','/preferences','/supports') ORDER BY c.field_path",id).map(c=>({field:c.field_path,captureState:c.capture_state,semanticState:c.semantic_state,canonicalState:c.canonical_state,importState:c.import_state,reason:c.reason}));
- return {character,coverage,birdTime,preferences,subjects:entities(db,ids),itemIds:query(db,`SELECT id FROM items WHERE id IN (${slots(ids)}) ORDER BY id`,...ids).map(r=>r.id),supports,...scope(db,[...prompts,...preferences,...supports.flatMap(s=>[...s.variants,...s.directionalClaims])])};
+ return {character,coverage,people:entities(db,supports.flatMap(s=>s.people)),birdTime,preferences,subjects:entities(db,ids),itemIds:query(db,`SELECT id FROM items WHERE id IN (${slots(ids)}) ORDER BY id`,...ids).map(r=>r.id),supports,...scope(db,[...prompts,...preferences,...supports.flatMap(s=>[...s.variants,...s.directionalClaims])])};
 }
 export function itemReference(db:Database.Database,input:unknown):ItemReference|null {
  v3(db);const id=referenceIdSchema.parse(input),item=entity(db,id);if(!item||!one(db,'SELECT id FROM items WHERE id=?',id))return null;
@@ -119,3 +136,6 @@ export function referenceEvidence(db:Database.Database,input:unknown):ClaimEvide
  v3(db);const ids=unique(evidenceRequestSchema.parse(input));
  return query(db,`SELECT c.*,d.source_url,d.sha256,d.capture_id,p.captured_at,p.source_role FROM source_claims c JOIN source_documents d ON d.id=c.document_id JOIN captures p ON p.id=d.capture_id WHERE c.id IN (${slots(ids)}) ORDER BY c.id`,...ids).map(c=>({id:c.id,recordId:c.record_id,fieldPath:c.field_path,origin:c.origin,evidenceState:c.evidence_state,valueState:c.value_state,value:z.json().parse(JSON.parse(c.value_json)),semanticRole:c.semantic_role,contextId:c.context_id,source:{url:c.source_url,pointer:c.source_pointer,sha256:c.sha256,captureId:c.capture_id,capturedAt:c.captured_at,role:c.source_role}}));
 }
+
+// Shared query primitives remain main-process-only; preload exposes named operations.
+export {facts,entity,entities,actions,scope,profileLinks,query,slots,v3};

@@ -1,3 +1,4 @@
+import type { CharacterProfile,ProfilePreference } from './character_profile';
 import type { Route, RouteContext } from './catalog';
 import type { Character, CharacterClass, Paralogue } from './source_models';
 import type { CertificationRules, ClassUnlock } from './source_models';
@@ -5,7 +6,7 @@ import type { LibrarySetup, SavedSetup } from './library_setup';
 import type { ClassLibrarySetup, SavedClassSetup } from './class_library_setup';
 import type { CharacterPlanning } from './character_planning';
 import type { ParalogueLibrarySetup, SavedParalogueSetup } from './paralogue_library_setup';
-import type { CatalogRequest,ReferencePage,EntitySummary,CharacterLearning,ClassRewards,ActionReference,CharacterSocial,ItemReference,LocationRequest,LocationReference,MapSurfaceReference,MarkerListRequest,MarkerSummary,MarkerRequest,MarkerReference,ClaimEvidence } from './reference_details';
+import type { CatalogRequest,ReferencePage,EntitySummary,CharacterLearning,ClassRewards,CrestReference,ActionReference,CharacterSocial,ItemReference,LocationRequest,LocationReference,MapSurfaceReference,MarkerListRequest,MarkerSummary,MarkerRequest,MarkerReference,ClaimEvidence } from './reference_details';
 
 export interface ReferenceConflict extends Record<string, unknown> { character_id: string | null; field: string; status: string }
 
@@ -31,9 +32,13 @@ export interface ParalogueLibraryData {
   conflicts: { paralogueId: string; routeId: Route | null; field: string; status: string; details: string }[];
 }
 export interface ReferenceApi {
+  characterProfile(id:string):Promise<CharacterProfile|null>;
+  loadCharacterProfilePreference():Promise<ProfilePreference|null>;
+  saveCharacterProfilePreference(value:ProfilePreference):Promise<ProfilePreference>;
   referenceCatalog(request:CatalogRequest):Promise<ReferencePage<EntitySummary>>;
   characterLearning(id:string):Promise<CharacterLearning|null>;
   classRewards(id:string):Promise<ClassRewards|null>;
+  crestReference(id:string):Promise<CrestReference|null>;
   actionReference(id:string):Promise<ActionReference|null>;
   characterSocial(id:string):Promise<CharacterSocial|null>;
   itemReference(id:string):Promise<ItemReference|null>;
@@ -61,8 +66,9 @@ export interface ReferenceApi {
   clearCharacterNote(characterId: string): Promise<CharacterPlanning | null>;
 }
 export const CHANNELS = {
+  characterProfile:'reference:character_profile',loadCharacterProfilePreference:'profile:load_preference',saveCharacterProfilePreference:'profile:save_preference',
   referenceCatalog:'reference:catalog',characterLearning:'reference:character_learning',classRewards:'reference:class_rewards',
-  actionReference:'reference:action_detail',characterSocial:'reference:character_social',itemReference:'reference:item_detail',
+  crestReference:'reference:crest_detail',actionReference:'reference:action_detail',characterSocial:'reference:character_social',itemReference:'reference:item_detail',
   locationReference:'reference:location_detail',mapSurfaceReference:'reference:map_surface',mapMarkers:'reference:map_markers',mapMarkerReference:'reference:map_marker',referenceEvidence:'reference:evidence',
   overview: 'reference:overview', characters: 'reference:characters',
   character: 'reference:character', characterClass: 'reference:class',

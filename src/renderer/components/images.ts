@@ -11,3 +11,4 @@ export function classIconUrl(classId:string):string|null {return selectedAssetUr
 export type AffinityVariant='boon'|'bane'|'neutral';
 export function skillIconUrl(skillId:string,variant:AffinityVariant):string|null {return selectedAssetUrl(manifest,skillId,'skill_icon',variant);}
 export function actionIconUrl(actionId:string):string|null {return selectedAssetUrl(manifest,actionId,'icon');}
+export function crestIconUrl(crestId:string):string|null {return selectedAssetUrl(manifest,crestId,'icon');}

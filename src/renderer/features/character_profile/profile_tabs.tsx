@@ -1,0 +1,59 @@
+import { PROFILE_SKILLS } from '../../../shared/character_profile';
+import type { CharacterProfile,ProfileTab } from '../../../shared/character_profile';
+import type { CharacterLearning,CharacterSocial,DetailRecord,ReferenceScope } from '../../../shared/reference_details';
+import { ROUTES,ROUTE_NAMES,SKILLS } from '../../../shared/catalog';
+import { skillLabel } from '../../../shared/library_setup';
+import { factText,contextText,conditionText,compareLearningRequirements,learningKindOrder } from '../../../shared/character_profile_query';
+import { CrestIcon } from '../../components/crest_icon';
+import { ActionIcon } from '../../components/action_icon';
+import { SkillIcon } from '../../components/skill_icon';
+import { Portrait } from '../../components/portrait';
+import type { DetailSelection } from './profile_details';
+const title=(s:string)=>s.replaceAll('_',' ').replace(/^./,c=>c.toUpperCase());
+function ActionEntry({award,learning,profile,onDetail}:{award:DetailRecord<'learning_awards'>;learning:CharacterLearning;profile:CharacterProfile;onDetail:(s:DetailSelection)=>void}) {
+  const a=learning.actions.find(a=>a.id===award.body.acquired_entity_id),link=learning.profileLinks.find(l=>l.ownerRecordId===award.id),effect=learning.profiles.find(p=>p.id===link?.profileRecordId);
+  const own=['personal','personal_equippable','level'].includes(award.body.acquisition_kind);
+  const label=<><span className="profile_grade">{award.body.grade_id??(award.body.level_value!==null?`Lv. ${award.body.level_value}`:award.body.acquisition_kind==='personal'?'Personal':'Not specified')}</span><ActionIcon id={a?.id}/><span>{award.body.acquired_label}</span><small>{a?title(a.actionKind):'Identity unresolved'}</small></>;
+  return <div className="profile_action" data-action-id={a?.id}>
+    {a?<button className="profile_action_trigger" aria-haspopup="dialog" onClick={()=>onDetail({kind:'action',id:a.id,name:a.name,ownerRecordId:award.id})}>{label}</button>:<div className="profile_action_unresolved">{label}</div>}
+    {own&&<p className="profile_action_effect">{factText(effect?.body.effect_text)}</p>}
+  </div>;
+}
+function Arts({p,l,onDetail}:{p:CharacterProfile;l:CharacterLearning;onDetail:(s:DetailSelection)=>void}) {
+  const abilityIds=new Set(l.actions.filter(a=>a.actionKind==='ability').map(a=>a.id));
+  const visibleAwards=l.awards.filter(a=>!(a.body.acquisition_kind==='shared_skill_rank'
+    && a.body.acquired_entity_id!==null && abilityIds.has(a.body.acquired_entity_id)
+    && /\bLv\.?\s*[1-5]$/iu.test(a.body.acquired_label)));
+  const own=visibleAwards.filter(a=>['personal','personal_equippable','level'].includes(a.body.acquisition_kind));
+  const order=compareLearningRequirements,byKind=learningKindOrder(l.actions);
+  return <div className="profile_arts_grid"><div>
+    <section><h3>Personal & equippable abilities</h3>{own.length?own.sort((a,b)=>(a.body.acquisition_kind==='personal'?0:1)-(b.body.acquisition_kind==='personal'?0:1)||order(a,b)).map(a=><ActionEntry key={a.id} award={a} learning={l} profile={p} onDetail={onDetail}/>):<p>Character abilities not documented.</p>}</section>
+    <section><h3>Bloodmarks & crests</h3>{p.crests.length?p.crests.map(c=><article key={c.id}><h4>{c.body.crest_id?<button className="profile_crest_trigger" aria-haspopup="dialog" onClick={()=>onDetail({kind:'crest',id:c.body.crest_id!,name:c.body.crest_label})}><CrestIcon id={c.body.crest_id}/>{c.body.crest_label}</button>:c.body.crest_label}</h4>{c.body.dragon_label.state==='value'&&<p className="hint">{factText(c.body.dragon_label)}</p>}<p>{factText(c.body.effect_text)}</p>{p.crestProfiles.filter(cp=>cp.body.crest_id===c.body.crest_id).filter(cp=>cp.body.trigger_json.raw!==null).map(cp=><p key={cp.id} className="hint">Trigger: {String(cp.body.trigger_json.raw??'Unknown')}{cp.body.trigger_json.unit?` ${cp.body.trigger_json.unit}`:''}</p>)}</article>):<p>Bloodmark information not documented.</p>}</section>
+    <section><h3>Blaze abilities & arts</h3>{p.blaze.length?p.blaze.map(b=>{const a=p.actions.find(a=>a.id===b.body.action_id),link=p.profileLinks.find(l=>l.ownerRecordId===b.id),effect=p.profiles.find(p=>p.id===link?.profileRecordId);return <article key={b.id}><h4><ActionIcon id={a?.id}/>{a?.name??p.related.find(e=>e.id===b.body.blaze_type_id)?.name??'Blaze association'}</h4><p>{factText(b.body.acquisition_text)}</p>{effect&&<p>{factText(effect.body.effect_text)}</p>}{b.context_id&&<p className="hint">{contextText(p,b.context_id)}</p>}{a&&<button onClick={()=>onDetail({kind:'action',id:a.id,name:a.name,ownerRecordId:b.id})}>Action details</button>}</article>;}):<p>Blaze information not documented.</p>}{p.blazeTypes.map(b=><p key={b.id}>{factText(b.body.description_text)}</p>)}</section>
+  </div><div><p className="hint">Documented learning by skill. Class access is a separate requirement.</p>{PROFILE_SKILLS.map(skill=>{
+    const awards=visibleAwards.filter(a=>a.body.skill_id===skill&&!own.some(o=>o.id===a.id));
+    return <section key={skill}><h3><SkillIcon skill={skill} variant="neutral"/>{skillLabel(skill)}</h3>{awards.length?awards.sort(byKind).map(a=><ActionEntry key={a.id} award={a} learning={l} profile={p} onDetail={onDetail}/>):<p>Learning information not documented.</p>}</section>;
+  })}{visibleAwards.filter(a=>!a.body.skill_id&&!own.some(o=>o.id===a.id)).length>0&&<section><h3>Other learning</h3>{visibleAwards.filter(a=>!a.body.skill_id&&!own.some(o=>o.id===a.id)).sort(byKind).map(a=><ActionEntry key={a.id} award={a} learning={l} profile={p} onDetail={onDetail}/>)}</section>}</div></div>;
+}
+function Recruitment({p,onDetail}:{p:CharacterProfile;onDetail:(s:DetailSelection)=>void}) {
+  function event(e:DetailRecord<'recruitment_events'>){const b=e.body;return <article key={e.id}><h4>{contextText(p,e.context_id)}</h4><p>{b.join_kind.state==='value'?title(String(b.join_kind.value)):'Recruitment type not specified'}{b.when_text.state==='value'?` · ${b.when_text.value}`:''}</p><dl className="profile_facts">{b.chapter_value.state==='value'&&<div><dt>Chapter</dt><dd>{factText(b.chapter_value)}</dd></div>}{b.join_kind.value!=='automatic'&&<><div><dt>Renown</dt><dd>{factText(b.renown_value)}</dd></div><div><dt>Support</dt><dd>{factText(b.support_value)}</dd></div></>}</dl>{b.condition_id&&<p>{conditionText(p,b.condition_id,p.related)}</p>}{p.timing.filter(t=>t.body.owner_record_id===e.id).map(t=><p key={t.id}>{title(t.body.timing_role)}: {factText(t.body.timing_text)}{t.body.semantics_state==='unresolved'?' · Timing meaning unresolved':''}</p>)}</article>;}
+  return <><div className="profile_recruitment_grid">{ROUTES.map(route=>{const events=p.recruitment.filter(e=>{const ctx=p.contexts.find(c=>c.id===e.context_id);return ctx?.route_ids.includes(route)||ctx?.route_scope==='all';});return <section key={route}><h3>{ROUTE_NAMES[route]}</h3>{events.length?events.map(event):<p>Recruitment not documented.</p>}</section>;})}</div>
+    {p.recruitment.filter(e=>{const c=p.contexts.find(c=>c.id===e.context_id);return !c||(!c.route_ids.length&&c.route_scope!=='all');}).map(event)}
+    <section><h3>Starting equipment & actions</h3>{p.loadouts.length?p.startingStates.map(s=><article key={s.id}>{s.context_id&&<p className="hint">{contextText(p,s.context_id)}</p>}{p.loadouts.filter(l=>l.body.starting_state_id===s.id).map(l=><p key={l.id}><span className="hint">{title(l.body.role)}: </span>{l.body.target_id&&p.related.find(e=>e.id===l.body.target_id&&['item','weapon','equipment','material','scroll','license','ability','combat_art','spell'].includes(e.kind))?<button className="profile_link" onClick={()=>{const target=p.related.find(e=>e.id===l.body.target_id)!;onDetail({kind:['ability','combat_art','spell'].includes(target.kind)?'action':'item',id:target.id,name:target.name});}}>{l.body.label}</button>:l.body.label}{l.body.quantity_json.raw!==null?` × ${l.body.quantity_json.raw}`:''}</p>)}</article>):<p>Starting loadout not documented.</p>}</section>
+  </>;
+}
+export function ProfileTabContent({tab,profile:p,learning,social,catalog,onChoose,onDetail,search,onSearch}:{tab:ProfileTab;profile:CharacterProfile;learning:CharacterLearning|null|undefined;social:CharacterSocial|null|undefined;catalog:Set<string>;onChoose:(id:string)=>void;onDetail:(s:DetailSelection)=>void;search:string;onSearch:(s:string)=>void}) {
+  if(tab==='recruitment')return <Recruitment p={p} onDetail={onDetail}/>;
+  if(tab==='arts_abilities')return learning?<Arts p={p} l={learning} onDetail={onDetail}/>:<p role="status">Loading learning information…</p>;
+  if(!social)return <p role="status">Loading social information…</p>;
+  if(tab==='liked_gifts'){
+    const groups=new Map<string,typeof social.preferences>();for(const pref of social.preferences){const key=JSON.stringify([pref.body.subject_kind,factText(pref.body.tier)]);groups.set(key,[...(groups.get(key)??[]),pref]);}
+    return groups.size?<div className="profile_preferences">{[...groups].map(([key,rows])=>{const [kind,tier]=JSON.parse(key) as string[];return <section key={key}><h3>{title(kind)} · {title(tier)}</h3><div className="profile_gift_grid">{rows.map(r=><div key={r.id}>{r.body.subject_id&&social.itemIds.includes(r.body.subject_id)?<button onClick={()=>onDetail({kind:'item',id:r.body.subject_id!,name:r.body.subject_label})}>{r.body.subject_label}</button>:<span>{r.body.subject_label}</span>}{r.context_id&&<small>{contextText(social,r.context_id)}</small>}</div>)}</div></section>;})}</div>:<p>Preferences not documented.</p>;
+  }
+  if(tab==='bird_time'){
+    const rows=social.birdTime.filter(b=>[factText(b.prompt.body.prompt_text),...b.answers.map(a=>factText(a.text))].some(t=>t.toLocaleLowerCase().includes(search.trim().toLocaleLowerCase())));
+    return <><label className="profile_search">Find a prompt or answer<input value={search} onChange={e=>onSearch(e.target.value)} type="search"/></label>{!social.birdTime.length?<p>Bird Time information not documented.</p>:!rows.length?<p>No matching prompts. <button onClick={()=>onSearch('')}>Clear search</button></p>:rows.map(b=><article key={b.prompt.id} className="profile_bird_prompt"><p>{factText(b.prompt.body.prompt_text)}</p>{b.answers.length?b.answers.map(a=><strong key={a.id}>{factText(a.text)}</strong>):<p>Answer not documented.</p>}</article>)}</>;
+  }
+  const pairs=social.supports.map(pair=>({...pair,partner:social.people.find(e=>e.id===pair.people.find(id=>id!==p.character.id))})).sort((a,b)=>(a.partner?.name??'').localeCompare(b.partner?.name??''));
+  return pairs.length?<table className="profile_support_table"><thead><tr><th>Partner</th><th>Conversations & conditions</th></tr></thead><tbody>{pairs.map(pair=><tr key={pair.id}><th scope="row">{pair.partner?<div className="profile_support_person"><Portrait id={pair.partner.id} name={pair.partner.name} variant="table"/>{catalog.has(pair.partner.id)?<button className="profile_link" onClick={()=>onChoose(pair.partner!.id)}>{pair.partner.name}</button>:pair.partner.name}</div>:'Partner not documented'}</th><td>{pair.variants.map(v=><div key={v.id} className="profile_support_variant"><strong>{v.body.conversation_rank}{v.body.variant_label?` · ${v.body.variant_label}`:''}</strong><p>{factText(v.body.condition_text)}</p>{v.body.condition_id&&<p>{conditionText(social,v.body.condition_id,social.people)}</p>}{v.body.numeric_support_threshold.state==='value'&&<p>Support level {factText(v.body.numeric_support_threshold)}</p>}{v.context_id&&<p className="hint">{contextText(social,v.context_id)}</p>}</div>)}{pair.directionalClaims.length>0&&<details><summary>Listed support details</summary>{pair.directionalClaims.map(d=><p key={d.id}>{social.people.find(e=>e.id===d.body.from_person_id)?.name??'Partner'} → {social.people.find(e=>e.id===d.body.to_person_id)?.name??'Partner'} · {d.body.conversation_rank}: {factText(d.body.text)}</p>)}</details>}</td></tr>)}</tbody></table>:<p>Supports not documented.</p>;
+}

@@ -28,7 +28,7 @@ test('planning input and stored-record schemas reject malformed values', () => {
 test('shortlist membership and retained notes round-trip independently', () => {
   const db = openUserDatabase(path.join(temporary, 'planning.sqlite'));
   try {
-    assert.equal(db.pragma('user_version', { simple: true }), 4);
+    assert.equal(db.pragma('user_version', { simple: true }), 5);
     assert.deepEqual(listCharacterPlanning(db), []);
     const added = setCharacterShortlisted(db, { characterId: 'alexandra', shortlisted: true }, 'dataset-a');
     assert.equal(added.shortlisted, true);
@@ -73,7 +73,7 @@ test('version-two user databases migrate without changing either library setup',
   legacy.close();
   const migrated = openUserDatabase(file);
   try {
-    assert.equal(migrated.pragma('user_version', { simple: true }), 4);
+    assert.equal(migrated.pragma('user_version', { simple: true }), 5);
     assert.deepEqual(loadSetup(migrated, 'cai')?.setup, defaultSetup());
     assert.equal(loadClassSetup(migrated), null);
     assert.deepEqual(listCharacterPlanning(migrated), []);
